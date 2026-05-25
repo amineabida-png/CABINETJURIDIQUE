@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cabinet Juridique Maroc</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body style="margin:0;padding:0;background:#0d0d0f;">
   <div id="root"></div>
-  <script type="text/babel">
+  <script type="text/babel" data-presets="react">
     const { useState } = React;
 
 const MODULES = [
@@ -378,7 +378,6 @@ function CabinetJuridique() {
                   </div>
                 </div>
               </div>
-            </div>
           )}
 
           {/* ══ CLIENTS & DOSSIERS ══ */}
@@ -875,8 +874,9 @@ function CabinetJuridique() {
   );
 }
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<CabinetJuridique />);
+    const domNode = document.getElementById('root');
+    const root = ReactDOM.createRoot(domNode);
+    root.render(React.createElement(CabinetJuridique));
   </script>
 </body>
 </html>
