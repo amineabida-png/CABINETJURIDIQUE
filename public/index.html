@@ -84,9 +84,53 @@ select option{background:#1a1a1e}
 .code-card:hover{border-color:rgba(139,115,85,.4);background:rgba(139,115,85,.05)}
 .risk-low{color:#4ade80}.risk-med{color:#fbbf24}.risk-high{color:#f87171}
 .detail-panel{background:rgba(139,115,85,.05);border:1px solid rgba(139,115,85,.2);border-radius:8px;padding:16px;margin-top:12px}
+
+/* ── RESPONSIVE MOBILE & TABLET ── */
+#menu-toggle{display:none;position:fixed;top:12px;left:12px;z-index:200;background:linear-gradient(135deg,#8b7355,#a08060);border:none;border-radius:8px;padding:10px 12px;cursor:pointer;color:#fff;font-size:18px;line-height:1}
+#overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:149}
+#overlay.show{display:block}
+
+@media(max-width:900px){
+  #menu-toggle{display:block}
+  #sidebar{position:fixed;left:-240px;top:0;height:100%;z-index:150;transition:left .3s ease;box-shadow:4px 0 20px rgba(0,0,0,.5)}
+  #sidebar.open{left:0}
+  #main{width:100%}
+  #topbar{padding:12px 16px 12px 60px}
+  #ptitle{font-size:14px}
+  #content{padding:14px 14px}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(2,1fr)}
+  .g2{grid-template-columns:1fr}
+  .g2e{grid-template-columns:1fr}
+  .g3c{grid-template-columns:1fr}
+  table{font-size:12px}
+  th,td{padding:8px 10px}
+  .sv{font-size:18px}
+  .modal{width:95vw;padding:20px}
+  #bib-codes{grid-template-columns:repeat(2,1fr) !important}
+}
+
+@media(max-width:480px){
+  #topbar{padding:10px 14px 10px 56px}
+  #ptitle{font-size:13px}
+  #content{padding:10px}
+  .g4{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:1fr 1fr}
+  .g2{grid-template-columns:1fr}
+  .g2e{grid-template-columns:1fr}
+  .btn{padding:8px 12px;font-size:10px}
+  .sv{font-size:16px}
+  table{display:block;overflow-x:auto;white-space:nowrap}
+  .ar{flex-wrap:wrap;gap:8px}
+  #bib-codes{grid-template-columns:1fr !important}
+  .card{padding:16px}
+  .sc{padding:16px}
+}
 </style>
 </head>
 <body>
+<button id="menu-toggle" onclick="toggleMenu()">☰</button>
+<div id="overlay" onclick="closeMenu()"></div>
 <div id="sidebar">
   <div class="logo">
     <div class="logo-title">CABINET</div>
@@ -576,6 +620,21 @@ function pPortail(){
   var docs=PDOC.map(function(d){return "<tr><td style='color:#e8e0d0'>"+d.client+"</td><td class='mono'>"+d.fichier+"</td><td style='font-size:11px;color:#5a5248'>"+d.taille+"</td><td class='mono' style='color:#5a5248'>"+d.date+"</td><td>"+sb(d.dir)+"</td><td><button class='btn bgh' style='padding:4px 10px;font-size:10px' data-action='telecharger'>Télécharger</button></td></tr>";}).join("");
   var acces=PACCES.map(function(a){return "<div class='f jb ac' style='padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04)'><div><div style='font-size:14px;color:#e8e0d0'>"+a.client+"</div><div style='font-size:11px;color:#4a4238;margin-top:2px'>"+a.email+" · Dernière conn. : "+a.conn+"</div></div><div class='f ac g8'>"+bd(a.actif?"Actif":"Inactif",a.actif?"bec":"bcl")+(a.actif?"":"<button class='btn bgh' style='padding:4px 10px;font-size:10px' data-action='inviter-client'>Renvoyer</button>")+"</div></div>";}).join("");
   return "<div class='g3'><div class='sc'><div class='sv' style='color:#d4b896'>"+PACCES.filter(function(a){return a.actif;}).length+"</div><div class='sl'>Clients connectés</div></div><div class='sc'><div class='sv' style='color:#fbbf24'>"+PMSG.filter(function(m){return !m.lu;}).length+"</div><div class='sl'>Messages non lus</div></div><div class='sc'><div class='sv' style='color:#60a5fa'>"+PDOC.length+"</div><div class='sl'>Documents partagés</div></div></div><div class='f g8 ac' style='margin-bottom:14px'><button class='btn tb active' data-action='tab-messages'>Messagerie</button><button class='btn tb' data-action='tab-documents'>Documents</button><button class='btn tb' data-action='tab-acces'>Accès clients</button></div><div id='portail-messages'><div class='g2e'><div>"+msgs+"</div><div class='card' style='display:flex;flex-direction:column'><div class='stitle'>Répondre au client</div><textarea placeholder='Rédigez votre réponse sécurisée...' rows='5' style='width:100%;margin-bottom:10px'></textarea><button class='btn bg' data-action='envoyer-msg'>Envoyer de manière sécurisée</button></div></div></div><div id='portail-documents' style='display:none'><div class='card'><div class='f jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Documents partagés</div><button class='btn bg' data-action='inviter-client'>+ Envoyer un document</button></div><table><thead><tr><th>Client</th><th>Fichier</th><th>Taille</th><th>Date</th><th>Direction</th><th></th></tr></thead><tbody>"+docs+"</tbody></table></div></div><div id='portail-acces' style='display:none'><div class='card'><div class='f jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Accès portail — Clients enregistrés</div><button class='btn bg' data-action='inviter-client'>+ Inviter un client</button></div>"+acces+"</div></div>";}
+
+function toggleMenu(){
+  var s=document.getElementById("sidebar");
+  var o=document.getElementById("overlay");
+  s.classList.toggle("open");
+  o.classList.toggle("show");
+}
+function closeMenu(){
+  document.getElementById("sidebar").classList.remove("open");
+  document.getElementById("overlay").classList.remove("show");
+}
+// Close menu after nav click on mobile
+document.addEventListener("click",function(e){
+  if(e.target.closest(".nb")){closeMenu();}
+});
 
 window.addEventListener("load",function(){buildNav();goTo("dashboard");});
 </script>
