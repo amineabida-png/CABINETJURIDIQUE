@@ -126,6 +126,72 @@ select option{background:#1a1a1e}
   .card{padding:16px}
   .sc{padding:16px}
 }
+
+/* ── IMPRESSION A4 ── */
+@media print {
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body { background: #fff !important; color: #111 !important; font-family: 'Georgia', serif !important; display: block !important; height: auto !important; overflow: visible !important; }
+  #sidebar, #topbar, #menu-toggle, #overlay, .btn, .nb, .modal-bg, .notif, #print-btn-area { display: none !important; }
+  #main { display: block !important; width: 100% !important; height: auto !important; overflow: visible !important; }
+  #content { padding: 0 !important; overflow: visible !important; height: auto !important; }
+  .card, .sc { background: #fff !important; border: 1px solid #ccc !important; border-radius: 4px !important; break-inside: avoid; margin-bottom: 12px !important; padding: 14px !important; }
+  .card::before, .sc::before { display: none !important; }
+  .badge { border: 1px solid #999 !important; color: #333 !important; background: #f5f5f5 !important; }
+  .bav { border-color: #2563eb !important; color: #1d4ed8 !important; }
+  .bec { border-color: #16a34a !important; color: #15803d !important; }
+  .bat { border-color: #ca8a04 !important; color: #92400e !important; }
+  .bur { border-color: #dc2626 !important; color: #b91c1c !important; }
+  .bno { border-color: #92400e !important; color: #78350f !important; }
+  .bcl { border-color: #6b7280 !important; color: #374151 !important; }
+  .bpa { border-color: #ea580c !important; color: #9a3412 !important; }
+  table { border-collapse: collapse !important; width: 100% !important; font-size: 11pt !important; }
+  th { background: #f3f4f6 !important; color: #111 !important; border: 1px solid #d1d5db !important; padding: 8px !important; font-size: 9pt !important; }
+  td { border: 1px solid #e5e7eb !important; color: #111 !important; padding: 7px 8px !important; }
+  tr:hover td { background: transparent !important; }
+  .stitle { color: #374151 !important; font-size: 9pt !important; letter-spacing: .1em !important; border-bottom: 1px solid #e5e7eb; padding-bottom: 6px; margin-bottom: 10px !important; }
+  .sv { color: #111 !important; font-size: 20pt !important; }
+  .sl { color: #374151 !important; }
+  .ss { color: #6b7280 !important; }
+  .mono { color: #374151 !important; }
+  .g4, .g3, .g2, .g2e { display: grid !important; gap: 10px !important; }
+  .g4 { grid-template-columns: repeat(4,1fr) !important; }
+  .g3 { grid-template-columns: repeat(3,1fr) !important; }
+  .g2 { grid-template-columns: 1.5fr 1fr !important; }
+  .g2e { grid-template-columns: 1fr 1fr !important; }
+  .pb { background: #e5e7eb !important; }
+  .pbb { background: #6b7280 !important; }
+  .risk-low { color: #15803d !important; }
+  .risk-med { color: #92400e !important; }
+  .risk-high { color: #b91c1c !important; }
+  .detail-panel { background: #f9fafb !important; border: 1px solid #e5e7eb !important; color: #111 !important; }
+  .mc { background: #f9fafb !important; border: 1px solid #e5e7eb !important; color: #111 !important; }
+  .ar { background: #f9fafb !important; border: 1px solid #e5e7eb !important; }
+  .tll { background: #9ca3af !important; }
+  .tld { border-color: #6b7280 !important; }
+  #print-header { display: block !important; }
+  @page { size: A4 portrait; margin: 15mm 12mm 15mm 12mm; }
+}
+
+#print-header {
+  display: none;
+  text-align: center;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #8b7355;
+}
+#print-header h1 { font-family: 'Cinzel', serif; font-size: 16pt; color: #111; letter-spacing: .1em; }
+#print-header p { font-size: 10pt; color: #666; margin-top: 4px; }
+
+#print-btn-area {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
 </style>
 </head>
 <body>
@@ -145,7 +211,17 @@ select option{background:#1a1a1e}
     <div><div id="ptitle">Tableau de bord</div><div id="pdate">Lundi 25 mai 2026</div></div>
     <button class="btn bg" data-action="new-dossier">+ Nouveau dossier</button>
   </div>
-  <div id="content"></div>
+  <div id="content">
+  <div id="print-header">
+    <h1>CABINET ALAMI &amp; ASSOCIÉS</h1>
+    <p id="print-module-title">Document imprimé le 25/05/2026</p>
+  </div>
+</div>
+<div id="print-btn-area">
+  <button class="btn bg" onclick="doPrint()" style="box-shadow:0 4px 15px rgba(139,115,85,.4);display:flex;align-items:center;gap:8px">
+    🖨 Imprimer
+  </button>
+</div>
 </div>
 
 <!-- MODALS -->
@@ -635,6 +711,23 @@ function closeMenu(){
 document.addEventListener("click",function(e){
   if(e.target.closest(".nb")){closeMenu();}
 });
+
+function doPrint(){
+  // Update print header with current module
+  var title = document.getElementById("ptitle").textContent;
+  var ph = document.getElementById("print-module-title");
+  if(ph) ph.textContent = title + " — Imprimé le " + new Date().toLocaleDateString("fr-FR");
+  // Show all hidden detail panels for print
+  document.querySelectorAll(".detail-panel").forEach(function(d){ d.setAttribute("data-was-hidden", d.style.display); d.style.display="block"; });
+  window.print();
+  // Restore hidden panels
+  setTimeout(function(){
+    document.querySelectorAll(".detail-panel").forEach(function(d){ 
+      var was = d.getAttribute("data-was-hidden");
+      if(was !== null) d.style.display = was;
+    });
+  }, 1000);
+}
 
 window.addEventListener("load",function(){buildNav();goTo("dashboard");});
 </script>
