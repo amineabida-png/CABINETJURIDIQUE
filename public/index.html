@@ -741,7 +741,7 @@ function viewItem(type, idx){
   var btns = document.getElementById("u-btns");
   title.textContent = "DÉTAIL — " + type.toUpperCase();
   body.innerHTML = buildViewHTML(type, item);
-  btns.innerHTML = '<button class="btn bgh" data-action="close-modal">Fermer</button><button class="btn btn-xs btn-print" onclick="printItem(''+type+'','+idx+')">🖨 Imprimer</button><button class="btn btn-xs btn-edit" onclick="editItem(''+type+'','+idx+')">✏ Modifier</button><button class="btn btn-xs btn-del" onclick="confirmDelete(''+type+'','+idx+')">🗑 Supprimer</button>';
+  btns.innerHTML = '<button class="btn bgh" data-action="close-modal">Fermer</button><button class="btn btn-xs btn-print" onclick="printItem(&quot;'+type+'&quot;,'+idx+')">🖨 Imprimer</button><button class="btn btn-xs btn-edit" onclick="editItem(&quot;'+type+'&quot;,'+idx+')">✏ Modifier</button><button class="btn btn-xs btn-del" onclick="confirmDelete(&quot;'+type+'&quot;,'+idx+')">🗑 Supprimer</button>';
   modal.classList.add("show");
 }
 
@@ -753,7 +753,7 @@ function editItem(type, idx){
   var btns = document.getElementById("u-btns");
   title.textContent = "MODIFIER — " + type.toUpperCase();
   body.innerHTML = buildEditHTML(type, item, idx);
-  btns.innerHTML = '<button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" onclick="saveEdit(''+type+'','+idx+')">Enregistrer</button>';
+  btns.innerHTML = '<button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" onclick="saveEdit(&quot;'+type+'&quot;,'+idx+')">Enregistrer</button>';
 }
 
 function confirmDelete(type, idx){
@@ -763,7 +763,7 @@ function confirmDelete(type, idx){
   var nom = item.client || item.nom || item.titre || item.ref || item.lib || "cet élément";
   document.getElementById("u-title").textContent = "SUPPRIMER";
   body.innerHTML = '<div class="confirm-box"><p>Êtes-vous sûr de vouloir supprimer<br><strong style=\"color:#fff\">' + nom + '</strong> ?<br><span style=\"font-size:12px;color:#9ca3af\">Cette action est irréversible.</span></p></div>';
-  btns.innerHTML = '<button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" style="background:linear-gradient(135deg,#dc2626,#b91c1c)" onclick="deleteItem(''+type+'','+idx+')">Confirmer la suppression</button>';
+  btns.innerHTML = '<button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" style="background:linear-gradient(135deg,#dc2626,#b91c1c)" onclick="deleteItem(&quot;'+type+'&quot;,'+idx+')">Confirmer la suppression</button>';
 }
 
 function deleteItem(type, idx){
