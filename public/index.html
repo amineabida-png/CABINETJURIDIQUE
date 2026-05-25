@@ -9,34 +9,34 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Cormorant Garamond',Georgia,serif;background:#0d0d0f;color:#e8e0d0;display:flex;height:100vh;overflow:hidden}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#8b7355;border-radius:2px}
-#sidebar{width:230px;background:#080809;border-right:1px solid rgba(139,115,85,0.15);display:flex;flex-direction:column;height:100vh;overflow-y:auto;flex-shrink:0}
+#sidebar{width:230px;background:#080809;border-right:1px solid rgba(139,115,85,.15);display:flex;flex-direction:column;height:100vh;overflow-y:auto;flex-shrink:0}
 #main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden}
 .logo{padding:22px 20px 14px}
 .logo-title{font-family:'Cinzel',serif;font-size:15px;letter-spacing:.12em;color:#d4b896}
 .logo-sub{font-size:9px;color:#4a4238;letter-spacing:.1em;margin-top:3px;font-family:'Cinzel',serif}
 .logo-hr{margin-top:12px;border:none;height:1px;background:linear-gradient(90deg,rgba(139,115,85,.5),transparent)}
-.grp-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#3a3328;padding:12px 18px 4px}
-.nav-btn{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;border-radius:6px;font-size:11px;color:#7a7060;border:1px solid transparent;font-family:'Cinzel',serif;margin:1px 10px;background:none;width:calc(100% - 20px);text-align:left;transition:all .2s}
-.nav-btn:hover{background:rgba(139,115,85,.1);color:#c4a878}
-.nav-btn.active{background:linear-gradient(135deg,rgba(139,115,85,.2),rgba(180,150,100,.08));color:#d4b896;border-color:rgba(139,115,85,.3)}
-.sidebar-foot{padding:14px 20px;border-top:1px solid rgba(139,115,85,.1);margin-top:auto}
-.sidebar-foot p{font-size:10px;color:#4a4238;font-family:'Cinzel',serif}
-.sidebar-foot span{font-size:9px;color:#2d2820;display:block;margin-top:2px}
+.grp{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#3a3328;padding:12px 18px 4px}
+.nb{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;border-radius:6px;font-size:11px;color:#7a7060;border:1px solid transparent;font-family:'Cinzel',serif;margin:1px 10px;background:none;width:calc(100% - 20px);text-align:left;transition:all .2s}
+.nb:hover{background:rgba(139,115,85,.1);color:#c4a878}
+.nb.active{background:linear-gradient(135deg,rgba(139,115,85,.2),rgba(180,150,100,.08));color:#d4b896;border-color:rgba(139,115,85,.3)}
+.sfoot{padding:14px 20px;border-top:1px solid rgba(139,115,85,.1);margin-top:auto}
+.sfoot p{font-size:10px;color:#4a4238;font-family:'Cinzel',serif}
+.sfoot span{font-size:9px;color:#2d2820;display:block;margin-top:2px}
 #topbar{padding:15px 26px;border-bottom:1px solid rgba(139,115,85,.12);display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,.2);flex-shrink:0}
-#page-title{font-family:'Cinzel',serif;font-size:17px;color:#d4b896;letter-spacing:.05em}
-#page-date{font-size:11px;color:#4a4238;margin-top:2px}
+#ptitle{font-family:'Cinzel',serif;font-size:17px;color:#d4b896;letter-spacing:.05em}
+#pdate{font-size:11px;color:#4a4238;margin-top:2px}
 #content{flex:1;overflow-y:auto;padding:22px 26px}
 .card{background:linear-gradient(135deg,#141416,#0f0f12);border:1px solid rgba(139,115,85,.18);border-radius:10px;padding:22px;margin-bottom:16px}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
 .g2{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;margin-bottom:16px}
 .g2e{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
-.g3c{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.stat-card{background:linear-gradient(135deg,#141416,#0f0f12);border:1px solid rgba(139,115,85,.18);border-radius:10px;padding:20px;position:relative;overflow:hidden}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#8b7355,transparent)}
-.stat-val{font-family:'Cinzel',serif;font-size:22px;font-weight:600;margin:8px 0 4px}
-.stat-lbl{font-size:11px;color:#8b7355;font-family:'Cinzel',serif;letter-spacing:.04em}
-.stat-sub{font-size:10px;color:#4a4238;margin-top:3px}
+.g3c{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+.sc{background:linear-gradient(135deg,#141416,#0f0f12);border:1px solid rgba(139,115,85,.18);border-radius:10px;padding:20px;position:relative;overflow:hidden}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#8b7355,transparent)}
+.sv{font-family:'Cinzel',serif;font-size:22px;font-weight:600;margin:8px 0 4px}
+.sl{font-size:11px;color:#8b7355;font-family:'Cinzel',serif;letter-spacing:.04em}
+.ss{font-size:10px;color:#4a4238;margin-top:3px}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{text-align:left;padding:10px 14px;color:#8b7355;font-size:10px;font-family:'Cinzel',serif;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid rgba(139,115,85,.18)}
 td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04);color:#c8bfb0;vertical-align:middle}
@@ -50,34 +50,40 @@ tr:hover td{background:rgba(139,115,85,.04)}
 .bur{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.22)}
 .bpa{background:rgba(249,115,22,.1);color:#fb923c;border:1px solid rgba(249,115,22,.18)}
 .btn{padding:9px 18px;border-radius:6px;cursor:pointer;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.06em;border:none;transition:all .2s;white-space:nowrap}
-.bgold{background:linear-gradient(135deg,#8b7355,#a08060);color:#fff}
-.bgold:hover{background:linear-gradient(135deg,#9a8060,#b09070)}
-.bghost{background:transparent;color:#8b7355;border:1px solid rgba(139,115,85,.3)}
-.bghost:hover{background:rgba(139,115,85,.1);color:#d4b896}
-.tab-btn{padding:8px 16px;border-radius:6px;cursor:pointer;font-family:'Cinzel',serif;font-size:11px;border:1px solid transparent;color:#6a6058;background:transparent;transition:all .2s}
-.tab-btn.active{background:rgba(139,115,85,.15);color:#d4b896;border-color:rgba(139,115,85,.3)}
+.bg{background:linear-gradient(135deg,#8b7355,#a08060);color:#fff}
+.bg:hover{background:linear-gradient(135deg,#9a8060,#b09070)}
+.bgh{background:transparent;color:#8b7355;border:1px solid rgba(139,115,85,.3)}
+.bgh:hover{background:rgba(139,115,85,.1);color:#d4b896}
+.tb{padding:8px 16px;border-radius:6px;cursor:pointer;font-family:'Cinzel',serif;font-size:11px;border:1px solid transparent;color:#6a6058;background:transparent;transition:all .2s}
+.tb.active{background:rgba(139,115,85,.15);color:#d4b896;border-color:rgba(139,115,85,.3)}
 input,select,textarea{background:rgba(255,255,255,.04);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:6px;padding:9px 14px;font-family:'Cormorant Garamond',serif;font-size:14px;outline:none}
-input:focus,select:focus{border-color:rgba(139,115,85,.5)}
+input:focus,select:focus,textarea:focus{border-color:rgba(139,115,85,.5)}
 input::placeholder,textarea::placeholder{color:#4a4238}
 select option{background:#1a1a1e}
 .stitle{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8b7355;margin-bottom:14px}
 .mono{font-family:'Courier New',monospace;font-size:11px;color:#8b7355}
-.prog-bg{background:rgba(139,115,85,.12);border-radius:4px;height:6px;overflow:hidden;flex:1;min-width:60px}
-.prog-bar{background:linear-gradient(90deg,#8b7355,#d4b896);height:100%;border-radius:4px}
-.msg-card{background:rgba(255,255,255,.02);border:1px solid rgba(139,115,85,.12);border-radius:8px;padding:14px 16px;margin-bottom:8px}
-.agenda-row{display:flex;gap:14px;align-items:center;padding:13px 16px;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid rgba(139,115,85,.1);margin-bottom:10px}
-.tl-wrap{position:relative;padding-left:28px}
-.tl-line{position:absolute;left:8px;top:0;bottom:0;width:1px;background:rgba(139,115,85,.2)}
-.tl-row{display:flex;gap:14px;margin-bottom:14px}
-.tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px;margin-left:-14px}
-.flex{display:flex}.gap8{gap:8px}.gap14{gap:14px}.ac{align-items:center}.jb{justify-content:space-between}.f1{flex:1}.fc{flex-direction:column}
-.modal-bg{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center}
+.pb{background:rgba(139,115,85,.12);border-radius:4px;height:6px;overflow:hidden;flex:1;min-width:60px}
+.pbb{background:linear-gradient(90deg,#8b7355,#d4b896);height:100%;border-radius:4px}
+.mc{background:rgba(255,255,255,.02);border:1px solid rgba(139,115,85,.12);border-radius:8px;padding:14px 16px;margin-bottom:8px}
+.ar{display:flex;gap:14px;align-items:center;padding:13px 16px;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid rgba(139,115,85,.1);margin-bottom:10px}
+.tlw{position:relative;padding-left:28px}
+.tll{position:absolute;left:8px;top:0;bottom:0;width:1px;background:rgba(139,115,85,.2)}
+.tlr{display:flex;gap:14px;margin-bottom:14px}
+.tld{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px;margin-left:-14px}
+.f{display:flex}.g8{gap:8px}.g14{gap:14px}.ac{align-items:center}.jb{justify-content:space-between}.f1{flex:1}.fc{flex-direction:column}
+.modal-bg{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);z-index:100;align-items:center;justify-content:center}
 .modal-bg.show{display:flex}
-.modal{background:#141416;border:1px solid rgba(139,115,85,.3);border-radius:12px;padding:28px;width:480px;max-width:90vw}
-.modal h3{font-family:'Cinzel',serif;color:#d4b896;margin-bottom:20px;font-size:15px;letter-spacing:.08em}
-.modal label{display:block;font-size:11px;color:#8b7355;font-family:'Cinzel',serif;letter-spacing:.06em;margin-bottom:5px;margin-top:14px}
+.modal{background:#141416;border:1px solid rgba(139,115,85,.35);border-radius:12px;padding:28px;width:500px;max-width:92vw;max-height:90vh;overflow-y:auto}
+.modal h3{font-family:'Cinzel',serif;color:#d4b896;margin-bottom:20px;font-size:14px;letter-spacing:.1em}
+.modal label{display:block;font-size:10px;color:#8b7355;font-family:'Cinzel',serif;letter-spacing:.08em;margin-bottom:5px;margin-top:14px;text-transform:uppercase}
 .modal input,.modal select,.modal textarea{width:100%}
-.modal-btns{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
+.modal-btns{display:flex;gap:10px;margin-top:22px;justify-content:flex-end}
+.notif{position:fixed;top:20px;right:20px;background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;padding:14px 22px;border-radius:8px;font-family:'Cinzel',serif;font-size:12px;z-index:999;letter-spacing:.05em;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.code-card{background:linear-gradient(135deg,#141416,#0f0f12);border:1px solid rgba(139,115,85,.18);border-radius:10px;padding:20px;cursor:pointer;transition:all .2s}
+.code-card:hover{border-color:rgba(139,115,85,.4);background:rgba(139,115,85,.05)}
+.risk-low{color:#4ade80}.risk-med{color:#fbbf24}.risk-high{color:#f87171}
+.detail-panel{background:rgba(139,115,85,.05);border:1px solid rgba(139,115,85,.2);border-radius:8px;padding:16px;margin-top:12px}
 </style>
 </head>
 <body>
@@ -87,388 +93,491 @@ select option{background:#1a1a1e}
     <div class="logo-sub">JURIDIQUE MAROC</div>
     <hr class="logo-hr"/>
   </div>
-  <div id="nav-container"></div>
-  <div class="sidebar-foot">
-    <p>Cabinet Alami & Associés</p>
-    <span>Casablanca · Barreau de Casablanca</span>
-  </div>
+  <div id="nav"></div>
+  <div class="sfoot"><p>Cabinet Alami &amp; Associés</p><span>Casablanca · Barreau de Casablanca</span></div>
 </div>
 <div id="main">
   <div id="topbar">
-    <div>
-      <div id="page-title">Tableau de bord</div>
-      <div id="page-date">Lundi 25 mai 2026</div>
-    </div>
-    <button class="btn bgold" data-action="new-dossier">+ Nouveau dossier</button>
+    <div><div id="ptitle">Tableau de bord</div><div id="pdate">Lundi 25 mai 2026</div></div>
+    <button class="btn bg" data-action="new-dossier">+ Nouveau dossier</button>
   </div>
   <div id="content"></div>
 </div>
 
-<!-- MODAL NOUVEAU DOSSIER -->
-<div class="modal-bg" id="modal-dossier">
+<!-- MODALS -->
+<div class="modal-bg" id="m-dossier">
   <div class="modal">
     <h3>NOUVEAU DOSSIER</h3>
-    <label>Client</label>
-    <input id="m-client" placeholder="Nom du client"/>
-    <label>Type</label>
-    <select id="m-type"><option>Avocat</option><option>Notaire</option></select>
-    <label>Matière</label>
-    <input id="m-matiere" placeholder="Ex: Droit commercial"/>
-    <label>Professionnel responsable</label>
-    <select id="m-avocat"><option>Me. Alami</option><option>Me. Berrada</option><option>Me. Idrissi</option><option>Me. Lahlou</option></select>
-    <div class="modal-btns">
-      <button class="btn bghost" data-action="close-modal">Annuler</button>
-      <button class="btn bgold" data-action="save-dossier">Enregistrer</button>
-    </div>
+    <label>Client</label><input id="md-client" placeholder="Nom complet du client"/>
+    <label>Type</label><select id="md-type"><option>Avocat</option><option>Notaire</option></select>
+    <label>Matière juridique</label><input id="md-matiere" placeholder="Ex: Droit commercial"/>
+    <label>Professionnel responsable</label><select id="md-avocat"><option>Me. Alami</option><option>Me. Berrada</option><option>Me. Idrissi</option><option>Me. Lahlou</option></select>
+    <label>Statut</label><select id="md-statut"><option>En cours</option><option>En attente</option></select>
+    <div class="modal-btns"><button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" data-action="save-dossier">Enregistrer</button></div>
   </div>
 </div>
 
-<!-- MODAL NOUVEAU RDV -->
-<div class="modal-bg" id="modal-rdv">
+<div class="modal-bg" id="m-rdv">
   <div class="modal">
     <h3>NOUVEAU RENDEZ-VOUS</h3>
-    <label>Client</label>
-    <input id="rdv-client" placeholder="Nom du client"/>
-    <label>Heure</label>
-    <input id="rdv-heure" placeholder="Ex: 09:00" type="time"/>
-    <label>Type de RDV</label>
-    <select id="rdv-type"><option>Consultation</option><option>Audience</option><option>Signature acte</option><option>Premier RDV</option></select>
-    <label>Salle</label>
-    <select id="rdv-salle"><option>Bureau 1</option><option>Bureau 2</option><option>Salle conférence</option><option>Tribunal</option></select>
-    <div class="modal-btns">
-      <button class="btn bghost" data-action="close-modal">Annuler</button>
-      <button class="btn bgold" data-action="save-rdv">Enregistrer</button>
-    </div>
+    <label>Client</label><input id="mr-client" placeholder="Nom du client"/>
+    <label>Heure</label><input id="mr-heure" type="time" value="09:00"/>
+    <label>Type de rendez-vous</label><select id="mr-type"><option>Consultation</option><option>Audience</option><option>Signature acte</option><option>Premier RDV</option><option>Bilan dossier</option></select>
+    <label>Salle</label><select id="mr-salle"><option>Bureau 1</option><option>Bureau 2</option><option>Salle conférence</option><option>Tribunal</option></select>
+    <div class="modal-btns"><button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" data-action="save-rdv">Enregistrer</button></div>
   </div>
 </div>
 
-<!-- MODAL NOUVELLE FACTURE -->
-<div class="modal-bg" id="modal-facture">
+<div class="modal-bg" id="m-acte">
+  <div class="modal">
+    <h3>NOUVEL ACTE</h3>
+    <label>Référence</label><input id="ma-ref" placeholder="Ex: ACT-005"/>
+    <label>Titre de l acte</label><input id="ma-titre" placeholder="Ex: Acte de vente immeuble"/>
+    <label>Type</label><select id="ma-type"><option>Notarié</option><option>Avocat</option></select>
+    <label>Client</label><input id="ma-client" placeholder="Nom du client"/>
+    <div class="modal-btns"><button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" data-action="save-acte">Enregistrer</button></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="m-procedure">
+  <div class="modal">
+    <h3>NOUVELLE PROCÉDURE</h3>
+    <label>Client</label><input id="mp-client" placeholder="Nom du client"/>
+    <label>Juridiction</label><select id="mp-juridiction"><option>TPI Casablanca</option><option>TPI Rabat</option><option>TPI Marrakech</option><option>Cour d appel Casablanca</option><option>Tribunal du travail Casablanca</option><option>Cour Suprême</option></select>
+    <label>Instance</label><select id="mp-instance"><option>1ère instance</option><option>Appel</option><option>Cassation</option><option>Conciliation</option><option>Instruction</option></select>
+    <label>Étape actuelle</label><input id="mp-etape" placeholder="Ex: Audience de plaidoirie"/>
+    <label>Échéance</label><input id="mp-echeance" type="date"/>
+    <label>N° de rôle</label><input id="mp-role" placeholder="Ex: TPI 24/01234"/>
+    <div class="modal-btns"><button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" data-action="save-procedure">Enregistrer</button></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="m-facture">
   <div class="modal">
     <h3>NOUVELLE FACTURE</h3>
-    <label>Client</label>
-    <input id="f-client" placeholder="Nom du client"/>
-    <label>Dossier</label>
-    <input id="f-dossier" placeholder="Ex: D-2024-001"/>
-    <label>Montant HT (MAD)</label>
-    <input id="f-montant" placeholder="Ex: 15000" type="number"/>
-    <div class="modal-btns">
-      <button class="btn bghost" data-action="close-modal">Annuler</button>
-      <button class="btn bgold" data-action="save-facture">Enregistrer</button>
-    </div>
+    <label>Client</label><input id="mf-client" placeholder="Nom du client"/>
+    <label>Référence dossier</label><input id="mf-dossier" placeholder="Ex: D-2024-001"/>
+    <label>Montant HT (MAD)</label><input id="mf-montant" type="number" placeholder="Ex: 15000"/>
+    <label>Date d échéance</label><input id="mf-date" type="date"/>
+    <div class="modal-btns"><button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" data-action="save-facture">Enregistrer</button></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="m-collab">
+  <div class="modal">
+    <h3>NOUVEAU COLLABORATEUR</h3>
+    <label>Nom complet</label><input id="mc-nom" placeholder="Ex: Me. Ahmed Benali"/>
+    <label>Rôle</label><select id="mc-role"><option>Associé</option><option>Collaborateur</option><option>Collaboratrice</option><option>Secrétaire juridique</option><option>Stagiaire</option></select>
+    <label>Spécialité</label><input id="mc-spec" placeholder="Ex: Droit commercial"/>
+    <div class="modal-btns"><button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" data-action="save-collab">Enregistrer</button></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="m-charge">
+  <div class="modal">
+    <h3>NOUVELLE CHARGE</h3>
+    <label>Libellé</label><input id="mch-lib" placeholder="Ex: Abonnement logiciel"/>
+    <label>Montant (MAD)</label><input id="mch-montant" type="number" placeholder="Ex: 2500"/>
+    <label>Catégorie</label><select id="mch-cat"><option>Immobilier</option><option>Ordinale</option><option>Assurance</option><option>Informatique</option><option>Frais généraux</option><option>Formation</option><option>Autre</option></select>
+    <label>Périodicité</label><select id="mch-per"><option>Mensuel</option><option>Annuel</option><option>Trimestriel</option><option>Unique</option></select>
+    <div class="modal-btns"><button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" data-action="save-charge">Enregistrer</button></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="m-client-lcb">
+  <div class="modal">
+    <h3>ÉVALUATION LAB-FT CLIENT</h3>
+    <label>Nom du client</label><input id="ml-client" placeholder="Nom complet"/>
+    <label>Type de client</label><select id="ml-type"><option>Personne physique</option><option>Personne morale</option><option>Non-résident</option></select>
+    <label>Niveau de risque estimé</label><select id="ml-niveau"><option>Faible</option><option>Moyen</option><option>Élevé</option></select>
+    <label>Statut KYC</label><select id="ml-kyc"><option>Complet</option><option>Partiel</option><option>À collecter</option></select>
+    <div class="modal-btns"><button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" data-action="save-lcb">Enregistrer</button></div>
   </div>
 </div>
 
 <script>
-var MODULES = [
-  {id:"dashboard",label:"Tableau de bord",icon:"⚖",group:"Principal"},
-  {id:"clients",label:"Clients & Dossiers",icon:"👤",group:"Principal"},
-  {id:"agenda",label:"Agenda",icon:"📅",group:"Principal"},
-  {id:"actes",label:"Actes & Documents",icon:"📜",group:"Principal"},
-  {id:"honoraires",label:"Honoraires & Facturation",icon:"💰",group:"Principal"},
-  {id:"procedures",label:"Suivi des procédures",icon:"🏛",group:"Juridique"},
-  {id:"bibliotheque",label:"Bibliothèque juridique",icon:"📚",group:"Juridique"},
-  {id:"collaborateurs",label:"Collaborateurs & RH",icon:"👥",group:"Cabinet"},
-  {id:"comptabilite",label:"Comptabilité interne",icon:"📊",group:"Cabinet"},
-  {id:"conformite",label:"Conformité & LAB-FT",icon:"🔐",group:"Conformité"},
-  {id:"portail",label:"Portail client",icon:"🌐",group:"Relation Client"}
+var MODS=[
+  {id:"dashboard",label:"Tableau de bord",icon:"⚖",grp:"Principal"},
+  {id:"clients",label:"Clients et Dossiers",icon:"👤",grp:"Principal"},
+  {id:"agenda",label:"Agenda",icon:"📅",grp:"Principal"},
+  {id:"actes",label:"Actes et Documents",icon:"📜",grp:"Principal"},
+  {id:"honoraires",label:"Honoraires et Facturation",icon:"💰",grp:"Principal"},
+  {id:"procedures",label:"Suivi des procédures",icon:"🏛",grp:"Juridique"},
+  {id:"bibliotheque",label:"Bibliothèque juridique",icon:"📚",grp:"Juridique"},
+  {id:"collaborateurs",label:"Collaborateurs et RH",icon:"👥",grp:"Cabinet"},
+  {id:"comptabilite",label:"Comptabilité interne",icon:"📊",grp:"Cabinet"},
+  {id:"conformite",label:"Conformité et LAB-FT",icon:"🔐",grp:"Conformité"},
+  {id:"portail",label:"Portail client",icon:"🌐",grp:"Relation Client"}
 ];
 
-var DOSSIERS = [
-  {id:"D-2024-001",client:"SARL Benali & Fils",type:"Avocat",matiere:"Droit commercial",statut:"En cours",date:"12/01/2024",avocat:"Me. Alami"},
+var DOS=[
+  {id:"D-2024-001",client:"SARL Benali et Fils",type:"Avocat",matiere:"Droit commercial",statut:"En cours",date:"12/01/2024",avocat:"Me. Alami"},
   {id:"D-2024-002",client:"Mme. Fatima Chraibi",type:"Notaire",matiere:"Succession",statut:"Clôturé",date:"05/02/2024",avocat:"Me. Berrada"},
   {id:"D-2024-003",client:"M. Youssef Bennani",type:"Avocat",matiere:"Droit du travail",statut:"En cours",date:"19/03/2024",avocat:"Me. Alami"},
   {id:"D-2024-004",client:"SCI Al Yasmine",type:"Notaire",matiere:"Vente immobilière",statut:"En attente",date:"02/04/2024",avocat:"Me. Idrissi"},
   {id:"D-2024-005",client:"M. Hassan Tazi",type:"Avocat",matiere:"Droit pénal",statut:"En cours",date:"14/04/2024",avocat:"Me. Alami"}
 ];
 
-var AGENDA = [
+var AGD=[
   {heure:"09:00",client:"M. Youssef Bennani",type:"Consultation",salle:"Bureau 1"},
-  {heure:"10:30",client:"SARL Benali & Fils",type:"Audience TPI",salle:"Tribunal"},
+  {heure:"10:30",client:"SARL Benali et Fils",type:"Audience TPI",salle:"Tribunal"},
   {heure:"14:00",client:"SCI Al Yasmine",type:"Signature acte",salle:"Bureau 2"},
   {heure:"15:30",client:"Mme. Fatima Chraibi",type:"Bilan succession",salle:"Salle conf."},
   {heure:"17:00",client:"Nouveau client",type:"Premier RDV",salle:"Bureau 1"}
 ];
 
-var ACTES = [
-  {ref:"ACT-001",titre:"Statuts SARL Benali",type:"Notarié",date:"10/01/2024",statut:"Signé"},
-  {ref:"ACT-002",titre:"Contrat de bail commercial",type:"Avocat",date:"18/02/2024",statut:"En cours"},
-  {ref:"ACT-003",titre:"Acte de vente Al Yasmine",type:"Notarié",date:"02/04/2024",statut:"En attente"},
-  {ref:"ACT-004",titre:"Accord transactionnel Bennani",type:"Avocat",date:"20/03/2024",statut:"Signé"}
+var ACT=[
+  {ref:"ACT-001",titre:"Statuts SARL Benali",type:"Notarié",client:"SARL Benali et Fils",date:"10/01/2024",statut:"Signé"},
+  {ref:"ACT-002",titre:"Contrat de bail commercial",type:"Avocat",client:"M. Youssef Bennani",date:"18/02/2024",statut:"En cours"},
+  {ref:"ACT-003",titre:"Acte de vente Al Yasmine",type:"Notarié",client:"SCI Al Yasmine",date:"02/04/2024",statut:"En attente"},
+  {ref:"ACT-004",titre:"Accord transactionnel Bennani",type:"Avocat",client:"M. Youssef Bennani",date:"20/03/2024",statut:"Signé"},
+  {ref:"ACT-005",titre:"Testament Chraibi",type:"Notarié",client:"Mme. Fatima Chraibi",date:"05/02/2024",statut:"Signé"},
+  {ref:"ACT-006",titre:"Contrat de travail cadre",type:"Avocat",client:"SARL Benali et Fils",date:"28/03/2024",statut:"Signé"}
 ];
 
-var HONORAIRES = [
-  {dossier:"D-2024-001",client:"SARL Benali & Fils",montant:"42 000 MAD",statut:"Payé",date:"28/02/2024"},
+var HON=[
+  {dossier:"D-2024-001",client:"SARL Benali et Fils",montant:"42 000 MAD",statut:"Payé",date:"28/02/2024"},
   {dossier:"D-2024-003",client:"M. Youssef Bennani",montant:"18 000 MAD",statut:"En attente",date:"15/04/2024"},
   {dossier:"D-2024-004",client:"SCI Al Yasmine",montant:"35 000 MAD",statut:"Partiel",date:"10/04/2024"},
   {dossier:"D-2024-005",client:"M. Hassan Tazi",montant:"21 000 MAD",statut:"Payé",date:"01/04/2024"}
 ];
 
-var PROCEDURES = [
-  {ref:"PROC-001",client:"SARL Benali & Fils",juridiction:"TPI Casablanca",etape:"Audience de plaidoirie",echeance:"28/05/2026",role:"TPI 24/01234",statut:"Planifiée"},
-  {ref:"PROC-002",client:"M. Youssef Bennani",juridiction:"Tribunal du travail Casablanca",etape:"Attente convocation",echeance:"15/06/2026",role:"TT 24/00891",statut:"En attente"},
-  {ref:"PROC-003",client:"M. Hassan Tazi",juridiction:"TPI Rabat",etape:"Dépôt mémoire",echeance:"10/06/2026",role:"TPI 24/00567",statut:"Urgent"},
-  {ref:"PROC-004",client:"SARL Benali & Fils",juridiction:"Cour d appel Casablanca",etape:"Dépôt conclusions",echeance:"01/07/2026",role:"CA 25/02345",statut:"En cours"}
+var PROC=[
+  {ref:"PROC-001",client:"SARL Benali et Fils",juridiction:"TPI Casablanca",instance:"1ère instance",etape:"Audience de plaidoirie",echeance:"28/05/2026",role:"TPI 24/01234",statut:"Planifiée"},
+  {ref:"PROC-002",client:"M. Youssef Bennani",juridiction:"Tribunal du travail Casablanca",instance:"Conciliation",etape:"Attente convocation",echeance:"15/06/2026",role:"TT 24/00891",statut:"En attente"},
+  {ref:"PROC-003",client:"M. Hassan Tazi",juridiction:"TPI Rabat",instance:"Instruction",etape:"Dépôt mémoire",echeance:"10/06/2026",role:"TPI 24/00567",statut:"Urgent"},
+  {ref:"PROC-004",client:"SARL Benali et Fils",juridiction:"Cour d appel Casablanca",instance:"Appel",etape:"Dépôt conclusions",echeance:"01/07/2026",role:"CA 25/02345",statut:"En cours"}
 ];
 
-var CODES = [
-  {code:"DOC — Dahir des Obligations et Contrats",articles:"1248 articles",domaine:"Droit civil",icon:"⚖"},
-  {code:"Code de commerce (Loi 15-95)",articles:"738 articles",domaine:"Droit commercial",icon:"🏢"},
-  {code:"Code du travail (Loi 65-99)",articles:"589 articles",domaine:"Droit social",icon:"👷"},
-  {code:"Code pénal marocain",articles:"624 articles",domaine:"Droit pénal",icon:"🔒"},
-  {code:"Code de procédure civile (CPC)",articles:"528 articles",domaine:"Procédure",icon:"📋"},
-  {code:"Code général des impôts (CGI)",articles:"247 articles",domaine:"Fiscalité",icon:"💰"}
+var CODES=[
+  {code:"DOC — Dahir des Obligations et Contrats",articles:"1248 articles",domaine:"Droit civil",icon:"⚖",detail:"Texte fondateur du droit des obligations au Maroc. Promulgué en 1913, révisé en 2016. Régit les contrats, la responsabilité civile, les quasi-contrats."},
+  {code:"Code de commerce (Loi 15-95)",articles:"738 articles",domaine:"Droit commercial",icon:"🏢",detail:"Régit les actes de commerce, les commerçants, les fonds de commerce, les sociétés commerciales et les procédures collectives."},
+  {code:"Code du travail (Loi 65-99)",articles:"589 articles",domaine:"Droit social",icon:"👷",detail:"Régit les relations de travail individuelles et collectives, la protection sociale, les syndicats et l'inspection du travail."},
+  {code:"Code pénal marocain",articles:"624 articles",domaine:"Droit pénal",icon:"🔒",detail:"Définit les infractions et les peines applicables. Distingue les crimes, délits et contraventions."},
+  {code:"Code de procédure civile (CPC)",articles:"528 articles",domaine:"Procédure",icon:"📋",detail:"Organise la procédure devant les juridictions civiles marocaines, les voies de recours et l'exécution des jugements."},
+  {code:"Code général des impôts (CGI)",articles:"247 articles",domaine:"Fiscalité",icon:"💰",detail:"Régit l'impôt sur les sociétés, l'impôt sur le revenu, la TVA, les droits d'enregistrement et de timbre."}
 ];
 
-var JURIS = [
-  {ref:"Cour Suprême, ch. civ., 15 janv. 2024",titre:"Responsabilité contractuelle — inexécution",domaine:"Droit civil",source:"Revue juridique n°45"},
-  {ref:"Cour Suprême, ch. adm., 22 févr. 2024",titre:"Urbanisme — permis de construire",domaine:"Droit administratif",source:"Bulletin officiel n°7254"},
-  {ref:"Cour Suprême, ch. soc., 6 mars 2024",titre:"Licenciement abusif — art. 41 Code Travail",domaine:"Droit social",source:"Revue sociale marocaine n°12"},
-  {ref:"Cour Suprême, ch. com., 12 avr. 2024",titre:"Clause de non-concurrence — validité",domaine:"Droit commercial",source:"Revue droit des affaires n°8"}
+var JURIS=[
+  {ref:"Cour Suprême, ch. civ., 15 janv. 2024",titre:"Responsabilité contractuelle — inexécution",domaine:"Droit civil",source:"Revue juridique n°45",resume:"La Cour confirme que l'inexécution d'une obligation contractuelle engage la responsabilité du débiteur sans nécessité de prouver une faute intentionnelle."},
+  {ref:"Cour Suprême, ch. adm., 22 févr. 2024",titre:"Urbanisme — permis de construire",domaine:"Droit administratif",source:"Bulletin officiel n°7254",resume:"Annulation d'un permis de construire délivré en violation des règles d'urbanisme. La Cour rappelle le contrôle de légalité des actes administratifs."},
+  {ref:"Cour Suprême, ch. soc., 6 mars 2024",titre:"Licenciement abusif — art. 41 Code Travail",domaine:"Droit social",source:"Revue sociale marocaine n°12",resume:"Confirmation que le licenciement sans cause réelle et sérieuse ouvre droit à indemnisation selon barème légal art. 41 du Code du Travail."},
+  {ref:"Cour Suprême, ch. com., 12 avr. 2024",titre:"Clause de non-concurrence — validité",domaine:"Droit commercial",source:"Revue droit des affaires n°8",resume:"La clause de non-concurrence est valide si elle est limitée dans le temps, l'espace et son objet, et si elle comporte une contrepartie financière."}
 ];
 
-var COLLABS = [
-  {nom:"Me. Nadia Alami",role:"Associée",spec:"Droit commercial",dos:12,taux:92},
-  {nom:"Me. Karim Berrada",role:"Associé",spec:"Droit notarial",dos:8,taux:88},
-  {nom:"Me. Samia Idrissi",role:"Collaboratrice",spec:"Droit immobilier",dos:6,taux:85},
-  {nom:"Me. Mehdi Lahlou",role:"Collaborateur",spec:"Droit du travail",dos:9,taux:90,conge:true},
-  {nom:"Mme. Houda Tazi",role:"Secrétaire juridique",spec:"—",dos:0,taux:0}
+var COL=[
+  {nom:"Me. Nadia Alami",role:"Associée",spec:"Droit commercial",dos:12,taux:92,email:"n.alami@cabinet-alami.ma",tel:"0522-xxx-xxx"},
+  {nom:"Me. Karim Berrada",role:"Associé",spec:"Droit notarial",dos:8,taux:88,email:"k.berrada@cabinet-alami.ma",tel:"0522-xxx-xxx"},
+  {nom:"Me. Samia Idrissi",role:"Collaboratrice",spec:"Droit immobilier",dos:6,taux:85,email:"s.idrissi@cabinet-alami.ma",tel:"0522-xxx-xxx"},
+  {nom:"Me. Mehdi Lahlou",role:"Collaborateur",spec:"Droit du travail",dos:9,taux:90,email:"m.lahlou@cabinet-alami.ma",tel:"0522-xxx-xxx",conge:true},
+  {nom:"Mme. Houda Tazi",role:"Secrétaire juridique",spec:"Administration",dos:0,taux:0,email:"h.tazi@cabinet-alami.ma",tel:"0522-xxx-xxx"}
 ];
 
-var CHARGES = [
-  {lib:"Loyer cabinet (Casablanca)",montant:"12 000 MAD",cat:"Immobilier",per:"Mensuel",statut:"Payé"},
-  {lib:"Cotisations Barreau de Casablanca",montant:"3 500 MAD",cat:"Ordinale",per:"Annuel",statut:"Payé"},
-  {lib:"Assurance RCP Cabinet",montant:"8 000 MAD",cat:"Assurance",per:"Annuel",statut:"En attente"},
-  {lib:"Logiciels et abonnements",montant:"1 500 MAD",cat:"Informatique",per:"Mensuel",statut:"Payé"},
-  {lib:"Fournitures bureau",montant:"600 MAD",cat:"Frais généraux",per:"Mensuel",statut:"Payé"},
-  {lib:"Formation continue",montant:"4 000 MAD",cat:"Formation",per:"Annuel",statut:"Payé"}
+var CHG=[
+  {lib:"Loyer cabinet (Casablanca)",montant:12000,cat:"Immobilier",per:"Mensuel",statut:"Payé"},
+  {lib:"Cotisations Barreau de Casablanca",montant:3500,cat:"Ordinale",per:"Annuel",statut:"Payé"},
+  {lib:"Assurance RCP Cabinet",montant:8000,cat:"Assurance",per:"Annuel",statut:"En attente"},
+  {lib:"Logiciels et abonnements",montant:1500,cat:"Informatique",per:"Mensuel",statut:"Payé"},
+  {lib:"Fournitures bureau",montant:600,cat:"Frais généraux",per:"Mensuel",statut:"Payé"},
+  {lib:"Formation continue",montant:4000,cat:"Formation",per:"Annuel",statut:"Payé"}
 ];
 
-var LCB = [
-  {client:"SARL Benali & Fils",niveau:"Faible",kyc:"Complet",decl:"—",date:"12/01/2024",statut:"Conforme"},
+var LCB=[
+  {client:"SARL Benali et Fils",niveau:"Faible",kyc:"Complet",decl:"—",date:"12/01/2024",statut:"Conforme"},
   {client:"SCI Al Yasmine",niveau:"Moyen",kyc:"Partiel",decl:"—",date:"02/04/2024",statut:"À compléter"},
   {client:"M. Hassan Tazi",niveau:"Élevé",kyc:"Complet",decl:"Déclaration UTRF",date:"14/04/2024",statut:"Déclaré"},
   {client:"Mme. Fatima Chraibi",niveau:"Faible",kyc:"Complet",decl:"—",date:"05/02/2024",statut:"Conforme"}
 ];
 
-function b(text, cls) { return '<span class="badge '+cls+'">'+text+'</span>'; }
-function sb(s) {
-  var map = {"En cours":"bec","Payé":"bec","Signé":"bec","Planifiée":"bec","Conforme":"bec","Clôturé":"bcl","En attente":"bat","À compléter":"bat","Urgent":"bur","Partiel":"bpa","Déclaré":"bno"};
-  return b(s, map[s]||"bat");
+var PMSG=[
+  {client:"SARL Benali et Fils",msg:"Pouvez-vous me communiquer l avancement de l audience ?",date:"25/05/2026",lu:false},
+  {client:"M. Youssef Bennani",msg:"J ai transmis les documents demandés.",date:"24/05/2026",lu:true},
+  {client:"SCI Al Yasmine",msg:"Quand sera finalisé l acte de vente ?",date:"23/05/2026",lu:true}
+];
+
+var PDOC=[
+  {client:"SARL Benali et Fils",fichier:"Statuts_SARL_Benali_v2.pdf",taille:"245 Ko",date:"18/05/2026",dir:"Reçu"},
+  {client:"M. Youssef Bennani",fichier:"Bulletins_salaire_2024.pdf",taille:"1.2 Mo",date:"21/05/2026",dir:"Reçu"},
+  {client:"SCI Al Yasmine",fichier:"Compromis_vente_AlYasmine.pdf",taille:"890 Ko",date:"15/05/2026",dir:"Envoyé"},
+  {client:"M. Hassan Tazi",fichier:"Mise_en_demeure_Tazi.pdf",taille:"156 Ko",date:"10/05/2026",dir:"Envoyé"}
+];
+
+var PACCES=[
+  {client:"SARL Benali et Fils",email:"contact@benali.ma",conn:"25/05/2026 14:32",actif:true},
+  {client:"M. Youssef Bennani",email:"y.bennani@gmail.com",conn:"24/05/2026 09:12",actif:true},
+  {client:"SCI Al Yasmine",email:"sci.alyasmine@gmail.com",conn:"23/05/2026 16:44",actif:true},
+  {client:"Mme. Fatima Chraibi",email:"f.chraibi@gmail.com",conn:"—",actif:false}
+];
+
+var PREVISIONNEL=[
+  {mois:"Janvier",ca:152000,ch:91000},
+  {mois:"Février",ca:184000,ch:92000},
+  {mois:"Mars",ca:221000,ch:93000},
+  {mois:"Avril",ca:198000,ch:94000},
+  {mois:"Mai",ca:187000,ch:94300},
+  {mois:"Juin (prév.)",ca:210000,ch:95000,prev:true}
+];
+
+function bd(t,c){return '<span class="badge '+c+'">'+t+'</span>';}
+function sb(s){
+  var m={"En cours":"bec","Payé":"bec","Signé":"bec","Planifiée":"bec","Conforme":"bec","Clôturé":"bcl","En attente":"bat","À compléter":"bat","Urgent":"bur","Partiel":"bpa","Déclaré":"bno","Reçu":"bec","Envoyé":"bno"};
+  return bd(s,m[s]||"bat");
 }
 
-function openModal(id) { document.getElementById(id).classList.add("show"); }
-function closeModals() {
-  document.querySelectorAll(".modal-bg").forEach(function(m){ m.classList.remove("show"); });
+function notif(msg){
+  var n=document.createElement("div");
+  n.className="notif";n.textContent=msg;document.body.appendChild(n);
+  setTimeout(function(){if(n.parentNode)n.parentNode.removeChild(n);},3000);
 }
 
-function showNotif(msg) {
-  var n = document.createElement("div");
-  n.style.cssText = "position:fixed;top:20px;right:20px;background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;padding:14px 22px;border-radius:8px;font-family:'Cinzel',serif;font-size:12px;z-index:999;letter-spacing:.05em";
-  n.textContent = msg;
-  document.body.appendChild(n);
-  setTimeout(function(){ document.body.removeChild(n); }, 3000);
-}
+function openM(id){document.getElementById(id).classList.add("show");}
+function closeM(){document.querySelectorAll(".modal-bg").forEach(function(m){m.classList.remove("show");});}
 
-function buildNav() {
-  var groups = [];
-  MODULES.forEach(function(m){ if(groups.indexOf(m.group)<0) groups.push(m.group); });
-  var html = "";
-  groups.forEach(function(g){
-    html += '<div class="grp-label">'+g+'</div>';
-    MODULES.filter(function(m){return m.group===g;}).forEach(function(m){
-      html += '<button class="nav-btn" data-id="'+m.id+'">'+m.icon+" "+m.label+'</button>';
+function buildNav(){
+  var grps=[];
+  MODS.forEach(function(m){if(grps.indexOf(m.grp)<0)grps.push(m.grp);});
+  var h="";
+  grps.forEach(function(g){
+    h+='<div class="grp">'+g+'</div>';
+    MODS.filter(function(m){return m.grp===g;}).forEach(function(m){
+      h+='<button class="nb" data-id="'+m.id+'">'+m.icon+" "+m.label+'</button>';
     });
   });
-  document.getElementById("nav-container").innerHTML = html;
-  document.querySelectorAll(".nav-btn").forEach(function(btn){
-    btn.addEventListener("click", function(){ goTo(this.getAttribute("data-id")); });
+  document.getElementById("nav").innerHTML=h;
+  document.querySelectorAll(".nb").forEach(function(b){
+    b.addEventListener("click",function(){goTo(this.getAttribute("data-id"));});
   });
 }
 
-function goTo(id) {
-  document.querySelectorAll(".nav-btn").forEach(function(b){ b.classList.remove("active"); });
-  var nb = document.querySelector('[data-id="'+id+'"]');
-  if(nb) nb.classList.add("active");
-  var mod = null;
-  for(var i=0;i<MODULES.length;i++){ if(MODULES[i].id===id){ mod=MODULES[i]; break; } }
-  document.getElementById("page-title").textContent = mod ? mod.label : id;
-  var c = document.getElementById("content");
-  if(id==="dashboard") c.innerHTML = pageDashboard();
-  else if(id==="clients") c.innerHTML = pageClients();
-  else if(id==="agenda") c.innerHTML = pageAgenda();
-  else if(id==="actes") c.innerHTML = pageActes();
-  else if(id==="honoraires") c.innerHTML = pageHonoraires();
-  else if(id==="procedures") c.innerHTML = pageProcedures();
-  else if(id==="bibliotheque") c.innerHTML = pageBib();
-  else if(id==="collaborateurs") c.innerHTML = pageCollabs();
-  else if(id==="comptabilite") c.innerHTML = pageCompta();
-  else if(id==="conformite") c.innerHTML = pageConformite();
-  else if(id==="portail") c.innerHTML = pagePortail();
+function goTo(id){
+  document.querySelectorAll(".nb").forEach(function(b){b.classList.remove("active");});
+  var nb=document.querySelector('[data-id="'+id+'"]');
+  if(nb)nb.classList.add("active");
+  var mod=MODS.find(function(m){return m.id===id;});
+  document.getElementById("ptitle").textContent=mod?mod.label:id;
+  var c=document.getElementById("content");
+  var pages={
+    dashboard:pDash,clients:pClients,agenda:pAgenda,actes:pActes,
+    honoraires:pHon,procedures:pProc,bibliotheque:pBib,
+    collaborateurs:pCollab,comptabilite:pCompta,conformite:pConf,portail:pPortail
+  };
+  if(pages[id])c.innerHTML=pages[id]();
 }
 
-// EVENT DELEGATION — handles ALL button clicks in content + modals
-document.addEventListener("click", function(e) {
-  var el = e.target.closest("[data-action]");
-  if(!el) return;
-  var action = el.getAttribute("data-action");
+// ── DELEGATION UNIVERSELLE ──
+document.addEventListener("click",function(e){
+  var el=e.target.closest("[data-action]");
+  if(!el)return;
+  var a=el.getAttribute("data-action");
 
-  if(action==="new-dossier") openModal("modal-dossier");
-  else if(action==="new-rdv") openModal("modal-rdv");
-  else if(action==="new-facture") openModal("modal-facture");
-  else if(action==="new-acte") { showNotif("Nouvel acte créé"); }
-  else if(action==="new-procedure") { showNotif("Nouvelle procédure ouverte"); }
-  else if(action==="new-collaborateur") { showNotif("Nouveau collaborateur ajouté"); }
-  else if(action==="new-charge") { showNotif("Nouvelle charge enregistrée"); }
-  else if(action==="new-client") { showNotif("Nouveau client ajouté"); }
-  else if(action==="envoyer-msg") { showNotif("Message envoyé de manière sécurisée"); }
-  else if(action==="verifier-conflit") { showNotif("Aucun conflit d'intérêts détecté"); }
-  else if(action==="evaluer-client") { showNotif("Évaluation LAB-FT lancée"); }
-  else if(action==="relancer") { showNotif("Relance envoyée au client"); }
-  else if(action==="telecharger") { showNotif("Téléchargement en cours..."); }
-  else if(action==="semaine-prec") { showNotif("Semaine précédente"); }
-  else if(action==="semaine-suiv") { showNotif("Semaine suivante"); }
-  else if(action==="tab-codes") {
+  // Navigation
+  if(a==="new-dossier")openM("m-dossier");
+  else if(a==="new-rdv")openM("m-rdv");
+  else if(a==="new-acte")openM("m-acte");
+  else if(a==="new-procedure")openM("m-procedure");
+  else if(a==="new-facture")openM("m-facture");
+  else if(a==="new-collab")openM("m-collab");
+  else if(a==="new-charge")openM("m-charge");
+  else if(a==="new-client-lcb")openM("m-client-lcb");
+  else if(a==="close-modal")closeM();
+
+  // Bibliothèque tabs
+  else if(a==="tab-codes"){
     document.getElementById("bib-codes").style.display="grid";
     document.getElementById("bib-juris").style.display="none";
-    document.querySelectorAll(".tab-btn").forEach(function(b){ b.classList.remove("active"); });
+    document.querySelectorAll(".tb").forEach(function(b){b.classList.remove("active");});
     el.classList.add("active");
   }
-  else if(action==="tab-juris") {
+  else if(a==="tab-juris"){
     document.getElementById("bib-codes").style.display="none";
     document.getElementById("bib-juris").style.display="block";
-    document.querySelectorAll(".tab-btn").forEach(function(b){ b.classList.remove("active"); });
+    document.querySelectorAll(".tb").forEach(function(b){b.classList.remove("active");});
     el.classList.add("active");
   }
-  else if(action==="close-modal") closeModals();
-  else if(action==="save-dossier") {
-    var client = document.getElementById("m-client").value;
-    if(client) {
-      var newId = "D-2024-00"+(DOSSIERS.length+1);
-      DOSSIERS.push({id:newId,client:client,type:document.getElementById("m-type").value,matiere:document.getElementById("m-matiere").value,statut:"En cours",date:new Date().toLocaleDateString("fr-FR"),avocat:document.getElementById("m-avocat").value});
-      closeModals();
-      showNotif("Dossier "+newId+" créé");
-      goTo("clients");
-    }
+
+  // Portail tabs
+  else if(a==="tab-messages"){showPortailTab("messages",el);}
+  else if(a==="tab-documents"){showPortailTab("documents",el);}
+  else if(a==="tab-acces"){showPortailTab("acces",el);}
+
+  // Comptabilité tabs
+  else if(a==="tab-charges"){showComptaTab("charges",el);}
+  else if(a==="tab-previsionnel"){showComptaTab("previsionnel",el);}
+
+  // Code card detail
+  else if(a==="show-code"){
+    var idx=el.getAttribute("data-idx");
+    var d=document.getElementById("detail-"+idx);
+    if(d)d.style.display=d.style.display==="none"?"block":"none";
   }
-  else if(action==="save-rdv") {
-    var client = document.getElementById("rdv-client").value;
-    if(client) {
-      AGENDA.push({heure:document.getElementById("rdv-heure").value||"09:00",client:client,type:document.getElementById("rdv-type").value,salle:document.getElementById("rdv-salle").value});
-      closeModals();
-      showNotif("RDV ajouté à l'agenda");
-      goTo("agenda");
-    }
+
+  // Juris detail
+  else if(a==="show-juris"){
+    var idx=el.getAttribute("data-idx");
+    var d=document.getElementById("jdetail-"+idx);
+    if(d)d.style.display=d.style.display==="none"?"block":"none";
   }
-  else if(action==="save-facture") {
-    var client = document.getElementById("f-client").value;
-    var montant = document.getElementById("f-montant").value;
-    if(client && montant) {
-      HONORAIRES.push({dossier:document.getElementById("f-dossier").value,client:client,montant:parseInt(montant).toLocaleString("fr-FR")+" MAD",statut:"En attente",date:new Date().toLocaleDateString("fr-FR")});
-      closeModals();
-      showNotif("Facture créée — "+parseInt(montant).toLocaleString("fr-FR")+" MAD");
-      goTo("honoraires");
-    }
+
+  // Actions simples
+  else if(a==="relancer")notif("Relance envoyée au client");
+  else if(a==="telecharger")notif("Téléchargement en cours...");
+  else if(a==="envoyer-msg")notif("Message envoyé de manière sécurisée");
+  else if(a==="inviter-client")notif("Invitation envoyée au client");
+  else if(a==="verifier-conflit"){
+    var n1=document.getElementById("conf-client");
+    var n2=document.getElementById("conf-adverse");
+    if(n1&&n1.value){notif("Aucun conflit détecté pour "+n1.value);}
+    else notif("Saisir le nom du client à vérifier");
   }
-  else if(action==="filter-dossiers") {
-    var s = document.getElementById("s-dos").value.toLowerCase();
-    var t = document.getElementById("f-type").value;
-    var rows = DOSSIERS.filter(function(d){ return (d.client.toLowerCase().indexOf(s)>=0||d.id.indexOf(s)>=0)&&(t==="Tous"||d.type===t); })
-      .map(function(d){ return "<tr><td class='mono'>"+d.id+"</td><td style='color:#e8e0d0'>"+d.client+"</td><td>"+b(d.type,d.type==="Avocat"?"bav":"bno")+"</td><td>"+d.matiere+"</td><td>"+sb(d.statut)+"</td><td style='font-size:11px;color:#5a5248'>"+d.date+"</td><td>"+d.avocat+"</td></tr>"; }).join("");
-    document.getElementById("dos-body").innerHTML = rows;
+  else if(a==="semaine-prec")notif("Semaine précédente");
+  else if(a==="semaine-suiv")notif("Semaine suivante");
+
+  // Saves
+  else if(a==="save-dossier"){
+    var cl=document.getElementById("md-client").value;
+    if(!cl){notif("Saisir le nom du client");return;}
+    var nd="D-2024-00"+(DOS.length+1);
+    DOS.push({id:nd,client:cl,type:document.getElementById("md-type").value,matiere:document.getElementById("md-matiere").value,statut:document.getElementById("md-statut").value,date:new Date().toLocaleDateString("fr-FR"),avocat:document.getElementById("md-avocat").value});
+    closeM();notif("Dossier "+nd+" créé");goTo("clients");
+  }
+  else if(a==="save-rdv"){
+    var cl=document.getElementById("mr-client").value;
+    if(!cl){notif("Saisir le nom du client");return;}
+    AGD.push({heure:document.getElementById("mr-heure").value||"09:00",client:cl,type:document.getElementById("mr-type").value,salle:document.getElementById("mr-salle").value});
+    closeM();notif("RDV ajouté à l agenda");goTo("agenda");
+  }
+  else if(a==="save-acte"){
+    var ref=document.getElementById("ma-ref").value;
+    var titre=document.getElementById("ma-titre").value;
+    if(!titre){notif("Saisir le titre de l acte");return;}
+    ACT.push({ref:ref||"ACT-00"+(ACT.length+1),titre:titre,type:document.getElementById("ma-type").value,client:document.getElementById("ma-client").value,date:new Date().toLocaleDateString("fr-FR"),statut:"En cours"});
+    closeM();notif("Acte créé");goTo("actes");
+  }
+  else if(a==="save-procedure"){
+    var cl=document.getElementById("mp-client").value;
+    if(!cl){notif("Saisir le nom du client");return;}
+    PROC.push({ref:"PROC-00"+(PROC.length+1),client:cl,juridiction:document.getElementById("mp-juridiction").value,instance:document.getElementById("mp-instance").value,etape:document.getElementById("mp-etape").value,echeance:document.getElementById("mp-echeance").value,role:document.getElementById("mp-role").value,statut:"En cours"});
+    closeM();notif("Procédure créée");goTo("procedures");
+  }
+  else if(a==="save-facture"){
+    var cl=document.getElementById("mf-client").value;
+    var mt=document.getElementById("mf-montant").value;
+    if(!cl||!mt){notif("Saisir client et montant");return;}
+    HON.push({dossier:document.getElementById("mf-dossier").value,client:cl,montant:parseInt(mt).toLocaleString("fr-FR")+" MAD",statut:"En attente",date:new Date().toLocaleDateString("fr-FR")});
+    closeM();notif("Facture créée : "+parseInt(mt).toLocaleString("fr-FR")+" MAD");goTo("honoraires");
+  }
+  else if(a==="save-collab"){
+    var nm=document.getElementById("mc-nom").value;
+    if(!nm){notif("Saisir le nom");return;}
+    COL.push({nom:nm,role:document.getElementById("mc-role").value,spec:document.getElementById("mc-spec").value,dos:0,taux:0,email:"",tel:""});
+    closeM();notif("Collaborateur ajouté");goTo("collaborateurs");
+  }
+  else if(a==="save-charge"){
+    var lb=document.getElementById("mch-lib").value;
+    var mt=document.getElementById("mch-montant").value;
+    if(!lb||!mt){notif("Saisir libellé et montant");return;}
+    CHG.push({lib:lb,montant:parseInt(mt),cat:document.getElementById("mch-cat").value,per:document.getElementById("mch-per").value,statut:"En attente"});
+    closeM();notif("Charge enregistrée");goTo("comptabilite");
+  }
+  else if(a==="save-lcb"){
+    var cl=document.getElementById("ml-client").value;
+    if(!cl){notif("Saisir le nom du client");return;}
+    LCB.push({client:cl,niveau:document.getElementById("ml-niveau").value,kyc:document.getElementById("ml-kyc").value,decl:"—",date:new Date().toLocaleDateString("fr-FR"),statut:document.getElementById("ml-niveau").value==="Élevé"?"À contrôler":"Conforme"});
+    closeM();notif("Client évalué et enregistré");goTo("conformite");
   }
 });
 
-// Input search — uses input event
-document.addEventListener("input", function(e) {
-  if(e.target.id==="s-dos"||e.target.id==="f-type") {
-    var s = (document.getElementById("s-dos")||{value:""}).value.toLowerCase();
-    var t = (document.getElementById("f-type")||{value:"Tous"}).value;
-    var rows = DOSSIERS.filter(function(d){ return (d.client.toLowerCase().indexOf(s)>=0||d.id.indexOf(s)>=0)&&(t==="Tous"||d.type===t); })
-      .map(function(d){ return "<tr><td class='mono'>"+d.id+"</td><td style='color:#e8e0d0'>"+d.client+"</td><td>"+b(d.type,d.type==="Avocat"?"bav":"bno")+"</td><td>"+d.matiere+"</td><td>"+sb(d.statut)+"</td><td style='font-size:11px;color:#5a5248'>"+d.date+"</td><td>"+d.avocat+"</td></tr>"; }).join("");
-    var tbody = document.getElementById("dos-body");
-    if(tbody) tbody.innerHTML = rows;
-  }
+// Fermer modal sur fond
+document.addEventListener("click",function(e){if(e.target.classList.contains("modal-bg"))closeM();});
+
+// Recherche dossiers
+document.addEventListener("input",function(e){
+  if(e.target.id==="s-dos"||e.target.id==="f-type"){filterDossiers();}
 });
-
-document.addEventListener("change", function(e) {
-  if(e.target.id==="f-type") {
-    var s = (document.getElementById("s-dos")||{value:""}).value.toLowerCase();
-    var t = e.target.value;
-    var rows = DOSSIERS.filter(function(d){ return (d.client.toLowerCase().indexOf(s)>=0||d.id.indexOf(s)>=0)&&(t==="Tous"||d.type===t); })
-      .map(function(d){ return "<tr><td class='mono'>"+d.id+"</td><td style='color:#e8e0d0'>"+d.client+"</td><td>"+b(d.type,d.type==="Avocat"?"bav":"bno")+"</td><td>"+d.matiere+"</td><td>"+sb(d.statut)+"</td><td style='font-size:11px;color:#5a5248'>"+d.date+"</td><td>"+d.avocat+"</td></tr>"; }).join("");
-    var tbody = document.getElementById("dos-body");
-    if(tbody) tbody.innerHTML = rows;
-  }
+document.addEventListener("change",function(e){
+  if(e.target.id==="f-type")filterDossiers();
 });
-
-// Close modal on background click
-document.addEventListener("click", function(e) {
-  if(e.target.classList.contains("modal-bg")) closeModals();
-});
-
-function pageDashboard() {
-  var dos = DOSSIERS.slice(0,4).map(function(d){ return "<tr><td class='mono'>"+d.id+"</td><td>"+d.client+"</td><td>"+b(d.type,d.type==="Avocat"?"bav":"bno")+"</td><td>"+sb(d.statut)+"</td></tr>"; }).join("");
-  var ag = AGENDA.slice(0,4).map(function(a){ return "<div style='display:flex;gap:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.04);margin-bottom:8px'><div class='mono' style='font-size:13px;min-width:44px'>"+a.heure+"</div><div><div style='font-size:13px;color:#c8bfb0'>"+a.client+"</div><div style='font-size:10px;color:#4a4238;margin-top:2px'>"+a.type+"</div></div></div>"; }).join("");
-  return "<div class='g4'><div class='stat-card'><div style='font-size:18px'>⚖</div><div class='stat-val' style='color:#d4b896'>23</div><div class='stat-lbl'>Dossiers actifs</div><div class='stat-sub'>+3 ce mois</div></div><div class='stat-card'><div style='font-size:18px'>📅</div><div class='stat-val' style='color:#60a5fa'>5</div><div class='stat-lbl'>RDV aujourd'hui</div><div class='stat-sub'>Prochain à 09:00</div></div><div class='stat-card'><div style='font-size:18px'>🏛</div><div class='stat-val' style='color:#f87171'>2</div><div class='stat-lbl'>Procédures urgentes</div></div><div class='stat-card'><div style='font-size:18px'>💰</div><div class='stat-val' style='color:#4ade80'>114 000 MAD</div><div class='stat-lbl'>Honoraires à encaisser</div></div></div><div class='g2'><div class='card'><div class='stitle'>Dossiers récents</div><table><thead><tr><th>Réf.</th><th>Client</th><th>Type</th><th>Statut</th></tr></thead><tbody>"+dos+"</tbody></table></div><div class='card'><div class='stitle'>Agenda du jour</div>"+ag+"</div></div>";
+function filterDossiers(){
+  var s=(document.getElementById("s-dos")||{value:""}).value.toLowerCase();
+  var t=(document.getElementById("f-type")||{value:"Tous"}).value;
+  var rows=DOS.filter(function(d){return(d.client.toLowerCase().indexOf(s)>=0||d.id.indexOf(s)>=0)&&(t==="Tous"||d.type===t);}).map(rowDos).join("");
+  var tb=document.getElementById("dos-body");if(tb)tb.innerHTML=rows;
 }
 
-function pageClients() {
-  var rows = DOSSIERS.map(function(d){ return "<tr><td class='mono'>"+d.id+"</td><td style='color:#e8e0d0'>"+d.client+"</td><td>"+b(d.type,d.type==="Avocat"?"bav":"bno")+"</td><td>"+d.matiere+"</td><td>"+sb(d.statut)+"</td><td style='font-size:11px;color:#5a5248'>"+d.date+"</td><td>"+d.avocat+"</td></tr>"; }).join("");
-  return "<div class='flex gap8 ac' style='margin-bottom:16px'><input id='s-dos' placeholder='Rechercher...' style='width:280px'/><select id='f-type'><option>Tous</option><option>Avocat</option><option>Notaire</option></select><div class='f1'></div><button class='btn bgold' data-action='new-dossier'>+ Nouveau dossier</button></div><div class='card'><table><thead><tr><th>Réf.</th><th>Client</th><th>Type</th><th>Matière</th><th>Statut</th><th>Date</th><th>Professionnel</th></tr></thead><tbody id='dos-body'>"+rows+"</tbody></table></div>";
+function showPortailTab(tab,el){
+  document.querySelectorAll(".tb").forEach(function(b){b.classList.remove("active");});
+  el.classList.add("active");
+  ["messages","documents","acces"].forEach(function(t){
+    var d=document.getElementById("portail-"+t);if(d)d.style.display=t===tab?"block":"none";
+  });
 }
 
-function pageAgenda() {
-  var rows = AGENDA.map(function(a,i){ return "<div class='agenda-row'><div class='mono' style='font-size:14px;min-width:48px'>"+a.heure+"</div><div style='width:3px;height:36px;background:"+(i===0?"#4ade80":"#8b7355")+";border-radius:2px;flex-shrink:0'></div><div style='flex:1'><div style='font-size:14px;color:#e8e0d0'>"+a.client+"</div><div style='font-size:11px;color:#5a5248;margin-top:3px'>"+a.type+" · "+a.salle+"</div></div></div>"; }).join("");
-  return "<div class='flex gap8 ac' style='margin-bottom:16px'><button class='btn bghost' data-action='semaine-prec'>‹ Semaine préc.</button><div class='f1' style='text-align:center;font-family:Cinzel,serif;color:#d4b896;font-size:15px'>Semaine du 20 au 26 mai 2026</div><button class='btn bghost' data-action='semaine-suiv'>Semaine suiv. ›</button><button class='btn bgold' data-action='new-rdv'>+ Nouveau RDV</button></div><div class='card'><div class='stitle'>Aujourd'hui — Lundi 25 mai</div>"+rows+"</div>";
+function showComptaTab(tab,el){
+  document.querySelectorAll(".tb").forEach(function(b){b.classList.remove("active");});
+  el.classList.add("active");
+  ["charges","previsionnel"].forEach(function(t){
+    var d=document.getElementById("compta-"+t);if(d)d.style.display=t===tab?"block":"none";
+  });
 }
 
-function pageActes() {
-  var rows = ACTES.map(function(a){ return "<tr><td class='mono'>"+a.ref+"</td><td style='color:#e8e0d0'>"+a.titre+"</td><td>"+b(a.type,a.type==="Notarié"?"bno":"bav")+"</td><td style='font-size:11px;color:#5a5248'>"+a.date+"</td><td>"+sb(a.statut)+"</td></tr>"; }).join("");
-  return "<div class='flex gap8' style='margin-bottom:16px'><button class='btn bgold' data-action='new-acte'>+ Nouvel acte</button></div><div class='card'><table><thead><tr><th>Référence</th><th>Titre</th><th>Type</th><th>Date</th><th>Statut</th></tr></thead><tbody>"+rows+"</tbody></table></div>";
-}
+// ── PAGES ──
+function rowDos(d){return "<tr><td class='mono'>"+d.id+"</td><td style='color:#e8e0d0'>"+d.client+"</td><td>"+bd(d.type,d.type==="Avocat"?"bav":"bno")+"</td><td>"+d.matiere+"</td><td>"+sb(d.statut)+"</td><td style='font-size:11px;color:#5a5248'>"+d.date+"</td><td>"+d.avocat+"</td></tr>";}
 
-function pageHonoraires() {
-  var rows = HONORAIRES.map(function(h){ return "<tr><td class='mono'>"+h.dossier+"</td><td style='color:#e8e0d0'>"+h.client+"</td><td style='font-family:Courier New;color:#d4b896'>"+h.montant+"</td><td>"+sb(h.statut)+"</td><td style='font-size:11px;color:#5a5248'>"+h.date+"</td><td><button class='btn bghost' style='padding:4px 10px;font-size:10px' data-action='relancer'>Relancer</button></td></tr>"; }).join("");
-  return "<div class='g3'><div class='stat-card'><div class='stat-val' style='color:#4ade80'>187 000 MAD</div><div class='stat-lbl'>CA ce mois</div></div><div class='stat-card'><div class='stat-val' style='color:#fbbf24'>59 000 MAD</div><div class='stat-lbl'>En attente</div></div><div class='stat-card'><div class='stat-val' style='color:#d4b896'>872 000 MAD</div><div class='stat-lbl'>Facturé YTD</div></div></div><div class='card'><div class='flex jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Factures & Honoraires</div><button class='btn bgold' data-action='new-facture'>+ Nouvelle facture</button></div><table><thead><tr><th>Dossier</th><th>Client</th><th>Montant HT</th><th>Statut</th><th>Date</th><th></th></tr></thead><tbody>"+rows+"</tbody></table></div>";
-}
+function pDash(){
+  var dos=DOS.slice(0,4).map(function(d){return "<tr><td class='mono'>"+d.id+"</td><td>"+d.client+"</td><td>"+bd(d.type,d.type==="Avocat"?"bav":"bno")+"</td><td>"+sb(d.statut)+"</td></tr>";}).join("");
+  var ag=AGD.slice(0,4).map(function(a){return "<div style='display:flex;gap:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.04);margin-bottom:8px'><div class='mono' style='font-size:13px;min-width:44px'>"+a.heure+"</div><div><div style='font-size:13px;color:#c8bfb0'>"+a.client+"</div><div style='font-size:10px;color:#4a4238;margin-top:2px'>"+a.type+"</div></div></div>";}).join("");
+  return "<div class='g4'><div class='sc'><div style='font-size:18px'>⚖</div><div class='sv' style='color:#d4b896'>"+DOS.length+"</div><div class='sl'>Dossiers actifs</div></div><div class='sc'><div style='font-size:18px'>📅</div><div class='sv' style='color:#60a5fa'>"+AGD.length+"</div><div class='sl'>RDV aujourd hui</div></div><div class='sc'><div style='font-size:18px'>🏛</div><div class='sv' style='color:#f87171'>"+PROC.filter(function(p){return p.statut==="Urgent";}).length+"</div><div class='sl'>Procédures urgentes</div></div><div class='sc'><div style='font-size:18px'>💰</div><div class='sv' style='color:#4ade80'>114 000 MAD</div><div class='sl'>Honoraires à encaisser</div></div></div><div class='g2'><div class='card'><div class='stitle'>Dossiers récents</div><table><thead><tr><th>Réf.</th><th>Client</th><th>Type</th><th>Statut</th></tr></thead><tbody>"+dos+"</tbody></table></div><div class='card'><div class='stitle'>Agenda du jour</div>"+ag+"</div></div>";}
 
-function pageProcedures() {
-  var rows = PROCEDURES.map(function(p){ return "<tr><td class='mono'>"+p.ref+"</td><td style='color:#e8e0d0'>"+p.client+"</td><td style='font-size:12px'>"+p.juridiction+"</td><td style='font-size:12px'>"+p.etape+"</td><td class='mono' style='color:"+(p.statut==="Urgent"?"#f87171":"#fbbf24")+"'>"+p.echeance+"</td><td class='mono' style='font-size:10px;color:#5a5248'>"+p.role+"</td><td>"+sb(p.statut)+"</td></tr>"; }).join("");
-  var tl = [{date:"12/01/2024",evt:"Ouverture du dossier",done:true},{date:"28/02/2024",evt:"Assignation déposée au greffe",done:true},{date:"15/04/2024",evt:"Dépôt conclusions en réponse",done:true},{date:"28/05/2026",evt:"Audience de plaidoirie — TPI Casablanca",current:true},{date:"01/07/2026",evt:"Dépôt conclusions Cour d appel"}].map(function(e){ var col=e.current?"#d4b896":e.done?"#4ade80":"#3d3830"; return "<div class='tl-row'><div class='tl-dot' style='background:"+col+";border:2px solid "+col+"'></div><div><div class='mono'>"+e.date+"</div><div style='font-size:13px;color:"+(e.current?"#d4b896":e.done?"#c8bfb0":"#5a5248")+";margin-top:2px'>"+e.evt+"</div></div></div>"; }).join("");
-  return "<div class='g3'><div class='stat-card'><div class='stat-val' style='color:#d4b896'>4</div><div class='stat-lbl'>Instances en cours</div></div><div class='stat-card'><div class='stat-val' style='color:#fbbf24'>3</div><div class='stat-lbl'>Échéances &lt; 30j</div></div><div class='stat-card'><div class='stat-val' style='color:#f87171'>1</div><div class='stat-lbl'>Urgentes</div></div></div><div class='card' style='margin-bottom:16px'><div class='flex jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Instances judiciaires</div><button class='btn bgold' data-action='new-procedure'>+ Nouvelle procédure</button></div><table><thead><tr><th>Réf.</th><th>Client</th><th>Juridiction</th><th>Étape</th><th>Échéance</th><th>N° Rôle</th><th>Statut</th></tr></thead><tbody>"+rows+"</tbody></table></div><div class='card'><div class='stitle'>Chronologie — SARL Benali et Fils</div><div class='tl-wrap'><div class='tl-line'></div>"+tl+"</div></div>";
-}
+function pClients(){
+  var rows=DOS.map(rowDos).join("");
+  return "<div class='f g8 ac' style='margin-bottom:16px'><input id='s-dos' placeholder='Rechercher...' style='width:280px'/><select id='f-type'><option>Tous</option><option>Avocat</option><option>Notaire</option></select><div class='f1'></div><button class='btn bg' data-action='new-dossier'>+ Nouveau dossier</button></div><div class='card'><table><thead><tr><th>Réf.</th><th>Client</th><th>Type</th><th>Matière</th><th>Statut</th><th>Date</th><th>Professionnel</th></tr></thead><tbody id='dos-body'>"+rows+"</tbody></table></div>";}
 
-function pageBib() {
-  var cards = CODES.map(function(c){ return "<div class='card' style='cursor:pointer'><div style='font-size:22px;margin-bottom:10px'>"+c.icon+"</div><div style='font-family:Cinzel,serif;font-size:12px;color:#d4b896;margin-bottom:6px'>"+c.code+"</div><div style='font-size:11px;color:#8b7355;margin-bottom:3px'>"+c.articles+"</div><div style='font-size:11px;color:#5a5248'>"+c.domaine+"</div></div>"; }).join("");
-  var jrows = JURIS.map(function(j){ return "<tr><td class='mono' style='font-size:10px'>"+j.ref+"</td><td style='color:#e8e0d0'>"+j.titre+"</td><td>"+b(j.domaine,"bat")+"</td><td style='font-size:11px;color:#5a5248'>"+j.source+"</td></tr>"; }).join("");
-  return "<div class='flex gap8 ac' style='margin-bottom:16px'><button class='tab-btn active' data-action='tab-codes'>Codes et Textes</button><button class='tab-btn' data-action='tab-juris'>Jurisprudence</button></div><div id='bib-codes' style='display:grid;grid-template-columns:repeat(3,1fr);gap:14px'>"+cards+"</div><div id='bib-juris' style='display:none'><div class='card'><table><thead><tr><th>Référence</th><th>Titre</th><th>Domaine</th><th>Source</th></tr></thead><tbody>"+jrows+"</tbody></table></div></div>";
-}
+function pAgenda(){
+  var rows=AGD.map(function(a,i){return "<div class='ar'><div class='mono' style='font-size:14px;min-width:48px'>"+a.heure+"</div><div style='width:3px;height:36px;background:"+(i===0?"#4ade80":"#8b7355")+";border-radius:2px;flex-shrink:0'></div><div style='flex:1'><div style='font-size:14px;color:#e8e0d0'>"+a.client+"</div><div style='font-size:11px;color:#5a5248;margin-top:3px'>"+a.type+" · "+a.salle+"</div></div></div>";}).join("");
+  return "<div class='f g8 ac' style='margin-bottom:16px'><button class='btn bgh' data-action='semaine-prec'>‹ Semaine préc.</button><div class='f1' style='text-align:center;font-family:Cinzel,serif;color:#d4b896;font-size:15px'>Semaine du 20 au 26 mai 2026</div><button class='btn bgh' data-action='semaine-suiv'>Semaine suiv. ›</button><button class='btn bg' data-action='new-rdv'>+ Nouveau RDV</button></div><div class='card'><div class='stitle'>Aujourd hui — Lundi 25 mai</div>"+rows+"</div>";}
 
-function pageCollabs() {
-  var rows = COLLABS.map(function(c){ var prog=c.taux?"<div style='display:flex;align-items:center;gap:8px'><div class='prog-bg'><div class='prog-bar' style='width:"+c.taux+"%'></div></div><span style='font-size:11px;color:#8b7355;min-width:30px'>"+c.taux+"%</span></div>":"—"; return "<tr><td style='color:#e8e0d0;font-weight:600'>"+c.nom+"</td><td style='font-size:12px'>"+c.role+"</td><td style='font-size:12px'>"+c.spec+"</td><td style='font-family:Courier New;color:#d4b896'>"+c.dos+"</td><td>"+prog+"</td><td>"+b(c.conge?"Congé":"Actif",c.conge?"bat":"bec")+"</td></tr>"; }).join("");
-  return "<div class='g4'><div class='stat-card'><div class='stat-val' style='color:#d4b896'>5</div><div class='stat-lbl'>Collaborateurs</div></div><div class='stat-card'><div class='stat-val' style='color:#60a5fa'>7</div><div class='stat-lbl'>Dossiers moy./pers.</div></div><div class='stat-card'><div class='stat-val' style='color:#4ade80'>89%</div><div class='stat-lbl'>Taux occupation</div></div><div class='stat-card'><div class='stat-val' style='color:#fbbf24'>1</div><div class='stat-lbl'>En congé</div></div></div><div class='card'><div class='flex jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Équipe du cabinet</div><button class='btn bgold' data-action='new-collaborateur'>+ Nouveau collaborateur</button></div><table><thead><tr><th>Nom</th><th>Rôle</th><th>Spécialité</th><th>Dossiers</th><th>Taux occupation</th><th>Statut</th></tr></thead><tbody>"+rows+"</tbody></table></div>";
-}
+function pActes(){
+  var rows=ACT.map(function(a){return "<tr><td class='mono'>"+a.ref+"</td><td style='color:#e8e0d0'>"+a.titre+"</td><td>"+bd(a.type,a.type==="Notarié"?"bno":"bav")+"</td><td style='font-size:12px;color:#c8bfb0'>"+a.client+"</td><td class='mono' style='color:#5a5248'>"+a.date+"</td><td>"+sb(a.statut)+"</td><td><button class='btn bgh' style='padding:4px 10px;font-size:10px' data-action='telecharger'>Ouvrir</button></td></tr>";}).join("");
+  return "<div class='f g8' style='margin-bottom:16px'><button class='btn bg' data-action='new-acte'>+ Nouvel acte</button></div><div class='card'><div class='stitle'>Registre des actes ("+ACT.length+")</div><table><thead><tr><th>Référence</th><th>Titre</th><th>Type</th><th>Client</th><th>Date</th><th>Statut</th><th></th></tr></thead><tbody>"+rows+"</tbody></table></div>";}
 
-function pageCompta() {
-  var rows = CHARGES.map(function(c){ return "<tr><td style='color:#e8e0d0'>"+c.lib+"</td><td>"+b(c.cat,"bat")+"</td><td style='font-family:Courier New;color:#f87171'>"+c.montant+"</td><td style='font-size:12px;color:#5a5248'>"+c.per+"</td><td>"+sb(c.statut)+"</td></tr>"; }).join("");
-  return "<div class='g4'><div class='stat-card'><div class='stat-val' style='color:#f87171'>94 300 MAD</div><div class='stat-lbl'>Charges mensuelles</div></div><div class='stat-card'><div class='stat-val' style='color:#4ade80'>187 000 MAD</div><div class='stat-lbl'>CA mensuel</div></div><div class='stat-card'><div class='stat-val' style='color:#d4b896'>92 700 MAD</div><div class='stat-lbl'>Résultat net</div></div><div class='stat-card'><div class='stat-val' style='color:#60a5fa'>248 000 MAD</div><div class='stat-lbl'>Trésorerie CNB</div></div></div><div class='card'><div class='flex jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Charges et Dépenses</div><button class='btn bgold' data-action='new-charge'>+ Nouvelle charge</button></div><table><thead><tr><th>Libellé</th><th>Catégorie</th><th>Montant</th><th>Périodicité</th><th>Statut</th></tr></thead><tbody>"+rows+"</tbody></table></div>";
-}
+function pHon(){
+  var rows=HON.map(function(h){return "<tr><td class='mono'>"+h.dossier+"</td><td style='color:#e8e0d0'>"+h.client+"</td><td style='font-family:Courier New;color:#d4b896;font-weight:600'>"+h.montant+"</td><td>"+sb(h.statut)+"</td><td class='mono' style='color:#5a5248'>"+h.date+"</td><td><button class='btn bgh' style='padding:4px 10px;font-size:10px' data-action='relancer'>Relancer</button></td></tr>";}).join("");
+  return "<div class='g3'><div class='sc'><div class='sv' style='color:#4ade80'>187 000 MAD</div><div class='sl'>CA ce mois</div></div><div class='sc'><div class='sv' style='color:#fbbf24'>59 000 MAD</div><div class='sl'>En attente</div></div><div class='sc'><div class='sv' style='color:#d4b896'>872 000 MAD</div><div class='sl'>Facturé YTD</div></div></div><div class='card'><div class='f jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Factures et Honoraires</div><button class='btn bg' data-action='new-facture'>+ Nouvelle facture</button></div><table><thead><tr><th>Dossier</th><th>Client</th><th>Montant HT</th><th>Statut</th><th>Date</th><th></th></tr></thead><tbody>"+rows+"</tbody></table></div>";}
 
-function pageConformite() {
-  var rows = LCB.map(function(l){ var rc=l.niveau==="Faible"?"#4ade80":l.niveau==="Moyen"?"#fbbf24":"#f87171"; var ri=l.niveau==="Faible"?"▼":l.niveau==="Moyen"?"◆":"▲"; return "<tr><td style='color:#e8e0d0'>"+l.client+"</td><td style='font-family:Cinzel,serif;font-size:11px;color:"+rc+"'>"+ri+" "+l.niveau+"</td><td>"+b(l.kyc,l.kyc==="Complet"?"bec":"bat")+"</td><td style='font-size:12px;color:"+(l.decl!=="—"?"#f87171":"#3d3830")+"'>"+l.decl+"</td><td style='font-size:11px;color:#5a5248'>"+l.date+"</td><td>"+sb(l.statut)+"</td></tr>"; }).join("");
-  return "<div class='g4'><div class='stat-card'><div class='stat-val' style='color:#4ade80'>18</div><div class='stat-lbl'>Clients conformes</div></div><div class='stat-card'><div class='stat-val' style='color:#fbbf24'>3</div><div class='stat-lbl'>KYC à compléter</div></div><div class='stat-card'><div class='stat-val' style='color:#f87171'>1</div><div class='stat-lbl'>Déclarations UTRF</div></div><div class='stat-card'><div class='stat-val' style='color:#d4b896'>0</div><div class='stat-lbl'>Conflits intérêts</div></div></div><div class='card' style='margin-bottom:16px'><div class='flex jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Registre LAB-FT</div><button class='btn bgold' data-action='evaluer-client'>+ Évaluer un client</button></div><table><thead><tr><th>Client</th><th>Niveau de risque</th><th>KYC</th><th>Déclaration UTRF</th><th>Date</th><th>Statut</th></tr></thead><tbody>"+rows+"</tbody></table></div><div class='g2e'><div class='card'><div class='stitle'>Registre RGPD</div><div style='padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)'><div style='font-size:13px;color:#e8e0d0'>Gestion des dossiers clients</div><div style='font-size:10px;color:#5a5248;margin-top:3px'>Base légale : Exécution contrat · Conservation : 5 ans</div></div><div style='padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)'><div style='font-size:13px;color:#e8e0d0'>Comptabilité et facturation</div><div style='font-size:10px;color:#5a5248;margin-top:3px'>Base légale : Obligation légale · Conservation : 10 ans</div></div><div style='padding:10px 0'><div style='font-size:13px;color:#e8e0d0'>Agenda et communications</div><div style='font-size:10px;color:#5a5248;margin-top:3px'>Base légale : Intérêt légitime · Conservation : 3 ans</div></div></div><div class='card'><div class='stitle'>Vérification conflits</div><input placeholder='Nom du nouveau client...' style='width:100%;margin-bottom:10px'/><input placeholder='Partie adverse...' style='width:100%;margin-bottom:10px'/><button class='btn bgold' style='width:100%' data-action='verifier-conflit'>Vérifier</button><div style='margin-top:12px;padding:10px 14px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:6px'><div style='font-size:11px;color:#4ade80;font-family:Cinzel,serif'>Dernier contrôle</div><div style='font-size:12px;color:#c8bfb0;margin-top:4px'>Aucun conflit — M. Hassan Tazi (25/05/2026)</div></div></div></div>";
-}
+function pProc(){
+  var rows=PROC.map(function(p){return "<tr><td class='mono'>"+p.ref+"</td><td style='color:#e8e0d0'>"+p.client+"</td><td style='font-size:12px'>"+p.juridiction+"</td><td style='font-size:12px'>"+p.instance+"</td><td style='font-size:12px;color:#c8bfb0'>"+p.etape+"</td><td class='mono' style='color:"+(p.statut==="Urgent"?"#f87171":"#fbbf24")+"'>"+p.echeance+"</td><td class='mono' style='font-size:10px;color:#5a5248'>"+p.role+"</td><td>"+sb(p.statut)+"</td></tr>";}).join("");
+  var tl=[{date:"12/01/2024",evt:"Ouverture du dossier D-2024-001",ok:true},{date:"28/02/2024",evt:"Assignation déposée au greffe du TPI Casablanca",ok:true},{date:"15/04/2024",evt:"Dépôt conclusions en réponse",ok:true},{date:"28/05/2026",evt:"Audience de plaidoirie — TPI Casablanca",cur:true},{date:"01/07/2026",evt:"Dépôt conclusions — Cour d appel Casablanca"}].map(function(e){var c=e.cur?"#d4b896":e.ok?"#4ade80":"#3d3830";return "<div class='tlr'><div class='tld' style='background:"+c+";border:2px solid "+c+"'></div><div><div class='mono'>"+e.date+"</div><div style='font-size:13px;color:"+(e.cur?"#d4b896":e.ok?"#c8bfb0":"#5a5248")+";margin-top:2px'>"+e.evt+"</div></div></div>";}).join("");
+  return "<div class='g3'><div class='sc'><div class='sv' style='color:#d4b896'>"+PROC.length+"</div><div class='sl'>Instances en cours</div></div><div class='sc'><div class='sv' style='color:#fbbf24'>"+PROC.filter(function(p){return p.statut==="En attente"||p.statut==="Planifiée";}).length+"</div><div class='sl'>Échéances à venir</div></div><div class='sc'><div class='sv' style='color:#f87171'>"+PROC.filter(function(p){return p.statut==="Urgent";}).length+"</div><div class='sl'>Urgentes</div></div></div><div class='card' style='margin-bottom:16px'><div class='f jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Instances judiciaires</div><button class='btn bg' data-action='new-procedure'>+ Nouvelle procédure</button></div><table><thead><tr><th>Réf.</th><th>Client</th><th>Juridiction</th><th>Instance</th><th>Étape</th><th>Échéance</th><th>N° Rôle</th><th>Statut</th></tr></thead><tbody>"+rows+"</tbody></table></div><div class='card'><div class='stitle'>Chronologie — SARL Benali et Fils (D-2024-001)</div><div class='tlw'><div class='tll'></div>"+tl+"</div></div>";}
 
-function pagePortail() {
-  var msgs = [{client:"SARL Benali et Fils",msg:"Pouvez-vous me communiquer l avancement de l audience ?",date:"25/05/2026",lu:false},{client:"M. Youssef Bennani",msg:"J ai transmis les documents demandés.",date:"24/05/2026",lu:true},{client:"SCI Al Yasmine",msg:"Quand sera finalisé l acte de vente ?",date:"23/05/2026",lu:true}].map(function(m){ return "<div class='msg-card'><div style='display:flex;justify-content:space-between;align-items:center'><div style='font-size:13px;color:#e8e0d0;font-weight:"+(m.lu?"normal":"600")+"'>"+m.client+"</div><div style='display:flex;align-items:center;gap:8px'>"+(m.lu?"":"<div style='width:8px;height:8px;background:#d4b896;border-radius:50%'></div>")+"<div style='font-size:10px;color:#4a4238'>"+m.date+"</div></div></div><div style='font-size:12px;color:#6a6058;margin-top:6px'>"+m.msg+"</div></div>"; }).join("");
-  return "<div class='g3'><div class='stat-card'><div class='stat-val' style='color:#d4b896'>12</div><div class='stat-lbl'>Clients connectés</div></div><div class='stat-card'><div class='stat-val' style='color:#fbbf24'>1</div><div class='stat-lbl'>Messages non lus</div></div><div class='stat-card'><div class='stat-val' style='color:#60a5fa'>8</div><div class='stat-lbl'>Documents reçus</div></div></div><div class='g2e'><div>"+msgs+"</div><div class='card' style='display:flex;flex-direction:column'><div class='stitle'>Répondre au client</div><textarea placeholder='Rédigez votre réponse sécurisée...' rows='5' style='width:100%;margin-bottom:10px'></textarea><button class='btn bgold' data-action='envoyer-msg'>Envoyer de manière sécurisée</button></div></div><div class='card' style='margin-top:0'><div class='flex jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Documents partagés</div><button class='btn bgold' data-action='new-client'>+ Envoyer un document</button></div><table><thead><tr><th>Client</th><th>Fichier</th><th>Taille</th><th>Date</th><th>Direction</th><th></th></tr></thead><tbody><tr><td>SARL Benali et Fils</td><td class='mono'>Statuts_SARL_Benali_v2.pdf</td><td style='font-size:11px;color:#5a5248'>245 Ko</td><td style='font-size:11px;color:#5a5248'>18/05/2026</td><td>"+b("Reçu","bec")+"</td><td><button class='btn bghost' style='padding:4px 10px;font-size:10px' data-action='telecharger'>Télécharger</button></td></tr><tr><td>M. Youssef Bennani</td><td class='mono'>Bulletins_salaire_2024.pdf</td><td style='font-size:11px;color:#5a5248'>1.2 Mo</td><td style='font-size:11px;color:#5a5248'>21/05/2026</td><td>"+b("Reçu","bec")+"</td><td><button class='btn bghost' style='padding:4px 10px;font-size:10px' data-action='telecharger'>Télécharger</button></td></tr></tbody></table></div>";
-}
+function pBib(){
+  var cards=CODES.map(function(c,i){return "<div class='code-card'><div style='font-size:24px;margin-bottom:10px'>"+c.icon+"</div><div style='font-family:Cinzel,serif;font-size:12px;color:#d4b896;margin-bottom:6px'>"+c.code+"</div><div style='font-size:11px;color:#8b7355;margin-bottom:3px'>"+c.articles+"</div><div style='font-size:11px;color:#5a5248;margin-bottom:10px'>"+c.domaine+"</div><button class='btn bgh' style='padding:5px 12px;font-size:10px;width:100%' data-action='show-code' data-idx='"+i+"'>Voir le détail</button><div id='detail-"+i+"' class='detail-panel' style='display:none;font-size:13px;color:#c8bfb0;line-height:1.6'>"+c.detail+"</div></div>";}).join("");
+  var jrows=JURIS.map(function(j,i){return "<tr><td class='mono' style='font-size:10px;color:#8b7355'>"+j.ref+"</td><td style='color:#e8e0d0'>"+j.titre+"</td><td>"+bd(j.domaine,"bat")+"</td><td style='font-size:11px;color:#5a5248'>"+j.source+"</td><td><button class='btn bgh' style='padding:4px 10px;font-size:10px' data-action='show-juris' data-idx='"+i+"'>Résumé</button></td></tr><tr id='jdetail-"+i+"' style='display:none'><td colspan='5' style='padding:10px 14px'><div class='detail-panel' style='margin:0;font-size:13px;color:#c8bfb0;line-height:1.6'>"+j.resume+"</div></td></tr>";}).join("");
+  return "<div class='f g8 ac' style='margin-bottom:16px'><button class='btn tb active' data-action='tab-codes'>Codes et Textes</button><button class='btn tb' data-action='tab-juris'>Jurisprudence ("+JURIS.length+")</button></div><div id='bib-codes' style='display:grid;grid-template-columns:repeat(3,1fr);gap:14px'>"+cards+"</div><div id='bib-juris' style='display:none'><div class='card'><table><thead><tr><th>Référence</th><th>Titre</th><th>Domaine</th><th>Source</th><th></th></tr></thead><tbody>"+jrows+"</tbody></table></div></div>";}
 
-window.addEventListener("load", function() {
-  buildNav();
-  goTo("dashboard");
-});
+function pCollab(){
+  var rows=COL.map(function(c){var prog=c.taux?"<div style='display:flex;align-items:center;gap:8px'><div class='pb'><div class='pbb' style='width:"+c.taux+"%'></div></div><span style='font-size:11px;color:#8b7355;min-width:32px'>"+c.taux+"%</span></div>":"—";return "<tr><td><div style='font-size:13px;color:#e8e0d0;font-weight:600'>"+c.nom+"</div><div style='font-size:10px;color:#5a5248;margin-top:2px'>"+c.email+"</div></td><td style='font-size:12px'>"+c.role+"</td><td style='font-size:12px'>"+c.spec+"</td><td style='font-family:Courier New;color:#d4b896;text-align:center'>"+c.dos+"</td><td>"+prog+"</td><td>"+bd(c.conge?"Congé":"Actif",c.conge?"bat":"bec")+"</td></tr>";}).join("");
+  var conges="<div style='padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04)'><div style='font-size:13px;color:#e8e0d0'>Me. Mehdi Lahlou</div><div style='font-size:11px;color:#5a5248;margin-top:3px'>Congés payés · 19/05 → 26/05/2026 · 8 jours</div></div>";
+  var formations="<div style='padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04)'><div style='font-size:13px;color:#e8e0d0'>Me. Samia Idrissi</div><div style='font-size:11px;color:#5a5248;margin-top:3px'>Droit immobilier avancé · 10/06/2026 · 14h</div></div><div style='padding:12px 0'><div style='font-size:13px;color:#e8e0d0'>Me. Nadia Alami</div><div style='font-size:11px;color:#5a5248;margin-top:3px'>Déontologie Barreau · 24/06/2026 · 7h</div></div>";
+  return "<div class='g4'><div class='sc'><div class='sv' style='color:#d4b896'>"+COL.length+"</div><div class='sl'>Collaborateurs</div></div><div class='sc'><div class='sv' style='color:#60a5fa'>7</div><div class='sl'>Dossiers moy./pers.</div></div><div class='sc'><div class='sv' style='color:#4ade80'>89%</div><div class='sl'>Taux occupation</div></div><div class='sc'><div class='sv' style='color:#fbbf24'>1</div><div class='sl'>En congé</div></div></div><div class='card'><div class='f jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Équipe du cabinet</div><button class='btn bg' data-action='new-collab'>+ Nouveau collaborateur</button></div><table><thead><tr><th>Collaborateur</th><th>Rôle</th><th>Spécialité</th><th style='text-align:center'>Dossiers</th><th>Taux occupation</th><th>Statut</th></tr></thead><tbody>"+rows+"</tbody></table></div><div class='g2e'><div class='card'><div class='stitle'>Congés et absences</div>"+conges+"<div style='margin-top:12px'><button class='btn bgh' style='width:100%;font-size:11px' data-action='new-charge'>+ Déclarer une absence</button></div></div><div class='card'><div class='stitle'>Formations continues</div>"+formations+"</div></div>";}
+
+function pCompta(){
+  var rows=CHG.map(function(c){return "<tr><td style='color:#e8e0d0'>"+c.lib+"</td><td>"+bd(c.cat,"bat")+"</td><td style='font-family:Courier New;color:#f87171;font-weight:600'>"+c.montant.toLocaleString("fr-FR")+" MAD</td><td style='font-size:12px;color:#5a5248'>"+c.per+"</td><td>"+sb(c.statut)+"</td></tr>";}).join("");
+  var total=CHG.reduce(function(sum,c){return sum+(c.per==="Mensuel"?c.montant:c.montant/12);},0);
+  var prev=PREVISIONNEL.map(function(m){return "<div style='display:flex;align-items:center;gap:14px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);opacity:"+(m.prev?".6":"1")+"'><div style='min-width:110px;font-family:Cinzel,serif;font-size:11px;color:#c8bfb0'>"+m.mois+"</div><div style='flex:1'><div style='display:flex;align-items:center;gap:8px;margin-bottom:4px'><div style='font-size:10px;color:#4ade80;width:50px'>CA</div><div class='pb'><div class='pbb' style='width:"+(m.ca/250000*100)+"%;background:linear-gradient(90deg,#4ade80,#22c55e)'></div></div><div style='font-family:Courier New;font-size:11px;color:#4ade80;min-width:90px;text-align:right'>"+m.ca.toLocaleString("fr-FR")+" MAD</div></div><div style='display:flex;align-items:center;gap:8px'><div style='font-size:10px;color:#f87171;width:50px'>Charges</div><div class='pb'><div class='pbb' style='width:"+(m.ch/250000*100)+"%;background:linear-gradient(90deg,#f87171,#ef4444)'></div></div><div style='font-family:Courier New;font-size:11px;color:#f87171;min-width:90px;text-align:right'>"+m.ch.toLocaleString("fr-FR")+" MAD</div></div></div><div style='font-family:Courier New;font-size:13px;color:#d4b896;min-width:100px;text-align:right'>+"+(m.ca-m.ch).toLocaleString("fr-FR")+" MAD</div></div>";}).join("");
+  var carpa="<div style='padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04)'><div class='f jb ac'><div><div style='font-size:13px;color:#e8e0d0'>SCI Al Yasmine — Séquestre vente</div><div style='font-size:10px;color:#5a5248;margin-top:2px'>Ouvert le 02/04/2024</div></div><div><div style='font-family:Courier New;font-size:16px;color:#d4b896'>1 800 000 MAD</div><div>"+bd("Bloqué","bur")+"</div></div></div></div><div style='padding:12px 0'><div class='f jb ac'><div><div style='font-size:13px;color:#e8e0d0'>SARL Benali — Provision dommages</div><div style='font-size:10px;color:#5a5248;margin-top:2px'>Ouvert le 15/03/2024</div></div><div><div style='font-family:Courier New;font-size:16px;color:#d4b896'>150 000 MAD</div><div>"+bd("Disponible","bec")+"</div></div></div></div>";
+  return "<div class='g4'><div class='sc'><div class='sv' style='color:#f87171'>"+Math.round(total).toLocaleString("fr-FR")+" MAD</div><div class='sl'>Charges mensuelles</div></div><div class='sc'><div class='sv' style='color:#4ade80'>187 000 MAD</div><div class='sl'>CA mensuel</div></div><div class='sc'><div class='sv' style='color:#d4b896'>92 700 MAD</div><div class='sl'>Résultat net</div></div><div class='sc'><div class='sv' style='color:#60a5fa'>248 000 MAD</div><div class='sl'>Trésorerie CNB</div></div></div><div class='f g8 ac' style='margin-bottom:14px'><button class='btn tb active' data-action='tab-charges'>Charges</button><button class='btn tb' data-action='tab-previsionnel'>Prévisionnel 2026</button></div><div id='compta-charges'><div class='card'><div class='f jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Charges et Dépenses</div><button class='btn bg' data-action='new-charge'>+ Nouvelle charge</button></div><table><thead><tr><th>Libellé</th><th>Catégorie</th><th>Montant</th><th>Périodicité</th><th>Statut</th></tr></thead><tbody>"+rows+"</tbody></table></div><div class='card'><div class='stitle'>Comptes séquestres — CNB Casablanca</div>"+carpa+"</div></div><div id='compta-previsionnel' style='display:none'><div class='card'><div class='stitle'>Prévisionnel CA vs Charges 2026</div>"+prev+"</div></div>";}
+
+function pConf(){
+  var rows=LCB.map(function(l){var rc=l.niveau==="Faible"?"risk-low":l.niveau==="Moyen"?"risk-med":"risk-high";var ri=l.niveau==="Faible"?"▼":l.niveau==="Moyen"?"◆":"▲";return "<tr><td style='color:#e8e0d0;font-weight:600'>"+l.client+"</td><td><span class='"+rc+"' style='font-family:Cinzel,serif;font-size:11px'>"+ri+" "+l.niveau+"</span></td><td>"+bd(l.kyc,l.kyc==="Complet"?"bec":"bat")+"</td><td style='font-size:12px;color:"+(l.decl!=="—"?"#f87171":"#3d3830")+"'>"+l.decl+"</td><td class='mono' style='color:#5a5248'>"+l.date+"</td><td>"+sb(l.statut)+"</td></tr>";}).join("");
+  return "<div class='g4'><div class='sc'><div class='sv' style='color:#4ade80'>"+LCB.filter(function(l){return l.statut==="Conforme";}).length+"</div><div class='sl'>Clients conformes</div></div><div class='sc'><div class='sv' style='color:#fbbf24'>"+LCB.filter(function(l){return l.kyc!=="Complet";}).length+"</div><div class='sl'>KYC à compléter</div></div><div class='sc'><div class='sv' style='color:#f87171'>"+LCB.filter(function(l){return l.decl!=="—";}).length+"</div><div class='sl'>Déclarations UTRF</div></div><div class='sc'><div class='sv' style='color:#d4b896'>0</div><div class='sl'>Conflits intérêts</div></div></div><div class='card' style='margin-bottom:16px'><div class='f jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Registre LAB-FT — Vigilance clients</div><button class='btn bg' data-action='new-client-lcb'>+ Évaluer un client</button></div><table><thead><tr><th>Client</th><th>Niveau de risque</th><th>KYC</th><th>Déclaration UTRF</th><th>Date</th><th>Statut</th></tr></thead><tbody>"+rows+"</tbody></table></div><div class='g2e'><div class='card'><div class='stitle'>Registre RGPD</div><div style='padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)'><div style='font-size:13px;color:#e8e0d0'>Gestion des dossiers clients</div><div style='font-size:10px;color:#5a5248;margin-top:3px'>Base légale : Exécution contrat · Conservation : 5 ans</div></div><div style='padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)'><div style='font-size:13px;color:#e8e0d0'>Comptabilité et facturation</div><div style='font-size:10px;color:#5a5248;margin-top:3px'>Base légale : Obligation légale · Conservation : 10 ans</div></div><div style='padding:10px 0'><div style='font-size:13px;color:#e8e0d0'>Agenda et communications</div><div style='font-size:10px;color:#5a5248;margin-top:3px'>Base légale : Intérêt légitime · Conservation : 3 ans</div></div></div><div class='card'><div class='stitle'>Vérification conflits d intérêts</div><div style='margin-bottom:10px'><label style='font-size:10px;color:#8b7355;display:block;margin-bottom:5px;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.06em'>Nouveau client</label><input id='conf-client' placeholder='Nom complet' style='width:100%'/></div><div style='margin-bottom:12px'><label style='font-size:10px;color:#8b7355;display:block;margin-bottom:5px;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.06em'>Partie adverse</label><input id='conf-adverse' placeholder='Nom de la partie adverse' style='width:100%'/></div><button class='btn bg' style='width:100%' data-action='verifier-conflit'>Vérifier les conflits</button><div style='margin-top:12px;padding:10px 14px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:6px'><div style='font-size:11px;color:#4ade80;font-family:Cinzel,serif'>Dernier contrôle</div><div style='font-size:12px;color:#c8bfb0;margin-top:4px'>Aucun conflit — M. Hassan Tazi (25/05/2026)</div></div></div></div>";}
+
+function pPortail(){
+  var msgs=PMSG.map(function(m){return "<div class='mc'><div class='f jb ac'><div style='font-size:13px;color:#e8e0d0;font-weight:"+(m.lu?"normal":"600")+"'>"+m.client+"</div><div class='f ac g8'>"+(m.lu?"":"<div style='width:8px;height:8px;background:#d4b896;border-radius:50%'></div>")+"<div style='font-size:10px;color:#4a4238'>"+m.date+"</div></div></div><div style='font-size:12px;color:#6a6058;margin-top:6px'>"+m.msg+"</div></div>";}).join("");
+  var docs=PDOC.map(function(d){return "<tr><td style='color:#e8e0d0'>"+d.client+"</td><td class='mono'>"+d.fichier+"</td><td style='font-size:11px;color:#5a5248'>"+d.taille+"</td><td class='mono' style='color:#5a5248'>"+d.date+"</td><td>"+sb(d.dir)+"</td><td><button class='btn bgh' style='padding:4px 10px;font-size:10px' data-action='telecharger'>Télécharger</button></td></tr>";}).join("");
+  var acces=PACCES.map(function(a){return "<div class='f jb ac' style='padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04)'><div><div style='font-size:14px;color:#e8e0d0'>"+a.client+"</div><div style='font-size:11px;color:#4a4238;margin-top:2px'>"+a.email+" · Dernière conn. : "+a.conn+"</div></div><div class='f ac g8'>"+bd(a.actif?"Actif":"Inactif",a.actif?"bec":"bcl")+(a.actif?"":"<button class='btn bgh' style='padding:4px 10px;font-size:10px' data-action='inviter-client'>Renvoyer</button>")+"</div></div>";}).join("");
+  return "<div class='g3'><div class='sc'><div class='sv' style='color:#d4b896'>"+PACCES.filter(function(a){return a.actif;}).length+"</div><div class='sl'>Clients connectés</div></div><div class='sc'><div class='sv' style='color:#fbbf24'>"+PMSG.filter(function(m){return !m.lu;}).length+"</div><div class='sl'>Messages non lus</div></div><div class='sc'><div class='sv' style='color:#60a5fa'>"+PDOC.length+"</div><div class='sl'>Documents partagés</div></div></div><div class='f g8 ac' style='margin-bottom:14px'><button class='btn tb active' data-action='tab-messages'>Messagerie</button><button class='btn tb' data-action='tab-documents'>Documents</button><button class='btn tb' data-action='tab-acces'>Accès clients</button></div><div id='portail-messages'><div class='g2e'><div>"+msgs+"</div><div class='card' style='display:flex;flex-direction:column'><div class='stitle'>Répondre au client</div><textarea placeholder='Rédigez votre réponse sécurisée...' rows='5' style='width:100%;margin-bottom:10px'></textarea><button class='btn bg' data-action='envoyer-msg'>Envoyer de manière sécurisée</button></div></div></div><div id='portail-documents' style='display:none'><div class='card'><div class='f jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Documents partagés</div><button class='btn bg' data-action='inviter-client'>+ Envoyer un document</button></div><table><thead><tr><th>Client</th><th>Fichier</th><th>Taille</th><th>Date</th><th>Direction</th><th></th></tr></thead><tbody>"+docs+"</tbody></table></div></div><div id='portail-acces' style='display:none'><div class='card'><div class='f jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Accès portail — Clients enregistrés</div><button class='btn bg' data-action='inviter-client'>+ Inviter un client</button></div>"+acces+"</div></div>";}
+
+window.addEventListener("load",function(){buildNav();goTo("dashboard");});
 </script>
 </body>
 </html>
