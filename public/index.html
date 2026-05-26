@@ -1850,55 +1850,106 @@ function openModeleForm(idx){
 
 function generateModele(idx){
   var m=window._MODELES[idx];if(!m)return;
-  var today=new Date().toLocaleDateString("fr-FR");
+  var isAr=LANG==="ar";
+  var today=new Date().toLocaleDateString(isAr?"ar-MA":"fr-FR");
   var vals={};
   m.fields.forEach(function(f){
     var el=document.getElementById(f.id);
     vals[f.id]=el?(el.value||"["+f.label+"]"):"["+f.label+"]";
   });
 
-  var cabNom=window.CABINET&&window.CABINET.nom?window.CABINET.nom:"Cabinet Alami & Associés";
-  var cabVille=window.CABINET&&window.CABINET.ville?window.CABINET.ville:"Casablanca";
+  var cabNom=window.CABINET&&window.CABINET.nom?window.CABINET.nom:(isAr?"مكتب علمي وشركاؤه":"Cabinet Alami & Associés");
+  var cabVille=window.CABINET&&window.CABINET.ville?window.CABINET.ville:(isAr?"الدار البيضاء":"Casablanca");
   var cabTel=window.CABINET&&window.CABINET.telephone?window.CABINET.telephone:"";
-  var cabBar=window.CABINET&&window.CABINET.barreau?"Barreau de "+window.CABINET.barreau:"Barreau de Casablanca";
+  var cabBar=window.CABINET&&window.CABINET.barreau?(isAr?"هيئة المحامين بـ"+window.CABINET.barreau:"Barreau de "+window.CABINET.barreau):(isAr?"هيئة المحامين بالدار البيضاء":"Barreau de Casablanca");
+  var docFont=isAr?"'Tajawal','Arial',sans-serif":"Georgia,serif";
+  var docDir=isAr?"rtl":"ltr";
+  var docAlign=isAr?"right":"left";
 
   var corps="";
   if(idx===0){// Mise en demeure
-    corps="Casablanca, le "+today+"\n\nÀ l attention de : "+vals.md_dest+"\n\nMadame, Monsieur,\n\nPar la présente, nous vous mettons formellement en demeure de procéder à :\n\n"+vals.md_objet+"\n\ndans un délai de "+vals.md_delai+" jours à compter de la réception de ce courrier.\n\nÀ défaut de réponse favorable dans ce délai, notre client se réservera le droit d engager toutes poursuites judiciaires utiles à la défense de ses intérêts, sans autre avertissement.\n\nNous vous invitons à prendre contact avec notre cabinet dans les meilleurs délais.\n\nVeuillez agréer, Madame, Monsieur, l expression de nos salutations distinguées.\n\n"+vals.md_avocat+"\n"+cabBar;
+    if(isAr){
+      corps="الدار البيضاء، بتاريخ "+today+"\n\nإلى: "+vals.md_dest+"\n\nالسيدة، السيد،\n\nيشرفني، باسم موكلي، أن أوجه إليكم هذا الإنذار الرسمي لأطلب منكم القيام بـ:\n\n"+vals.md_objet+"\n\nوذلك في أجل "+vals.md_delai+" يوماً من تاريخ تسلم هذا الإنذار.\n\nفي حالة عدم الاستجابة خلال الأجل المحدد، يحتفظ موكلي بحقه في اتخاذ كافة الإجراءات القانونية الكفيلة بصون حقوقه، دون أي إنذار آخر.\n\nنأمل أن تتداركوا الأمر قبل اللجوء إلى القضاء.\n\nتفضلوا بقبول فائق الاحترام والتقدير.\n\n"+vals.md_avocat+"\n"+cabBar;
+    } else {
+      corps="Casablanca, le "+today+"\n\nÀ l attention de : "+vals.md_dest+"\n\nMadame, Monsieur,\n\nPar la présente, nous vous mettons formellement en demeure de procéder à :\n\n"+vals.md_objet+"\n\ndans un délai de "+vals.md_delai+" jours à compter de la réception de ce courrier.\n\nÀ défaut de réponse favorable dans ce délai, notre client se réservera le droit d engager toutes poursuites judiciaires utiles à la défense de ses intérêts, sans autre avertissement.\n\nNous vous invitons à prendre contact avec notre cabinet dans les meilleurs délais.\n\nVeuillez agréer, Madame, Monsieur, l expression de nos salutations distinguées.\n\n"+vals.md_avocat+"\n"+cabBar;
+    }
   } else if(idx===1){// Conclusions
-    corps="TRIBUNAL DE PREMIÈRE INSTANCE DE "+vals.co_tribunal.toUpperCase()+"\n\nCONCLUSIONS EN RÉPONSE\n\nPour : "+vals.co_client+"\nContre : "+vals.co_adverse+"\n\nI. EN FAIT\n"+vals.co_faits+"\n\nII. EN DROIT\n"+vals.co_droit+"\n\nPAR CES MOTIFS\n\nPlaise au Tribunal de bien vouloir :\n- Déclarer recevable et bien fondée la demande de "+vals.co_client+"\n- "+vals.co_demande+"\n- Condamner la partie adverse aux dépens\n\nSous toutes réserves.\n\nCasablanca, le "+today+"\n"+vals.co_avocat+"\n"+cabBar;
+    if(isAr){
+      corps="المحكمة الابتدائية بـ"+vals.co_tribunal+"\n\nمذكرة في الجواب\n\nباسم: "+vals.co_client+"\nضد: "+vals.co_adverse+"\n\nأولاً: في الوقائع\n"+vals.co_faits+"\n\nثانياً: في القانون\n"+vals.co_droit+"\n\nبناء على ذلك\n\nنلتمس من المحكمة الموقرة أن تتفضل بـ:\n- التصريح بقبول طلب "+vals.co_client+" شكلاً وموضوعاً\n- "+vals.co_demande+"\n- إلزام الطرف المدعى عليه بالصائر\n\nمع حفظ كافة الحقوق.\n\nالدار البيضاء، بتاريخ "+today+"\n"+vals.co_avocat+"\n"+cabBar;
+    } else {
+      corps="TRIBUNAL DE PREMIÈRE INSTANCE DE "+vals.co_tribunal.toUpperCase()+"\n\nCONCLUSIONS EN RÉPONSE\n\nPour : "+vals.co_client+"\nContre : "+vals.co_adverse+"\n\nI. EN FAIT\n"+vals.co_faits+"\n\nII. EN DROIT\n"+vals.co_droit+"\n\nPAR CES MOTIFS\n\nPlaise au Tribunal de bien vouloir :\n- Déclarer recevable et bien fondée la demande de "+vals.co_client+"\n- "+vals.co_demande+"\n- Condamner la partie adverse aux dépens\n\nSous toutes réserves.\n\nCasablanca, le "+today+"\n"+vals.co_avocat+"\n"+cabBar;
+    }
   } else if(idx===2){// Protocole
-    var echeance=vals.pt_montant?parseInt(vals.pt_montant).toLocaleString("fr-FR")+" MAD":"[Montant]";
-    corps="PROTOCOLE D ACCORD TRANSACTIONNEL\n\nEntre les soussignés :\n\n1. "+vals.pt_partieA+" (ci-après Partie A)\n2. "+vals.pt_partieB+" (ci-après Partie B)\n\nIl a été convenu et arrêté ce qui suit :\n\nARTICLE 1 — OBJET\n"+vals.pt_objet+"\n\nARTICLE 2 — ENGAGEMENTS\n"+vals.pt_engagements+"\n\nARTICLE 3 — RÈGLEMENT\nLa Partie B s engage à verser la somme de "+echeance+" à la Partie A.\n\nARTICLE 4 — CONFIDENTIALITÉ\nLes parties s engagent à maintenir la confidentialité du présent accord.\n\nARTICLE 5 — DROIT APPLICABLE\nLe présent accord est soumis au droit marocain.\n\nFait à Casablanca, le "+today+"\n\nSignature Partie A : "+vals.pt_partieA+"\nSignature Partie B : "+vals.pt_partieB+"\n\nAvocat rédacteur : "+vals.pt_avocat;
+    var echeance=vals.pt_montant?parseInt(vals.pt_montant).toLocaleString("fr-FR")+" MAD":"[المبلغ]";
+    if(isAr){
+      corps="اتفاقية تسوية ودية\n\nبين الأطراف الموقعين أسفله:\n\n1. "+vals.pt_partieA+" (الطرف الأول)\n2. "+vals.pt_partieB+" (الطرف الثاني)\n\nتم الاتفاق على ما يلي:\n\nالمادة الأولى — الموضوع\n"+vals.pt_objet+"\n\nالمادة الثانية — الالتزامات\n"+vals.pt_engagements+"\n\nالمادة الثالثة — التسوية المالية\nيلتزم الطرف الثاني بأداء مبلغ "+echeance+" للطرف الأول.\n\nالمادة الرابعة — السرية\nيلتزم الطرفان بالحفاظ على سرية هذه الاتفاقية.\n\nالمادة الخامسة — القانون المطبق\nتخضع هذه الاتفاقية لأحكام القانون المغربي.\n\nحرر بالدار البيضاء بتاريخ "+today+"\n\nتوقيع الطرف الأول: "+vals.pt_partieA+"\nتوقيع الطرف الثاني: "+vals.pt_partieB+"\n\nالمحامي المحرر: "+vals.pt_avocat;
+    } else {
+      corps="PROTOCOLE D ACCORD TRANSACTIONNEL\n\nEntre les soussignés :\n\n1. "+vals.pt_partieA+" (ci-après Partie A)\n2. "+vals.pt_partieB+" (ci-après Partie B)\n\nIl a été convenu et arrêté ce qui suit :\n\nARTICLE 1 — OBJET\n"+vals.pt_objet+"\n\nARTICLE 2 — ENGAGEMENTS\n"+vals.pt_engagements+"\n\nARTICLE 3 — RÈGLEMENT\nLa Partie B s engage à verser la somme de "+echeance+" à la Partie A.\n\nARTICLE 4 — CONFIDENTIALITÉ\nLes parties s engagent à maintenir la confidentialité du présent accord.\n\nARTICLE 5 — DROIT APPLICABLE\nLe présent accord est soumis au droit marocain.\n\nFait à Casablanca, le "+today+"\n\nSignature Partie A : "+vals.pt_partieA+"\nSignature Partie B : "+vals.pt_partieB+"\n\nAvocat rédacteur : "+vals.pt_avocat;
+    }
   } else if(idx===3){// Résiliation
-    corps="Casablanca, le "+today+"\n\nÀ l attention de : "+vals.lr_dest+"\n\nObjet : Résiliation de "+vals.lr_contrat+"\n\nMadame, Monsieur,\n\nNous avons l honneur de vous informer, au nom et pour le compte de "+vals.lr_client+", de la résiliation du "+vals.lr_contrat+" pour le motif suivant :\n\n"+vals.lr_motif+"\n\nCette résiliation prendra effet le "+vals.lr_date_effet+".\n\nNous vous invitons à prendre toutes dispositions utiles.\n\nVeuillez agréer, Madame, Monsieur, l expression de nos salutations distinguées.\n\n"+vals.lr_avocat+"\n"+cabBar;
+    if(isAr){
+      corps="الدار البيضاء، بتاريخ "+today+"\n\nإلى: "+vals.lr_dest+"\n\nالموضوع: فسخ "+vals.lr_contrat+"\n\nالسيدة، السيد،\n\nيشرفني إعلامكم، باسم موكلي "+vals.lr_client+"، بفسخ "+vals.lr_contrat+" للسبب التالي:\n\n"+vals.lr_motif+"\n\nيسري مفعول هذا الفسخ ابتداءً من "+vals.lr_date_effet+".\n\nنرجو اتخاذ ما يلزم من إجراءات.\n\nتفضلوا بقبول فائق الاحترام والتقدير.\n\n"+vals.lr_avocat+"\n"+cabBar;
+    } else {
+      corps="Casablanca, le "+today+"\n\nÀ l attention de : "+vals.lr_dest+"\n\nObjet : Résiliation de "+vals.lr_contrat+"\n\nMadame, Monsieur,\n\nNous avons l honneur de vous informer, au nom et pour le compte de "+vals.lr_client+", de la résiliation du "+vals.lr_contrat+" pour le motif suivant :\n\n"+vals.lr_motif+"\n\nCette résiliation prendra effet le "+vals.lr_date_effet+".\n\nNous vous invitons à prendre toutes dispositions utiles.\n\nVeuillez agréer, Madame, Monsieur, l expression de nos salutations distinguées.\n\n"+vals.lr_avocat+"\n"+cabBar;
+    }
   } else if(idx===4){// Procuration
-    corps="PROCURATION\n\nPar-devant Maître "+vals.pr_notaire+", Notaire à "+cabVille+",\n\nA comparu :\nLE MANDANT : "+vals.pr_mandant+"\n\nLequel constitue pour son mandataire :\nLE MANDATAIRE : "+vals.pr_mandataire+"\n\nAuquel il donne pouvoir et capacité de :\n"+vals.pr_objet+"\n\nCette procuration est consentie pour la durée nécessaire à l accomplissement de sa mission et au plus tard jusqu au "+vals.pr_validite+".\n\nEn foi de quoi, la présente procuration a été signée à "+cabVille+", le "+today+"\n\nSignature du mandant :\n"+vals.pr_mandant+"\n\nSignature du notaire :\nMaître "+vals.pr_notaire;
+    if(isAr){
+      corps="توكيل\n\nأمام الموثق الأستاذ "+vals.pr_notaire+" بـ"+cabVille+"،\n\nمثل أمامه:\nالموكِّل: "+vals.pr_mandant+"\n\nالذي وكّل ونقل صلاحياته إلى:\nالوكيل: "+vals.pr_mandataire+"\n\nلأجل:\n"+vals.pr_objet+"\n\nيسري هذا التوكيل إلى غاية "+vals.pr_validite+".\n\nحرر بـ"+cabVille+" بتاريخ "+today+"\n\nتوقيع الموكِّل:\n"+vals.pr_mandant+"\n\nتوقيع الموثق:\nالأستاذ "+vals.pr_notaire;
+    } else {
+      corps="PROCURATION\n\nPar-devant Maître "+vals.pr_notaire+", Notaire à "+cabVille+",\n\nA comparu :\nLE MANDANT : "+vals.pr_mandant+"\n\nLequel constitue pour son mandataire :\nLE MANDATAIRE : "+vals.pr_mandataire+"\n\nAuquel il donne pouvoir et capacité de :\n"+vals.pr_objet+"\n\nCette procuration est consentie pour la durée nécessaire à l accomplissement de sa mission et au plus tard jusqu au "+vals.pr_validite+".\n\nEn foi de quoi, la présente procuration a été signée à "+cabVille+", le "+today+"\n\nSignature du mandant :\n"+vals.pr_mandant+"\n\nSignature du notaire :\nMaître "+vals.pr_notaire;
+    }
   } else if(idx===5){// Promesse de vente
-    var prix=vals.pv_prix?parseInt(vals.pv_prix).toLocaleString("fr-FR")+" MAD":"[Prix]";
-    var acompte=vals.pv_acompte?parseInt(vals.pv_acompte).toLocaleString("fr-FR")+" MAD":"[Acompte]";
-    corps="PROMESSE SYNALLAGMATIQUE DE VENTE\n\nPar-devant Maître "+vals.pv_notaire+", Notaire à "+cabVille+",\n\nEntre :\nLE VENDEUR : "+vals.pv_vendeur+"\nL ACQUÉREUR : "+vals.pv_acquereur+"\n\nARTICLE 1 — DÉSIGNATION DU BIEN\n"+vals.pv_bien+"\n\nARTICLE 2 — PRIX\nLe prix de vente est fixé à "+prix+".\nL acquéreur verse ce jour un acompte de "+acompte+".\n\nARTICLE 3 — CONDITIONS\nLa vente est conclue sous les conditions habituelles de la profession.\n\nARTICLE 4 — RÉITÉRATION\nL acte définitif sera passé au plus tard le "+vals.pv_date_reit+".\n\nFait à "+cabVille+", le "+today+"\n\nSignature du vendeur :\n"+vals.pv_vendeur+"\n\nSignature de l acquéreur :\n"+vals.pv_acquereur+"\n\nNotaire : Maître "+vals.pv_notaire;
+    var prix=vals.pv_prix?parseInt(vals.pv_prix).toLocaleString("fr-FR")+" MAD":(isAr?"[الثمن]":"[Prix]");
+    var acompte=vals.pv_acompte?parseInt(vals.pv_acompte).toLocaleString("fr-FR")+" MAD":(isAr?"[التسبيق]":"[Acompte]");
+    if(isAr){
+      corps="وعد ملزم للطرفين بالبيع\n\nأمام الموثق الأستاذ "+vals.pv_notaire+" بـ"+cabVille+"،\n\nالبائع: "+vals.pv_vendeur+"\nالمشتري: "+vals.pv_acquereur+"\n\nالمادة الأولى — تعيين العقار\n"+vals.pv_bien+"\n\nالمادة الثانية — الثمن\nحدد ثمن البيع في "+prix+".\nيؤدي المشتري اليوم تسبيقاً قدره "+acompte+".\n\nالمادة الثالثة — الشروط\nيبرم البيع وفق الأعراف المهنية المعتادة.\n\nالمادة الرابعة — تجديد العقد\nيحرر العقد النهائي في أجل أقصاه "+vals.pv_date_reit+".\n\nحرر بـ"+cabVille+" بتاريخ "+today+"\n\nتوقيع البائع:\n"+vals.pv_vendeur+"\n\nتوقيع المشتري:\n"+vals.pv_acquereur+"\n\nالموثق: الأستاذ "+vals.pv_notaire;
+    } else {
+      corps="PROMESSE SYNALLAGMATIQUE DE VENTE\n\nPar-devant Maître "+vals.pv_notaire+", Notaire à "+cabVille+",\n\nEntre :\nLE VENDEUR : "+vals.pv_vendeur+"\nL ACQUÉREUR : "+vals.pv_acquereur+"\n\nARTICLE 1 — DÉSIGNATION DU BIEN\n"+vals.pv_bien+"\n\nARTICLE 2 — PRIX\nLe prix de vente est fixé à "+prix+".\nL acquéreur verse ce jour un acompte de "+acompte+".\n\nARTICLE 3 — CONDITIONS\nLa vente est conclue sous les conditions habituelles de la profession.\n\nARTICLE 4 — RÉITÉRATION\nL acte définitif sera passé au plus tard le "+vals.pv_date_reit+".\n\nFait à "+cabVille+", le "+today+"\n\nSignature du vendeur :\n"+vals.pv_vendeur+"\n\nSignature de l acquéreur :\n"+vals.pv_acquereur+"\n\nNotaire : Maître "+vals.pv_notaire;
+    }
   } else if(idx===6){// Attestation
-    corps="ATTESTATION DE PROPRIÉTÉ\n\nJe soussigné, Maître "+vals.ap_notaire+", Notaire à "+cabVille+",\n\nATTESTE ET CERTIFIE\n\nQue Monsieur/Madame "+vals.ap_proprietaire+" est propriétaire du bien immeuble suivant :\n\nDÉSIGNATION : "+vals.ap_bien+"\nTITRE FONCIER N° : "+vals.ap_titre+"\nSUPERFICIE : "+vals.ap_superficie+" m²\n\nLa présente attestation est délivrée à la demande de l intéressé pour servir et valoir ce que de droit.\n\nFait à "+cabVille+", le "+today+"\n\nMaître "+vals.ap_notaire+"\nNotaire à "+cabVille;
+    if(isAr){
+      corps="شهادة الملكية\n\nنحن الموثق الأستاذ "+vals.ap_notaire+" بـ"+cabVille+"،\n\nنُشهد ونُصرح\n\nبأن السيد/السيدة "+vals.ap_proprietaire+" مالك للعقار الموصوف كما يلي:\n\nالتسمية: "+vals.ap_bien+"\nرقم الرسم العقاري: "+vals.ap_titre+"\nالمساحة: "+vals.ap_superficie+" م²\n\nسلمت هذه الشهادة بناء على طلب المعني بالأمر لتكون حجة فيما يثبته القانون.\n\nحرر بـ"+cabVille+" بتاريخ "+today+"\n\nالموثق الأستاذ "+vals.ap_notaire+"\nالموثق بـ"+cabVille;
+    } else {
+      corps="ATTESTATION DE PROPRIÉTÉ\n\nJe soussigné, Maître "+vals.ap_notaire+", Notaire à "+cabVille+",\n\nATTESTE ET CERTIFIE\n\nQue Monsieur/Madame "+vals.ap_proprietaire+" est propriétaire du bien immeuble suivant :\n\nDÉSIGNATION : "+vals.ap_bien+"\nTITRE FONCIER N° : "+vals.ap_titre+"\nSUPERFICIE : "+vals.ap_superficie+" m²\n\nLa présente attestation est délivrée à la demande de l intéressé pour servir et valoir ce que de droit.\n\nFait à "+cabVille+", le "+today+"\n\nMaître "+vals.ap_notaire+"\nNotaire à "+cabVille;
+    }
   } else if(idx===7){// Relance
-    var montant=vals.rl_montant?parseInt(vals.rl_montant).toLocaleString("fr-FR")+" MAD":"[Montant]";
-    corps="Casablanca, le "+today+"\n\nÀ l attention de : "+vals.rl_client+"\n\nObjet : Relance — Facture N° "+vals.rl_num_facture+"\n\nMadame, Monsieur,\n\nSauf erreur ou omission de notre part, nous constatons que la facture N° "+vals.rl_num_facture+" d un montant de "+montant+", émise le "+vals.rl_date_fact+", demeure impayée à ce jour.\n\nNous vous serions reconnaissants de bien vouloir procéder au règlement de cette somme dans les meilleurs délais.\n\nPassé ce délai, nous nous verrons dans l obligation d engager les poursuites nécessaires au recouvrement de notre créance.\n\nCordialement,\n"+vals.rl_cabinet;
+    var montant=vals.rl_montant?parseInt(vals.rl_montant).toLocaleString("fr-FR")+" MAD":(isAr?"[المبلغ]":"[Montant]");
+    if(isAr){
+      corps="الدار البيضاء، بتاريخ "+today+"\n\nإلى: "+vals.rl_client+"\n\nالموضوع: تذكير — فاتورة رقم "+vals.rl_num_facture+"\n\nالسيدة، السيد،\n\nإلا في حالة خطأ أو سهو من جانبنا، فإن الفاتورة رقم "+vals.rl_num_facture+" البالغ مبلغها "+montant+" الصادرة بتاريخ "+vals.rl_date_fact+" لا تزال غير مسددة إلى اليوم.\n\nنرجو منكم التكرم بتسوية هذا المبلغ في أقرب وقت ممكن.\n\nفي حالة عدم الاستجابة، سنضطر إلى اتخاذ الإجراءات القانونية اللازمة لاسترداد حقوقنا.\n\nمع فائق الاحترام،\n"+vals.rl_cabinet;
+    } else {
+      corps="Casablanca, le "+today+"\n\nÀ l attention de : "+vals.rl_client+"\n\nObjet : Relance — Facture N° "+vals.rl_num_facture+"\n\nMadame, Monsieur,\n\nSauf erreur ou omission de notre part, nous constatons que la facture N° "+vals.rl_num_facture+" d un montant de "+montant+", émise le "+vals.rl_date_fact+", demeure impayée à ce jour.\n\nNous vous serions reconnaissants de bien vouloir procéder au règlement de cette somme dans les meilleurs délais.\n\nPassé ce délai, nous nous verrons dans l obligation d engager les poursuites nécessaires au recouvrement de notre créance.\n\nCordialement,\n"+vals.rl_cabinet;
+    }
   } else if(idx===8){// Convention règlement
-    var total=vals.cr_montant_total?parseInt(vals.cr_montant_total).toLocaleString("fr-FR")+" MAD":"[Montant]";
-    var echeance=vals.cr_montant_total&&vals.cr_nb_echeances?Math.round(parseInt(vals.cr_montant_total)/parseInt(vals.cr_nb_echeances)).toLocaleString("fr-FR")+" MAD":"[Montant/échéance]";
-    corps="CONVENTION DE RÈGLEMENT ÉCHELONNÉ\n\nEntre :\nLE DÉBITEUR : "+vals.cr_debiteur+"\nLE CRÉANCIER : "+vals.cr_creancier+"\n\nARTICLE 1 — MONTANT\nLe débiteur reconnaît devoir au créancier la somme totale de "+total+".\n\nARTICLE 2 — ÉCHELONNEMENT\nLe règlement sera effectué en "+vals.cr_nb_echeances+" versements égaux de "+echeance+" chacun.\nLa première échéance est fixée au "+vals.cr_premiere_echeance+".\n\nARTICLE 3 — CLAUSE RÉSOLUTOIRE\nTout défaut de paiement d une échéance rendra l intégralité de la dette exigible immédiatement.\n\nFait à "+cabVille+", le "+today+"\n\nSignature du débiteur : "+vals.cr_debiteur+"\nSignature du créancier : "+vals.cr_creancier+"\n\nPar : "+vals.cr_cabinet;
+    var total=vals.cr_montant_total?parseInt(vals.cr_montant_total).toLocaleString("fr-FR")+" MAD":(isAr?"[المبلغ]":"[Montant]");
+    var echeance=vals.cr_montant_total&&vals.cr_nb_echeances?Math.round(parseInt(vals.cr_montant_total)/parseInt(vals.cr_nb_echeances)).toLocaleString("fr-FR")+" MAD":(isAr?"[قسط]":"[Montant/échéance]");
+    if(isAr){
+      corps="اتفاقية تسوية ديون بالتقسيط\n\nبين:\nالمدين: "+vals.cr_debiteur+"\nالدائن: "+vals.cr_creancier+"\n\nالمادة الأولى — المبلغ\nيُقر المدين بأنه مدين للدائن بمبلغ إجمالي قدره "+total+".\n\nالمادة الثانية — التقسيط\nيؤدى الدين على "+vals.cr_nb_echeances+" دفعات متساوية قدر كل دفعة "+echeance+".\nتاريخ أول دفعة: "+vals.cr_premiere_echeance+".\n\nالمادة الثالثة — الشرط الفاسخ\nكل تأخر في أداء دفعة يجعل كامل الدين حالاً فوراً.\n\nحرر بـ"+cabVille+" بتاريخ "+today+"\n\nتوقيع المدين: "+vals.cr_debiteur+"\nتوقيع الدائن: "+vals.cr_creancier+"\n\nمحرر: "+vals.cr_cabinet;
+    } else {
+      corps="CONVENTION DE RÈGLEMENT ÉCHELONNÉ\n\nEntre :\nLE DÉBITEUR : "+vals.cr_debiteur+"\nLE CRÉANCIER : "+vals.cr_creancier+"\n\nARTICLE 1 — MONTANT\nLe débiteur reconnaît devoir au créancier la somme totale de "+total+".\n\nARTICLE 2 — ÉCHELONNEMENT\nLe règlement sera effectué en "+vals.cr_nb_echeances+" versements égaux de "+echeance+" chacun.\nLa première échéance est fixée au "+vals.cr_premiere_echeance+".\n\nARTICLE 3 — CLAUSE RÉSOLUTOIRE\nTout défaut de paiement d une échéance rendra l intégralité de la dette exigible immédiatement.\n\nFait à "+cabVille+", le "+today+"\n\nSignature du débiteur : "+vals.cr_debiteur+"\nSignature du créancier : "+vals.cr_creancier+"\n\nPar : "+vals.cr_cabinet;
+    }
   }
 
   // Generic template generator for all other templates
   if(!corps) {
-    corps = m.titre.toUpperCase() + "\n\n";
-    corps += "Casablanca, le " + today + "\n\n";
-    m.fields.forEach(function(f){
-      if(vals[f.id] && vals[f.id] !== "["+f.label+"]") {
-        corps += f.label.toUpperCase() + " : " + vals[f.id] + "\n";
-      }
-    });
-    corps += "\n\nFait à " + (window.CABINET&&window.CABINET.ville?window.CABINET.ville:"Casablanca") + ", le " + today;
+    if(isAr){
+      corps = m.titre + "\n\n";
+      corps += cabVille + "، بتاريخ " + today + "\n\n";
+      m.fields.forEach(function(f){
+        if(vals[f.id] && vals[f.id] !== "["+f.label+"]") {
+          corps += f.label + ": " + vals[f.id] + "\n";
+        }
+      });
+      corps += "\n\nحرر بـ" + cabVille + " بتاريخ " + today;
+    } else {
+      corps = m.titre.toUpperCase() + "\n\n";
+      corps += "Casablanca, le " + today + "\n\n";
+      m.fields.forEach(function(f){
+        if(vals[f.id] && vals[f.id] !== "["+f.label+"]") {
+          corps += f.label.toUpperCase() + " : " + vals[f.id] + "\n";
+        }
+      });
+      corps += "\n\nFait à " + (window.CABINET&&window.CABINET.ville?window.CABINET.ville:"Casablanca") + ", le " + today;
+    }
     if(vals[Object.keys(vals).find(function(k){return k.endsWith("_avocat")||k.endsWith("_notaire");})||""]) {
       var signataire = vals[Object.keys(vals).find(function(k){return k.endsWith("_avocat")||k.endsWith("_notaire");})||""];
       corps += "\n\n" + signataire;
@@ -1907,10 +1958,11 @@ function generateModele(idx){
   document.getElementById("m-modele-form").remove();
 
   var w=window.open("","_blank","width=860,height=750");
-  w.document.write("<!DOCTYPE html><html><head><meta charset='UTF-8'><title>"+m.titre+"</title><style>body{font-family:Georgia,serif;padding:20mm;color:#111;max-width:185mm;margin:0 auto;line-height:1.8}h1{font-size:14pt;text-align:center;letter-spacing:.08em;border-bottom:2px solid #8b7355;padding-bottom:8px;margin-bottom:6px}h2{font-size:10pt;text-align:center;color:#555;margin-bottom:24px}.corps{white-space:pre-wrap;font-size:11pt;line-height:1.9}.footer{margin-top:30px;font-size:8pt;color:#999;text-align:center;border-top:1px solid #eee;padding-top:10px}@page{size:A4 portrait;margin:20mm 15mm}</style></head><body>");
-  w.document.write("<h1>"+cabNom+"</h1><h2>"+cabBar+(cabTel?" · "+cabTel:"")+"</h2>");
+  var arFont=isAr?"<link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap'>":"";
+  w.document.write("<!DOCTYPE html><html dir='"+docDir+"' lang='"+(isAr?"ar":"fr")+"'><head><meta charset='UTF-8'>"+arFont+"<title>"+m.titre+"</title><style>body{font-family:"+docFont+";padding:20mm;color:#111;max-width:185mm;margin:0 auto;line-height:1.9;direction:"+docDir+"}h1{font-size:14pt;text-align:center;letter-spacing:"+(isAr?"0":".08em")+";border-bottom:2px solid #8b7355;padding-bottom:8px;margin-bottom:6px}h2{font-size:10pt;text-align:center;color:#555;margin-bottom:24px}.corps{white-space:pre-wrap;font-size:11pt;line-height:2;text-align:"+docAlign+"}.footer{margin-top:30px;font-size:8pt;color:#999;text-align:center;border-top:1px solid #eee;padding-top:10px}@page{size:A4 portrait;margin:20mm 15mm}</style></head><body>");
+  var docTitle=isAr?m.titre:m.titre;w.document.write("<h1>"+cabNom+"</h1><h2>"+cabBar+(cabTel?" · "+cabTel:"")+"</h2>");
   w.document.write("<div class='corps'>"+corps+"</div>");
-  w.document.write("<div class='footer'>"+cabNom+" · "+cabVille+" · "+today+"</div>");
+  w.document.write("<div class='footer'>"+cabNom+" · "+cabVille+(isAr?" · تاريخ الطباعة: ":" · ")+today+"</div>");
   w.document.write("</body></html>");
   w.document.close();
   setTimeout(function(){w.print();},700);
