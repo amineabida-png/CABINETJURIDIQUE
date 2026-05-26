@@ -248,6 +248,45 @@ select option{background:#1a1a1e}
 
 <!-- MODALS -->
 
+<!-- MODAL NOTE -->
+<div class="modal-bg" id="m-note">
+  <div class="modal">
+    <h3>NOUVELLE NOTE</h3>
+    <label>Dossier lié</label><input id="mn-dossier" placeholder="Ex: D-2024-001 ou libre"/>
+    <label>Titre</label><input id="mn-titre" placeholder="Ex: Appel client, CR réunion..."/>
+    <label>Contenu</label><textarea id="mn-contenu" rows="5" placeholder="Contenu de la note..." style="width:100%"></textarea>
+    <label>Priorité</label><select id="mn-prio"><option>Normale</option><option>Urgente</option><option>Information</option></select>
+    <div class="modal-btns"><button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" data-action="save-note">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- MODAL TEMPS -->
+<div class="modal-bg" id="m-temps">
+  <div class="modal">
+    <h3>SAISIE DE TEMPS</h3>
+    <label>Dossier</label><input id="mt-dossier" placeholder="Ex: D-2024-001"/>
+    <label>Client</label><input id="mt-client" placeholder="Nom du client"/>
+    <label>Description</label><input id="mt-desc" placeholder="Ex: Rédaction conclusions, audience..."/>
+    <label>Durée (minutes)</label><input id="mt-duree" type="number" placeholder="Ex: 90"/>
+    <label>Taux horaire (MAD/h)</label><input id="mt-taux" type="number" placeholder="Ex: 1500"/>
+    <label>Date</label><input id="mt-date" type="date"/>
+    <div class="modal-btns"><button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" data-action="save-temps">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- MODAL PIECE -->
+<div class="modal-bg" id="m-piece">
+  <div class="modal">
+    <h3>NOUVELLE PIÈCE JUSTIFICATIVE</h3>
+    <label>Dossier</label><input id="mp2-dossier" placeholder="Ex: D-2024-001"/>
+    <label>Client</label><input id="mp2-client" placeholder="Nom du client"/>
+    <label>Libellé du document</label><input id="mp2-lib" placeholder="Ex: Contrat de travail, Jugement..."/>
+    <label>Type</label><select id="mp2-type"><option>À recevoir</option><option>Reçu</option><option>Transmis</option><option>Archivé</option></select>
+    <label>Échéance</label><input id="mp2-echeance" type="date"/>
+    <div class="modal-btns"><button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" data-action="save-piece">Enregistrer</button></div>
+  </div>
+</div>
+
 <!-- MODAL UNIVERSEL VIEW/EDIT/DELETE -->
 <div class="modal-bg" id="m-universal">
   <div class="view-modal" id="m-universal-inner">
@@ -358,7 +397,11 @@ var MODS=[
   {id:"collaborateurs",label:"Collaborateurs et RH",icon:"👥",grp:"Cabinet"},
   {id:"comptabilite",label:"Comptabilité interne",icon:"📊",grp:"Cabinet"},
   {id:"conformite",label:"Conformité et LAB-FT",icon:"🔐",grp:"Conformité"},
-  {id:"portail",label:"Portail client",icon:"🌐",grp:"Relation Client"}
+  {id:"portail",label:"Portail client",icon:"🌐",grp:"Relation Client"},
+  {id:"analytique",label:"Analytique et KPIs",icon:"📈",grp:"Analyse"},
+  {id:"temps",label:"Temps et Facturation",icon:"⏱",grp:"Analyse"},
+  {id:"notes",label:"Notes et Mémos",icon:"📝",grp:"Analyse"},
+  {id:"pieces",label:"Pièces justificatives",icon:"📎",grp:"Analyse"}
 ];
 
 var DOS=[];
@@ -400,6 +443,9 @@ var PDOC=[];
 var PACCES=[];
 
 var PREVISIONNEL=[];
+var NOTES=[];
+var TEMPS=[];
+var PIECES=[];
 
 function bd(t,c){return '<span class="badge '+c+'">'+t+'</span>';}
 function sb(s){
@@ -462,6 +508,19 @@ document.addEventListener("click",function(e){
   else if(a==="new-collab")openM("m-collab");
   else if(a==="new-charge")openM("m-charge");
   else if(a==="new-client-lcb")openM("m-client-lcb");
+  else if(a==="new-note")openM("m-note");
+  else if(a==="new-temps")openM("m-temps");
+  else if(a==="new-piece")openM("m-piece");
+  else if(a==="start-timer"){startTimer();}
+  else if(a==="stop-timer"){stopTimer();}
+  else if(a==="delete-note"){var i=parseInt(el.getAttribute("data-idx"));NOTES.splice(i,1);notif("Note supprimée");goTo("notes");}
+  else if(a==="delete-temps"){var i=parseInt(el.getAttribute("data-idx"));TEMPS.splice(i,1);notif("Saisie supprimée");goTo("temps");}
+  else if(a==="delete-piece"){var i=parseInt(el.getAttribute("data-idx"));PIECES.splice(i,1);notif("Pièce supprimée");goTo("pieces");}
+  else if(a==="toggle-piece"){
+    var i=parseInt(el.getAttribute("data-idx"));
+    var p=PIECES[i];
+    if(p){p.type=p.type==="Reçu"?"À recevoir":"Reçu";goTo("pieces");}
+  }
   else if(a==="close-modal")closeM();
 
   // Bibliothèque tabs
@@ -561,6 +620,25 @@ document.addEventListener("click",function(e){
     if(!lb||!mt){notif("Saisir libellé et montant");return;}
     CHG.push({lib:lb,montant:parseInt(mt),cat:document.getElementById("mch-cat").value,per:document.getElementById("mch-per").value,statut:"En attente"});
     closeM();notif("Charge enregistrée");goTo("comptabilite");
+  }
+  else if(a==="save-note"){
+    var t=document.getElementById("mn-titre").value;
+    if(!t){notif("Saisir un titre");return;}
+    NOTES.push({dossier:document.getElementById("mn-dossier").value,titre:t,contenu:document.getElementById("mn-contenu").value,prio:document.getElementById("mn-prio").value,date:new Date().toLocaleDateString("fr-FR")});
+    closeM();notif("Note enregistrée");goTo("notes");
+  }
+  else if(a==="save-temps"){
+    var duree=parseInt(document.getElementById("mt-duree").value)||0;
+    var taux=parseInt(document.getElementById("mt-taux").value)||0;
+    if(!duree){notif("Saisir une durée");return;}
+    TEMPS.push({dossier:document.getElementById("mt-dossier").value,client:document.getElementById("mt-client").value,desc:document.getElementById("mt-desc").value,duree:duree,taux:taux,montant:Math.round(duree/60*taux),date:document.getElementById("mt-date").value||new Date().toLocaleDateString("fr-FR")});
+    closeM();notif("Temps enregistré : "+Math.round(duree/60*taux).toLocaleString("fr-FR")+" MAD");goTo("temps");
+  }
+  else if(a==="save-piece"){
+    var lib=document.getElementById("mp2-lib").value;
+    if(!lib){notif("Saisir le libellé");return;}
+    PIECES.push({dossier:document.getElementById("mp2-dossier").value,client:document.getElementById("mp2-client").value,lib:lib,type:document.getElementById("mp2-type").value,echeance:document.getElementById("mp2-echeance").value,date:new Date().toLocaleDateString("fr-FR")});
+    closeM();notif("Pièce ajoutée");goTo("pieces");
   }
   else if(a==="save-lcb"){
     var cl=document.getElementById("ml-client").value;
@@ -827,6 +905,35 @@ function buildPrintFields(type, item){
   return html;
 }
 
+var timerInterval=null;
+var timerStart=null;
+var timerRunning=false;
+var timerSeconds=0;
+
+function startTimer(){
+  if(timerRunning) return;
+  timerRunning=true;
+  timerStart=Date.now()-timerSeconds*1000;
+  timerInterval=setInterval(function(){
+    timerSeconds=Math.floor((Date.now()-timerStart)/1000);
+    var el=document.getElementById("timer-display");
+    if(el){var m=Math.floor(timerSeconds/60);var s=timerSeconds%60;el.textContent=(m<10?"0"+m:m)+":"+(s<10?"0"+s:s);}
+  },1000);
+  var btn=document.getElementById("timer-btn");
+  if(btn){btn.textContent="⏹ Arrêter";btn.setAttribute("data-action","stop-timer");}
+  notif("Chronomètre démarré");
+}
+
+function stopTimer(){
+  if(!timerRunning) return;
+  clearInterval(timerInterval);
+  timerRunning=false;
+  var mins=Math.round(timerSeconds/60);
+  document.getElementById("mt-duree").value=mins;
+  openM("m-temps");
+  notif("Temps enregistré : "+mins+" minutes");
+}
+
 function toggleMenu(){
   var s=document.getElementById("sidebar");
   var o=document.getElementById("overlay");
@@ -857,6 +964,87 @@ function doPrint(){
       if(was !== null) d.style.display = was;
     });
   }, 1000);
+}
+
+
+// ── PAGE ANALYTIQUE ──
+function pAnalytique(){
+  var totalDos=DOS.length;
+  var dosEnCours=DOS.filter(function(d){return d.statut==="En cours";}).length;
+  var dosClot=DOS.filter(function(d){return d.statut==="Clôturé";}).length;
+  var totalHon=HON.reduce(function(s,h){return s+parseInt((h.montant||"").replace(/[^0-9]/g,"")||0);},0);
+  var honPaye=HON.filter(function(h){return h.statut==="Payé";}).reduce(function(s,h){return s+parseInt((h.montant||"").replace(/[^0-9]/g,"")||0);},0);
+  var honAttente=HON.filter(function(h){return h.statut!=="Payé";}).reduce(function(s,h){return s+parseInt((h.montant||"").replace(/[^0-9]/g,"")||0);},0);
+  var txRecouvrement=totalHon?Math.round(honPaye/totalHon*100):0;
+  var totalTemps=TEMPS.reduce(function(s,t){return s+t.montant;},0);
+  var totalProc=PROC.length;
+  var procUrgentes=PROC.filter(function(p){return p.statut==="Urgent";}).length;
+
+  // Dossiers par type
+  var nbAv=DOS.filter(function(d){return d.type==="Avocat";}).length;
+  var nbNo=DOS.filter(function(d){return d.type==="Notaire";}).length;
+
+  // Dossiers par matière
+  var matieres={};
+  DOS.forEach(function(d){matieres[d.matiere]=(matieres[d.matiere]||0)+1;});
+  var matList=Object.keys(matieres).map(function(k){return {k:k,v:matieres[k]};}).sort(function(a,b){return b.v-a.v;}).slice(0,5);
+
+  // Honoraires par collaborateur
+  var byAvoc={};
+  HON.forEach(function(h){
+    var dos=DOS.find(function(d){return d.id===h.dossier;});
+    var av=dos?dos.avocat:"Autre";
+    byAvoc[av]=(byAvoc[av]||0)+parseInt((h.montant||"").replace(/[^0-9]/g,"")||0);
+  });
+  var avList=Object.keys(byAvoc).map(function(k){return {k:k,v:byAvoc[k]};}).sort(function(a,b){return b.v-a.v;});
+
+  var matRows=matList.length?matList.map(function(m){
+    var pct=totalDos?Math.round(m.v/totalDos*100):0;
+    return "<div style='margin-bottom:12px'><div class='f jb ac' style='margin-bottom:4px'><span style='font-size:13px;color:#c8bfb0'>"+m.k+"</span><span class='mono'>"+m.v+" dossier"+(m.v>1?"s":"")+" ("+pct+"%)</span></div><div class='pb'><div class='pbb' style='width:"+pct+"%'></div></div></div>";
+  }).join(""):'<div style="text-align:center;padding:20px;color:#4a4238;font-family:Cinzel,serif;font-size:11px">Aucun dossier enregistré</div>';
+
+  var avRows=avList.length?avList.map(function(a){
+    var pct=totalHon?Math.round(a.v/totalHon*100):0;
+    return "<div style='margin-bottom:12px'><div class='f jb ac' style='margin-bottom:4px'><span style='font-size:13px;color:#c8bfb0'>"+a.k+"</span><span class='mono'>"+a.v.toLocaleString("fr-FR")+" MAD</span></div><div class='pb'><div class='pbb' style='width:"+pct+"%'></div></div></div>";
+  }).join(""):'<div style="text-align:center;padding:20px;color:#4a4238;font-family:Cinzel,serif;font-size:11px">Aucune donnée de facturation</div>';
+
+  return "<div class='g4'><div class='sc'><div class='sv' style='color:#d4b896'>"+totalDos+"</div><div class='sl'>Total dossiers</div><div class='ss'>"+dosEnCours+" en cours · "+dosClot+" clôturés</div></div><div class='sc'><div class='sv' style='color:#4ade80'>"+txRecouvrement+"%</div><div class='sl'>Taux de recouvrement</div><div class='ss'>"+honPaye.toLocaleString('fr-FR')+" MAD encaissés</div></div><div class='sc'><div class='sv' style='color:#fbbf24'>"+honAttente.toLocaleString('fr-FR')+" MAD</div><div class='sl'>Honoraires en attente</div><div class='ss'>"+HON.filter(function(h){return h.statut!=='Payé';}).length+" factures</div></div><div class='sc'><div class='sv' style='color:#60a5fa'>"+totalTemps.toLocaleString('fr-FR')+" MAD</div><div class='sl'>Revenus temps saisi</div><div class='ss'>"+TEMPS.length+" saisies</div></div></div><div class='g2e'><div class='card'><div class='stitle'>Dossiers par matière</div>"+matRows+"</div><div class='card'><div class='stitle'>Honoraires par professionnel</div>"+avRows+"</div></div><div class='g3'><div class='sc'><div style='font-size:11px;color:#8b7355;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.08em'>Avocat</div><div class='sv' style='color:#60a5fa'>"+nbAv+"</div><div class='sl'>Dossiers</div></div><div class='sc'><div style='font-size:11px;color:#8b7355;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.08em'>Notaire</div><div class='sv' style='color:#d4b896'>"+nbNo+"</div><div class='sl'>Dossiers</div></div><div class='sc'><div style='font-size:11px;color:#8b7355;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.08em'>Procédures</div><div class='sv' style='color:#f87171'>"+procUrgentes+"</div><div class='sl'>Urgentes / "+totalProc+" total</div></div></div>";
+}
+
+// ── PAGE TEMPS ──
+function pTemps(){
+  var totalMin=TEMPS.reduce(function(s,t){return s+t.duree;},0);
+  var totalMad=TEMPS.reduce(function(s,t){return s+t.montant;},0);
+  var rows=TEMPS.length?TEMPS.map(function(t,i){
+    return "<tr><td class='mono' style='color:#5a5248'>"+t.date+"</td><td style='color:#e8e0d0'>"+t.dossier+"</td><td>"+t.client+"</td><td style='font-size:13px;color:#c8bfb0'>"+t.desc+"</td><td class='mono' style='color:#60a5fa'>"+t.duree+" min</td><td class='mono' style='color:#d4b896'>"+t.montant.toLocaleString('fr-FR')+" MAD</td><td><button class='btn-xs btn-del' data-action='delete-temps' data-idx='"+i+"'>🗑</button></td></tr>";
+  }).join(""):"<tr><td colspan='7' style='text-align:center;padding:40px;color:#4a4238;font-family:Cinzel,serif;font-size:11px;letter-spacing:.08em'>Aucune saisie de temps — Cliquez sur + Nouvelle saisie</td></tr>";
+
+  var timerHtml="<div class='card' style='margin-bottom:16px'><div class='stitle'>Chronomètre</div><div class='f ac gap14'><div id='timer-display' style='font-family:Courier New;font-size:36px;color:#d4b896;min-width:100px'>00:00</div><div class='f fc gap8'><button class='btn bg' id='timer-btn' data-action='start-timer'>▶ Démarrer</button><div style='font-size:11px;color:#5a5248;font-family:Cinzel,serif'>Le temps s arrête et ouvre le formulaire</div></div></div></div>";
+
+  return timerHtml+"<div class='g3'><div class='sc'><div class='sv' style='color:#60a5fa'>"+Math.round(totalMin/60*10)/10+"h</div><div class='sl'>Temps total saisi</div></div><div class='sc'><div class='sv' style='color:#4ade80'>"+totalMad.toLocaleString('fr-FR')+" MAD</div><div class='sl'>Revenus générés</div></div><div class='sc'><div class='sv' style='color:#d4b896'>"+TEMPS.length+"</div><div class='sl'>Saisies de temps</div></div></div><div class='card'><div class='f jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Registre du temps</div><button class='btn bg' data-action='new-temps'>+ Nouvelle saisie</button></div><table><thead><tr><th>Date</th><th>Dossier</th><th>Client</th><th>Description</th><th>Durée</th><th>Montant</th><th></th></tr></thead><tbody>"+rows+"</tbody></table></div>";
+}
+
+// ── PAGE NOTES ──
+function pNotes(){
+  var prioCols={"Urgente":"#f87171","Normale":"#d4b896","Information":"#60a5fa"};
+  var cards=NOTES.length?NOTES.map(function(n,i){
+    var col=prioCols[n.prio]||"#d4b896";
+    return "<div class='card' style='border-left:3px solid "+col+";position:relative'><div class='f jb ac' style='margin-bottom:8px'><div style='font-family:Cinzel,serif;font-size:13px;color:#e8e0d0'>"+n.titre+"</div><div class='f ac gap8'><span class='badge' style='border-color:"+col+";color:"+col+";background:rgba(0,0,0,.2)'>"+n.prio+"</span><button class='btn-xs btn-del' data-action='delete-note' data-idx='"+i+"'>🗑</button></div></div>"+( n.dossier?"<div class='mono' style='margin-bottom:8px'>"+n.dossier+"</div>":"")+"<div style='font-size:13px;color:#9a8f7e;line-height:1.6'>"+( n.contenu||"<em>Aucun contenu</em>")+"</div><div style='font-size:10px;color:#4a4238;margin-top:10px;font-family:Cinzel,serif'>"+n.date+"</div></div>";
+  }).join(""):"<div class='card' style='text-align:center;padding:40px;color:#4a4238;font-family:Cinzel,serif;font-size:12px;letter-spacing:.08em'>Aucune note — Cliquez sur + Nouvelle note pour commencer</div>";
+
+  return "<div class='f jb ac' style='margin-bottom:16px'><div class='f gap8 ac'><span class='badge bec'>"+NOTES.filter(function(n){return n.prio==="Urgente";}).length+" urgente(s)</span><span class='badge bat'>"+NOTES.length+" total</span></div><button class='btn bg' data-action='new-note'>+ Nouvelle note</button></div><div style='display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px'>"+cards+"</div>";
+}
+
+// ── PAGE PIECES ──
+function pPieces(){
+  var aRecevoir=PIECES.filter(function(p){return p.type==="À recevoir";}).length;
+  var recus=PIECES.filter(function(p){return p.type==="Reçu";}).length;
+  var rows=PIECES.length?PIECES.map(function(p,i){
+    var overdue=p.echeance&&new Date(p.echeance)<new Date()&&p.type==="À recevoir";
+    return "<tr><td class='mono' style='color:#5a5248'>"+( p.dossier||"—")+"</td><td style='color:#e8e0d0'>"+( p.client||"—")+"</td><td style='color:#c8bfb0'>"+p.lib+"</td><td>"+sb(p.type)+"</td><td class='mono' style='color:"+( overdue?"#f87171":"#5a5248")+"'>"+( p.echeance||"—")+"</td><td class='mono' style='color:#5a5248'>"+p.date+"</td><td><div class='action-btns'><button class='btn-xs btn-edit' data-action='toggle-piece' data-idx='"+i+"'>"+( p.type==="Reçu"?"↩":"✓")+"</button><button class='btn-xs btn-del' data-action='delete-piece' data-idx='"+i+"'>🗑</button></div></td></tr>";
+  }).join(""):"<tr><td colspan='7' style='text-align:center;padding:40px;color:#4a4238;font-family:Cinzel,serif;font-size:11px;letter-spacing:.08em'>Aucune pièce — Cliquez sur + Ajouter une pièce</td></tr>";
+
+  return "<div class='g3'><div class='sc'><div class='sv' style='color:#fbbf24'>"+aRecevoir+"</div><div class='sl'>À recevoir</div></div><div class='sc'><div class='sv' style='color:#4ade80'>"+recus+"</div><div class='sl'>Reçues</div></div><div class='sc'><div class='sv' style='color:#d4b896'>"+PIECES.length+"</div><div class='sl'>Total</div></div></div><div class='card'><div class='f jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Suivi des pièces justificatives</div><button class='btn bg' data-action='new-piece'>+ Ajouter une pièce</button></div><table><thead><tr><th>Dossier</th><th>Client</th><th>Document</th><th>Statut</th><th>Échéance</th><th>Ajouté le</th><th></th></tr></thead><tbody>"+rows+"</tbody></table></div>";
 }
 
 window.addEventListener("load",function(){buildNav();goTo("dashboard");});
