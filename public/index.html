@@ -248,6 +248,34 @@ select option{background:#1a1a1e}
 
 <!-- MODALS -->
 
+<!-- MODAL CONVENTION -->
+<div class="modal-bg" id="m-convention">
+  <div class="modal">
+    <h3>NOUVELLE CONVENTION D HONORAIRES</h3>
+    <label>Client</label><input id="cv-client" placeholder="Nom complet du client"/>
+    <label>Type de mission</label><select id="cv-mission"><option>Conseil juridique</option><option>Représentation judiciaire</option><option>Rédaction acte</option><option>Négociation</option><option>Autre</option></select>
+    <label>Matière</label><input id="cv-matiere" placeholder="Ex: Droit commercial, Succession..."/>
+    <label>Honoraires forfaitaires (MAD)</label><input id="cv-forfait" type="number" placeholder="Ex: 15000"/>
+    <label>Taux horaire (MAD/h)</label><input id="cv-taux" type="number" placeholder="Ex: 1500"/>
+    <label>Provision à verser (MAD)</label><input id="cv-provision" type="number" placeholder="Ex: 5000"/>
+    <label>Professionnel responsable</label><select id="cv-avocat"><option>Me. Alami</option><option>Me. Berrada</option><option>Me. Idrissi</option><option>Me. Lahlou</option></select>
+    <div class="modal-btns"><button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" data-action="save-convention">Générer</button></div>
+  </div>
+</div>
+
+<!-- MODAL TRESORERIE -->
+<div class="modal-bg" id="m-treso">
+  <div class="modal">
+    <h3>NOUVEAU MOUVEMENT</h3>
+    <label>Type</label><select id="tr-type"><option>Entrée</option><option>Sortie</option></select>
+    <label>Libellé</label><input id="tr-lib" placeholder="Ex: Honoraires Benali, Loyer..."/>
+    <label>Montant (MAD)</label><input id="tr-montant" type="number" placeholder="Ex: 15000"/>
+    <label>Catégorie</label><select id="tr-cat"><option>Honoraires</option><option>Provision</option><option>Remboursement</option><option>Loyer</option><option>Charges</option><option>Salaires</option><option>Autre</option></select>
+    <label>Date</label><input id="tr-date" type="date"/>
+    <div class="modal-btns"><button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" data-action="save-treso">Enregistrer</button></div>
+  </div>
+</div>
+
 <!-- MODAL NOTE -->
 <div class="modal-bg" id="m-note">
   <div class="modal">
@@ -401,7 +429,12 @@ var MODS=[
   {id:"analytique",label:"Analytique et KPIs",icon:"📈",grp:"Analyse"},
   {id:"temps",label:"Temps et Facturation",icon:"⏱",grp:"Analyse"},
   {id:"notes",label:"Notes et Mémos",icon:"📝",grp:"Analyse"},
-  {id:"pieces",label:"Pièces justificatives",icon:"📎",grp:"Analyse"}
+  {id:"pieces",label:"Pièces justificatives",icon:"📎",grp:"Analyse"},
+  {id:"modeles",label:"Modèles de documents",icon:"📋",grp:"Documents"},
+  {id:"conventions",label:"Devis et Conventions",icon:"🤝",grp:"Documents"},
+  {id:"delais",label:"Délais légaux",icon:"⏳",grp:"Documents"},
+  {id:"tresorerie",label:"Tableau de trésorerie",icon:"💳",grp:"Documents"},
+  {id:"emoluments",label:"Émoluments notariaux",icon:"⚖",grp:"Documents"}
 ];
 
 var DOS=[];
@@ -446,6 +479,9 @@ var PREVISIONNEL=[];
 var NOTES=[];
 var TEMPS=[];
 var PIECES=[];
+var CONVENTIONS=[];
+var TRESORERIE_ENT=[];
+var TRESORERIE_SOR=[];
 
 function bd(t,c){return '<span class="badge '+c+'">'+t+'</span>';}
 function sb(s){
@@ -489,7 +525,7 @@ function goTo(id){
     dashboard:pDash,clients:pClients,agenda:pAgenda,actes:pActes,
     honoraires:pHon,procedures:pProc,bibliotheque:pBib,
     collaborateurs:pCollab,comptabilite:pCompta,conformite:pConf,portail:pPortail,
-    analytique:pAnalytique,temps:pTemps,notes:pNotes,pieces:pPieces
+    analytique:pAnalytique,temps:pTemps,notes:pNotes,pieces:pPieces,modeles:pModeles,conventions:pConventions,delais:pDelais,tresorerie:pTresorerie,emoluments:pEmoluments
   };
   if(pages[id])c.innerHTML=pages[id]();
 }
@@ -621,6 +657,50 @@ document.addEventListener("click",function(e){
     if(!lb||!mt){notif("Saisir libellé et montant");return;}
     CHG.push({lib:lb,montant:parseInt(mt),cat:document.getElementById("mch-cat").value,per:document.getElementById("mch-per").value,statut:"En attente"});
     closeM();notif("Charge enregistrée");goTo("comptabilite");
+  }
+  else if(a==="save-convention"){
+    var cl=document.getElementById("cv-client").value;
+    if(!cl){notif("Saisir le nom du client");return;}
+    var conv={
+      ref:"CONV-"+String(CONVENTIONS.length+1).padStart(3,"0"),
+      client:cl,mission:document.getElementById("cv-mission").value,
+      matiere:document.getElementById("cv-matiere").value,
+      forfait:parseInt(document.getElementById("cv-forfait").value)||0,
+      taux:parseInt(document.getElementById("cv-taux").value)||0,
+      provision:parseInt(document.getElementById("cv-provision").value)||0,
+      avocat:document.getElementById("cv-avocat").value,
+      date:new Date().toLocaleDateString("fr-FR"),statut:"En attente signature"
+    };
+    CONVENTIONS.push(conv);
+    closeM();notif("Convention "+conv.ref+" générée");goTo("conventions");
+  }
+  else if(a==="save-treso"){
+    var lib=document.getElementById("tr-lib").value;
+    var mt=parseInt(document.getElementById("tr-montant").value)||0;
+    if(!lib||!mt){notif("Saisir libellé et montant");return;}
+    var mv={lib:lib,montant:mt,cat:document.getElementById("tr-cat").value,date:document.getElementById("tr-date").value||new Date().toLocaleDateString("fr-FR"),type:document.getElementById("tr-type").value};
+    if(mv.type==="Entrée")TRESORERIE_ENT.push(mv);
+    else TRESORERIE_SOR.push(mv);
+    closeM();notif("Mouvement enregistré : "+mt.toLocaleString("fr-FR")+" MAD");goTo("tresorerie");
+  }
+  else if(a==="sign-convention"){
+    var i=parseInt(el.getAttribute("data-idx"));
+    if(CONVENTIONS[i])CONVENTIONS[i].statut="Signée";
+    notif("Convention signée");goTo("conventions");
+  }
+  else if(a==="print-convention"){
+    var i=parseInt(el.getAttribute("data-idx"));
+    printConvention(i);
+  }
+  else if(a==="del-convention"){
+    var i=parseInt(el.getAttribute("data-idx"));
+    CONVENTIONS.splice(i,1);notif("Convention supprimée");goTo("conventions");
+  }
+  else if(a==="del-treso"){
+    var i=parseInt(el.getAttribute("data-idx"));
+    var t=el.getAttribute("data-t");
+    if(t==="e")TRESORERIE_ENT.splice(i,1);else TRESORERIE_SOR.splice(i,1);
+    notif("Mouvement supprimé");goTo("tresorerie");
   }
   else if(a==="save-note"){
     var t=document.getElementById("mn-titre").value;
@@ -906,6 +986,20 @@ function buildPrintFields(type, item){
   return html;
 }
 
+function printConvention(idx){
+  var cv=CONVENTIONS[idx];if(!cv)return;
+  var w=window.open("","_blank","width=850,height=750");
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Convention — '+cv.client+'</title><style>body{font-family:Georgia,serif;padding:20mm;color:#111;max-width:185mm;margin:0 auto}h1{font-size:16pt;text-align:center;letter-spacing:.08em;margin-bottom:4px}h2{font-size:11pt;text-align:center;color:#555;font-weight:normal;margin-bottom:24px}hr{border:none;border-top:2px solid #8b7355;margin:16px 0}.section{margin-bottom:18px}.section h3{font-size:11pt;text-transform:uppercase;letter-spacing:.06em;color:#333;border-bottom:1px solid #ccc;padding-bottom:4px;margin-bottom:10px}.row{display:flex;justify-content:space-between;margin-bottom:6px;font-size:11pt}.label{color:#555;min-width:180px}.val{font-weight:bold}.total-box{background:#f5f5f5;border:2px solid #8b7355;border-radius:4px;padding:16px;text-align:center;margin:20px 0}.total-box .amount{font-size:22pt;font-weight:bold;color:#8b7355}.sig{display:flex;justify-content:space-between;margin-top:40px}.sig-box{text-align:center;width:45%}.sig-line{border-top:1px solid #333;margin-top:60px;padding-top:6px;font-size:9pt;color:#555}.footer{margin-top:30px;font-size:8pt;color:#999;text-align:center;border-top:1px solid #eee;padding-top:10px}@page{size:A4;margin:15mm 12mm}</style></head><body>');
+  w.document.write('<h1>CABINET ALAMI &amp; ASSOCIÉS</h1><h2>CONVENTION D&apos;HONORAIRES</h2><hr>');
+  w.document.write('<div class="section"><h3>Parties</h3><div class="row"><span class="label">Client</span><span class="val">'+cv.client+'</span></div><div class="row"><span class="label">Professionnel</span><span class="val">'+cv.avocat+'</span></div><div class="row"><span class="label">Date</span><span class="val">'+cv.date+'</span></div><div class="row"><span class="label">Référence</span><span class="val">'+cv.ref+'</span></div></div>');
+  w.document.write('<div class="section"><h3>Objet de la mission</h3><div class="row"><span class="label">Type de mission</span><span class="val">'+cv.mission+'</span></div><div class="row"><span class="label">Matière juridique</span><span class="val">'+( cv.matiere||"—")+'</span></div></div>');
+  w.document.write('<div class="section"><h3>Honoraires</h3>'+( cv.forfait?'<div class="row"><span class="label">Honoraires forfaitaires</span><span class="val">'+cv.forfait.toLocaleString("fr-FR")+' MAD HT</span></div>':"")+( cv.taux?'<div class="row"><span class="label">Taux horaire</span><span class="val">'+cv.taux.toLocaleString("fr-FR")+' MAD/h HT</span></div>':"")+'<div class="row"><span class="label">Provision initiale</span><span class="val">'+cv.provision.toLocaleString("fr-FR")+' MAD</span></div></div>');
+  w.document.write('<div class="total-box"><div style="font-size:10pt;color:#555;margin-bottom:4px">PROVISION À VERSER À LA SIGNATURE</div><div class="amount">'+cv.provision.toLocaleString("fr-FR")+' MAD</div></div>');
+  w.document.write('<div class="sig"><div class="sig-box"><div class="sig-line">Le Client<br>'+cv.client+'</div></div><div class="sig-box"><div class="sig-line">L&apos;Avocat<br>'+cv.avocat+'</div></div></div>');
+  w.document.write('<div class="footer">Cabinet Alami &amp; Associés · Casablanca · Barreau de Casablanca · Imprimé le '+new Date().toLocaleDateString("fr-FR")+'</div></body></html>');
+  w.document.close();setTimeout(function(){w.print();},600);
+}
+
 var timerInterval=null;
 var timerStart=null;
 var timerRunning=false;
@@ -1046,6 +1140,151 @@ function pPieces(){
   }).join(""):"<tr><td colspan='7' style='text-align:center;padding:40px;color:#4a4238;font-family:Cinzel,serif;font-size:11px;letter-spacing:.08em'>Aucune pièce — Cliquez sur + Ajouter une pièce</td></tr>";
 
   return "<div class='g3'><div class='sc'><div class='sv' style='color:#fbbf24'>"+aRecevoir+"</div><div class='sl'>À recevoir</div></div><div class='sc'><div class='sv' style='color:#4ade80'>"+recus+"</div><div class='sl'>Reçues</div></div><div class='sc'><div class='sv' style='color:#d4b896'>"+PIECES.length+"</div><div class='sl'>Total</div></div></div><div class='card'><div class='f jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Suivi des pièces justificatives</div><button class='btn bg' data-action='new-piece'>+ Ajouter une pièce</button></div><table><thead><tr><th>Dossier</th><th>Client</th><th>Document</th><th>Statut</th><th>Échéance</th><th>Ajouté le</th><th></th></tr></thead><tbody>"+rows+"</tbody></table></div>";
+}
+
+
+// ── PAGE MODELES ──
+function pModeles(){
+  var today=new Date().toLocaleDateString("fr-FR");
+  var MODELES_LIST=[
+    {cat:"Avocat",titre:"Mise en demeure",desc:"Lettre formelle avant action en justice",icone:"📬",
+     contenu:"MISE EN DEMEURE\n\nCasablanca, le "+today+"\n\nMadame, Monsieur,\n\nNous vous mettons en demeure de procéder à [OBJET] dans un délai de 15 jours.\n\nÀ défaut, toutes poursuites judiciaires seront engagées.\n\nCordialement,\nCabinet Alami & Associés"},
+    {cat:"Avocat",titre:"Conclusions en réponse",desc:"Modèle de conclusions devant le TPI",icone:"📄",
+     contenu:"CONCLUSIONS EN RÉPONSE\n\nAu nom de [CLIENT],\n\nI. EN FAIT\n[Exposé des faits]\n\nII. EN DROIT\n[Argumentation juridique]\n\nPAR CES MOTIFS\nPlaise au Tribunal de :\n- Déclarer recevable la demande\n- Débouter la partie adverse\n\nSous toutes réserves."},
+    {cat:"Avocat",titre:"Protocole transactionnel",desc:"Accord amiable entre parties",icone:"🤝",
+     contenu:"PROTOCOLE D ACCORD TRANSACTIONNEL\n\nEntre :\n1. [PARTIE A]\n2. [PARTIE B]\n\nArticle 1 - Objet : [Objet]\nArticle 2 - Engagements : [Engagements]\nArticle 3 - Règlement : [Modalités]\n\nFait à Casablanca, le "+today},
+    {cat:"Notaire",titre:"Procuration notariée",desc:"Mandat général ou spécial",icone:"✍",
+     contenu:"PROCURATION\n\nPar-devant Maître [Nom du Notaire], Notaire à Casablanca,\n\nA comparu : [MANDANT]\n\nLequel a constitué pour son mandataire : [MANDATAIRE]\n\nAuquel il donne pouvoir de [OBJET]\n\nValable jusqu au [DATE]\n\nFait à Casablanca, le "+today},
+    {cat:"Notaire",titre:"Promesse de vente immobilière",desc:"Avant-contrat de vente d un bien immobilier",icone:"🏠",
+     contenu:"PROMESSE DE VENTE\n\nVENDEUR : [Nom, CIN, adresse]\nACQUÉREUR : [Nom, CIN, adresse]\n\nBIEN : [Description, titre foncier n°]\n\nPRIX : [MONTANT] MAD\n\nCONDITIONS : [Conditions suspensives]\n\nRÉITÉRATION : [DATE]\n\nFait à Casablanca, le "+today},
+    {cat:"Général",titre:"Courrier de relance",desc:"Relance amiable pour facture impayée",icone:"💌",
+     contenu:"RELANCE AMIABLE\n\nCasablanca, le "+today+"\n\nObjet : Règlement facture n° [NUMERO]\n\nMadame, Monsieur,\n\nLa facture n° [NUMERO] de [MONTANT] MAD reste impayée.\n\nMerci de procéder au règlement dans les meilleurs délais.\n\nCordialement,\nCabinet Alami & Associés"},
+  ];
+  window._MODELES_LIST=MODELES_LIST;
+  var cards=MODELES_LIST.map(function(m,i){
+    return "<div class=\'card\'><div class=\'f jb ac\' style=\'margin-bottom:10px\'><div style=\'font-size:22px\'>"+m.icone+"</div><span class=\'badge "+(m.cat==="Avocat"?"bav":m.cat==="Notaire"?"bno":"bat")+"\'>"+m.cat+"</span></div><div style=\'font-family:Cinzel,serif;font-size:13px;color:#d4b896;margin-bottom:6px\'>"+m.titre+"</div><div style=\'font-size:12px;color:#6a6058;margin-bottom:14px;line-height:1.5\'>"+m.desc+"</div><button class=\'btn bg\' style=\'width:100%;font-size:11px\' onclick=\'printModele("+i+")\'>🖨 Générer et imprimer</button></div>";
+  }).join("");
+  return "<div style=\'margin-bottom:16px\'><div style=\'font-family:Cinzel,serif;font-size:11px;color:#8b7355;letter-spacing:.1em;text-transform:uppercase\'>"+MODELES_LIST.length+" modèles disponibles</div></div><div style=\'display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px\'>"+cards+"</div>";
+}
+
+function printModele(i){
+  var m=window._MODELES_LIST[i];if(!m)return;
+  var w=window.open("","_blank","width=850,height=700");
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+m.titre+'</title><style>body{font-family:Georgia,serif;padding:20mm;color:#111;max-width:185mm;margin:0 auto;white-space:pre-wrap;line-height:1.8}h1{font-size:14pt;text-align:center;letter-spacing:.08em;border-bottom:2px solid #8b7355;padding-bottom:8px;margin-bottom:20px}h2{font-size:12pt;text-align:center;color:#555;margin-bottom:24px}.footer{margin-top:30px;font-size:8pt;color:#999;text-align:center;border-top:1px solid #eee;padding-top:10px}@page{size:A4;margin:15mm 12mm}</style></head><body>');
+  w.document.write('<h1>CABINET ALAMI &amp; ASSOCIÉS</h1><h2>'+m.titre.toUpperCase()+'</h2>');
+  w.document.write("<pre style=\'white-space:pre-wrap;font-family:Georgia,serif;font-size:11pt;line-height:1.8\'>"+( typeof m.contenu==="function"?m.contenu():m.contenu)+"</pre>");
+  w.document.write('<div class="footer">Cabinet Alami &amp; Associés · Casablanca · Barreau de Casablanca</div></body></html>');
+  w.document.close();setTimeout(function(){w.print();},600);
+}
+
+// ── PAGE CONVENTIONS ──
+function pConventions(){
+  var rows=CONVENTIONS.length?CONVENTIONS.map(function(cv,i){
+    var hon=cv.forfait?cv.forfait.toLocaleString("fr-FR")+" MAD":cv.taux?cv.taux.toLocaleString("fr-FR")+" MAD/h":"—";
+    return "<tr><td class='mono' style='color:#8b7355'>"+cv.ref+"</td><td style='color:#e8e0d0'>"+cv.client+"</td><td style='font-size:12px'>"+cv.mission+"</td><td style='font-family:Courier New;color:#d4b896'>"+hon+"</td><td style='font-family:Courier New;color:#4ade80'>"+cv.provision.toLocaleString("fr-FR")+" MAD</td><td>"+sb(cv.statut)+"</td><td style='font-size:11px;color:#5a5248'>"+cv.date+"</td><td><div class='action-btns'><button class='btn-xs btn-print' data-action='print-convention' data-idx='"+i+"'>🖨</button><button class='btn-xs btn-edit' data-action='sign-convention' data-idx='"+i+"'>✓</button><button class='btn-xs btn-del' data-action='del-convention' data-idx='"+i+"'>🗑</button></div></td></tr>";
+  }).join(""):"<tr><td colspan='8' style='text-align:center;padding:40px;color:#4a4238;font-family:Cinzel,serif;font-size:11px'>Aucune convention — Cliquez sur + Nouvelle convention</td></tr>";
+  var totalProv=CONVENTIONS.reduce(function(s,cv){return s+cv.provision;},0);
+  var nbSign=CONVENTIONS.filter(function(cv){return cv.statut==="Signée";}).length;
+  return "<div class='g3'><div class='sc'><div class='sv' style='color:#d4b896'>"+CONVENTIONS.length+"</div><div class='sl'>Conventions</div></div><div class='sc'><div class='sv' style='color:#4ade80'>"+nbSign+"</div><div class='sl'>Signées</div></div><div class='sc'><div class='sv' style='color:#60a5fa'>"+totalProv.toLocaleString("fr-FR")+" MAD</div><div class='sl'>Provisions totales</div></div></div><div class='card'><div class='f jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Conventions d honoraires</div><button class='btn bg' data-action='new-convention'>+ Nouvelle convention</button></div><table><thead><tr><th>Réf.</th><th>Client</th><th>Mission</th><th>Honoraires</th><th>Provision</th><th>Statut</th><th>Date</th><th></th></tr></thead><tbody>"+rows+"</tbody></table></div>";
+}
+
+// ── PAGE DELAIS ──
+function pDelais(){
+  var DELAIS=[
+    {cat:"Procédure civile",lib:"Appel jugement TPI",jours:30,base:"Art. 134 CPC"},
+    {cat:"Procédure civile",lib:"Pourvoi en cassation",jours:30,base:"Art. 358 CPC"},
+    {cat:"Procédure civile",lib:"Opposition jugement défaut",jours:15,base:"Art. 130 CPC"},
+    {cat:"Droit du travail",lib:"Recours prud homal",jours:90,base:"Art. 532 Code Travail"},
+    {cat:"Droit du travail",lib:"Appel jugement prud homal",jours:15,base:"Art. 541 Code Travail"},
+    {cat:"Prescription",lib:"Action personnelle (quinquennale)",jours:1825,base:"Art. 387 DOC"},
+    {cat:"Prescription",lib:"Créances salariales",jours:730,base:"Art. 396 Code Travail"},
+    {cat:"Droit immobilier",lib:"Droit de préemption",jours:30,base:"Dahir 1963"},
+    {cat:"Pénal",lib:"Appel correctionnel",jours:10,base:"Art. 387 CPP"},
+    {cat:"Pénal",lib:"Pourvoi en cassation pénal",jours:10,base:"Art. 521 CPP"},
+  ];
+  var cats=[...new Set(DELAIS.map(function(d){return d.cat;}))];
+  var calc="<div class='card' style='margin-bottom:16px'><div class='stitle'>Calculateur de délai</div><div class='f ac gap14' style='flex-wrap:wrap'><div><label style='display:block;font-size:10px;color:#8b7355;font-family:Cinzel,serif;text-transform:uppercase;margin-bottom:5px'>Date de départ</label><input type='date' id='delai-from' style='width:180px'/></div><div><label style='display:block;font-size:10px;color:#8b7355;font-family:Cinzel,serif;text-transform:uppercase;margin-bottom:5px'>Nombre de jours</label><input type='number' id='delai-nb' placeholder='Ex: 30' style='width:120px'/></div><button class='btn bg' onclick='calcDelai()'>Calculer</button><div id='delai-result' style='font-family:Cinzel,serif;color:#d4b896;font-size:14px;align-self:center'></div></div></div>";
+  var tables="";
+  cats.forEach(function(cat){
+    var items=DELAIS.filter(function(d){return d.cat===cat;});
+    var tbody=items.map(function(d){
+      var col=d.jours<=15?"#f87171":d.jours<=30?"#fbbf24":"#4ade80";
+      var aff=d.jours>=365?Math.round(d.jours/365)+" ans":d.jours+" jours";
+      return "<tr><td style='color:#e8e0d0'>"+d.lib+"</td><td style='font-family:Courier New;color:"+col+";font-weight:bold'>"+aff+"</td><td style='font-size:11px;color:#8b7355'>"+d.base+"</td><td><button class='btn-xs btn-view' onclick='calcFromToday("+d.jours+")'>→ Calculer</button></td></tr>";
+    }).join("");
+    tables+="<div class='card' style='margin-bottom:14px'><div class='stitle'>"+cat+"</div><table><thead><tr><th>Délai</th><th>Durée</th><th>Base légale</th><th></th></tr></thead><tbody>"+tbody+"</tbody></table></div>";
+  });
+  return calc+tables;
+}
+
+function calcDelai(){
+  var from=document.getElementById("delai-from").value;
+  var nb=parseInt(document.getElementById("delai-nb").value)||0;
+  if(!from||!nb){document.getElementById("delai-result").textContent="Saisir date et nombre de jours";return;}
+  var d=new Date(from);d.setDate(d.getDate()+nb);
+  document.getElementById("delai-result").textContent="→ Échéance : "+d.toLocaleDateString("fr-FR");
+}
+
+function calcFromToday(jours){
+  var d=new Date();d.setDate(d.getDate()+jours);
+  notif("Échéance dans "+jours+" jours : "+d.toLocaleDateString("fr-FR"));
+}
+
+// ── PAGE TRESORERIE ──
+function pTresorerie(){
+  var allMvt=[];
+  TRESORERIE_ENT.forEach(function(m,i){allMvt.push({lib:m.lib,montant:m.montant,cat:m.cat,date:m.date,type:"Entrée",idx:i,t:"e"});});
+  TRESORERIE_SOR.forEach(function(m,i){allMvt.push({lib:m.lib,montant:m.montant,cat:m.cat,date:m.date,type:"Sortie",idx:i,t:"s"});});
+  allMvt.sort(function(a,b){return (b.date||"").localeCompare(a.date||"");});
+  var totalEnt=TRESORERIE_ENT.reduce(function(s,m){return s+m.montant;},0);
+  var totalSor=TRESORERIE_SOR.reduce(function(s,m){return s+m.montant;},0);
+  var solde=totalEnt-totalSor;
+  var rows=allMvt.length?allMvt.map(function(m){
+    var isE=m.type==="Entrée";
+    return "<tr><td class='mono' style='color:#5a5248'>"+m.date+"</td><td style='color:#e8e0d0'>"+m.lib+"</td><td>"+bd(m.cat,"bat")+"</td><td style='font-family:Courier New;color:"+(isE?"#4ade80":"#f87171")+";font-weight:bold'>"+(isE?"+":"-")+m.montant.toLocaleString("fr-FR")+" MAD</td><td>"+sb(m.type)+"</td><td><button class='btn-xs btn-del' data-action='del-treso' data-idx='"+m.idx+"' data-t='"+m.t+"'>🗑</button></td></tr>";
+  }).join(""):"<tr><td colspan='6' style='text-align:center;padding:40px;color:#4a4238;font-family:Cinzel,serif;font-size:11px'>Aucun mouvement — Cliquez sur + Nouveau mouvement</td></tr>";
+  return "<div class='g4'><div class='sc'><div class='sv' style='color:#4ade80'>"+totalEnt.toLocaleString("fr-FR")+" MAD</div><div class='sl'>Total entrées</div></div><div class='sc'><div class='sv' style='color:#f87171'>"+totalSor.toLocaleString("fr-FR")+" MAD</div><div class='sl'>Total sorties</div></div><div class='sc'><div class='sv' style='color:"+(solde>=0?"#4ade80":"#f87171")+"'>"+(solde>=0?"+":"")+solde.toLocaleString("fr-FR")+" MAD</div><div class='sl'>Solde</div></div><div class='sc'><div class='sv' style='color:#d4b896'>"+allMvt.length+"</div><div class='sl'>Mouvements</div></div></div><div class='card'><div class='f jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Mouvements de trésorerie</div><button class='btn bg' data-action='new-treso'>+ Nouveau mouvement</button></div><table><thead><tr><th>Date</th><th>Libellé</th><th>Catégorie</th><th>Montant</th><th>Type</th><th></th></tr></thead><tbody>"+rows+"</tbody></table></div>";
+}
+
+// ── PAGE EMOLUMENTS ──
+function pEmoluments(){
+  var baremeRows="<tr><td style='color:#c8bfb0'>0 à 20 000 MAD</td><td style='font-family:Courier New;color:#d4b896;text-align:center'>1.50%</td></tr><tr><td style='color:#c8bfb0'>20 001 à 200 000 MAD</td><td style='font-family:Courier New;color:#d4b896;text-align:center'>1.25%</td></tr><tr><td style='color:#c8bfb0'>200 001 à 2 000 000 MAD</td><td style='font-family:Courier New;color:#d4b896;text-align:center'>1.00%</td></tr><tr><td style='color:#c8bfb0'>2 000 001 à 10 000 000 MAD</td><td style='font-family:Courier New;color:#d4b896;text-align:center'>0.50%</td></tr><tr><td style='color:#c8bfb0'>Au-delà de 10 000 000 MAD</td><td style='font-family:Courier New;color:#d4b896;text-align:center'>0.25%</td></tr>";
+  var actesRows="<tr><td style='color:#e8e0d0'>Vente immobilière</td><td style='font-size:11px;color:#5a5248'>Acte authentique de vente</td></tr><tr><td style='color:#e8e0d0'>Donation immobilière</td><td style='font-size:11px;color:#5a5248'>Acte de donation entre vifs</td></tr><tr><td style='color:#e8e0d0'>Partage successoral</td><td style='font-size:11px;color:#5a5248'>Acte de partage d une succession</td></tr><tr><td style='color:#e8e0d0'>Constitution de société</td><td style='font-size:11px;color:#5a5248'>Statuts notariés avec apports immobiliers</td></tr><tr><td style='color:#e8e0d0'>Hypothèque</td><td style='font-size:11px;color:#5a5248'>Constitution ou mainlevée</td></tr><tr><td style='color:#e8e0d0'>Bail emphytéotique</td><td style='font-size:11px;color:#5a5248'>Bail de longue durée sur immeuble</td></tr>";
+  return "<div class='card' style='margin-bottom:16px'><div class='stitle'>Calculateur d émoluments notariaux (Barème officiel Maroc)</div><div class='f ac gap14' style='flex-wrap:wrap;margin-bottom:16px'><div><label style='display:block;font-size:10px;color:#8b7355;font-family:Cinzel,serif;text-transform:uppercase;margin-bottom:5px'>Valeur de l acte (MAD)</label><input type='number' id='emo-valeur' placeholder='Ex: 500000' style='width:200px'/></div><div><label style='display:block;font-size:10px;color:#8b7355;font-family:Cinzel,serif;text-transform:uppercase;margin-bottom:5px'>Type d acte</label><select id='emo-type' style='width:220px'><option>Vente immobilière</option><option>Donation</option><option>Partage successoral</option><option>Constitution de société</option><option>Hypothèque</option></select></div><button class='btn bg' onclick='calcEmoluments()'>Calculer</button></div><div id='emo-result'></div></div><div class='g2e'><div class='card'><div class='stitle'>Barème officiel marocain</div><table><thead><tr><th>Tranche</th><th style='text-align:center'>Taux</th></tr></thead><tbody>"+baremeRows+"</tbody></table><div style='margin-top:10px;font-size:11px;color:#5a5248'>+ TVA 20% sur émoluments · + Droits d enregistrement variables</div></div><div class='card'><div class='stitle'>Actes concernés</div><table><thead><tr><th>Type d acte</th><th>Description</th></tr></thead><tbody>"+actesRows+"</tbody></table></div></div>";
+}
+
+function calcEmoluments(){
+  var val=parseFloat(document.getElementById("emo-valeur").value)||0;
+  if(!val){document.getElementById("emo-result").style.color="#f87171";document.getElementById("emo-result").textContent="Saisir une valeur";return;}
+  var emo=calcEmoHelper(val);
+  var tva=Math.round(emo*0.20);
+  emo=Math.round(emo);
+  var total=emo+tva;
+  var el=document.getElementById("emo-result");
+  el.innerHTML="";
+  var grid=document.createElement("div");
+  grid.style.cssText="display:grid;grid-template-columns:repeat(3,1fr);gap:10px";
+  [["Émoluments HT",emo,"#d4b896"],["TVA 20%",tva,"#fbbf24"],["Total TTC",total,"#4ade80"]].forEach(function(x){
+    var sc=document.createElement("div");sc.className="sc";
+    sc.innerHTML="<div class='sv' style='color:"+x[2]+";font-size:18px'>"+x[1].toLocaleString("fr-FR")+" MAD</div><div class='sl'>"+x[0]+"</div>";
+    grid.appendChild(sc);
+  });
+  el.appendChild(grid);
+}
+
+function calcEmoHelper(v){
+  if(v<=0)return 0;
+  var t=0;
+  if(v<=20000)return v*0.015;
+  t+=20000*0.015;
+  if(v<=200000){t+=(v-20000)*0.0125;return t;}
+  t+=180000*0.0125;
+  if(v<=2000000){t+=(v-200000)*0.01;return t;}
+  t+=1800000*0.01;
+  if(v<=10000000){t+=(v-2000000)*0.005;return t;}
+  t+=8000000*0.005;
+  t+=(v-10000000)*0.0025;
+  return t;
 }
 
 window.addEventListener("load",function(){buildNav();goTo("dashboard");});
