@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>LEXIA — Super Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Cormorant Garamond',Georgia,serif;background:#0a0a0c;color:#e8e0d0;min-height:100vh}
+.topbar{background:linear-gradient(135deg,#0d0d0f,#141416);border-bottom:1px solid rgba(251,191,36,.2);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.logo{font-family:'Cinzel',serif;font-size:18px;color:#fbbf24;letter-spacing:.15em;display:flex;align-items:center;gap:10px}
+.logo span{font-size:11px;color:#8b7355;letter-spacing:.08em;font-family:'Cormorant Garamond',serif}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.btn{padding:9px 18px;border-radius:7px;cursor:pointer;font-family:'Cinzel',serif;font-size:11px;border:none;letter-spacing:.06em;transition:all .2s}
+.btn-gold{background:linear-gradient(135deg,#8b7355,#a08060);color:#fff}
+.btn-gold:hover{background:linear-gradient(135deg,#9a8060,#b09070)}
+.btn-red{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.25)}
+.btn-red:hover{background:rgba(239,68,68,.25)}
+.btn-green{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.2)}
+.btn-green:hover{background:rgba(34,197,94,.2)}
+.btn-blue{background:rgba(96,165,250,.1);color:#60a5fa;border:1px solid rgba(96,165,250,.2)}
+.btn-blue:hover{background:rgba(96,165,250,.2)}
+.btn-purple{background:rgba(167,139,250,.1);color:#a78bfa;border:1px solid rgba(167,139,250,.2)}
+.btn-purple:hover{background:rgba(167,139,250,.2)}
+.btn-outline{background:transparent;color:#8b7355;border:1px solid rgba(139,115,85,.3)}
+.main{max-width:1200px;margin:0 auto;padding:28px 24px}
+.page-title{font-family:'Cinzel',serif;font-size:22px;color:#fbbf24;letter-spacing:.1em;margin-bottom:6px}
+.page-sub{font-size:13px;color:#5a5248;margin-bottom:28px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.stat-card{background:linear-gradient(135deg,#141416,#0f0f12);border:1px solid rgba(139,115,85,.2);border-radius:12px;padding:20px}
+.stat-card::before{content:'';display:block;width:32px;height:3px;border-radius:2px;margin-bottom:12px}
+.stat-card.gold::before{background:linear-gradient(90deg,#fbbf24,#d4b896)}
+.stat-card.green::before{background:linear-gradient(90deg,#4ade80,#22c55e)}
+.stat-card.red::before{background:linear-gradient(90deg,#f87171,#dc2626)}
+.stat-card.blue::before{background:linear-gradient(90deg,#60a5fa,#3b82f6)}
+.stat-val{font-family:'Cinzel',serif;font-size:28px;margin-bottom:4px}
+.stat-card.gold .stat-val{color:#fbbf24}
+.stat-card.green .stat-val{color:#4ade80}
+.stat-card.red .stat-val{color:#f87171}
+.stat-card.blue .stat-val{color:#60a5fa}
+.stat-lbl{font-size:11px;color:#6a6058;text-transform:uppercase;letter-spacing:.08em;font-family:'Cinzel',serif}
+.stat-sub{font-size:11px;color:#4a4238;margin-top:4px}
+.card{background:linear-gradient(135deg,#141416,#0f0f12);border:1px solid rgba(139,115,85,.18);border-radius:12px;padding:22px;margin-bottom:18px}
+.card h3{font-family:'Cinzel',serif;font-size:13px;color:#d4b896;letter-spacing:.1em;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(139,115,85,.15)}
+.tabs{display:flex;gap:4px;margin-bottom:22px;border-bottom:1px solid rgba(139,115,85,.15);padding-bottom:0}
+.tab{padding:10px 18px;border-radius:8px 8px 0 0;cursor:pointer;font-family:'Cinzel',serif;font-size:11px;color:#6a6058;border:1px solid transparent;border-bottom:none;transition:all .2s;margin-bottom:-1px;background:transparent}
+.tab.active{background:#141416;color:#fbbf24;border-color:rgba(139,115,85,.2);border-bottom-color:#141416}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:10px 14px;color:#8b7355;font-size:10px;font-family:'Cinzel',serif;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid rgba(139,115,85,.2)}
+td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle}
+tr:hover td{background:rgba(139,115,85,.04)}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-family:'Cinzel',serif}
+.badge-super{background:rgba(251,191,36,.12);color:#fbbf24;border:1px solid rgba(251,191,36,.25)}
+.badge-client{background:rgba(96,165,250,.1);color:#60a5fa;border:1px solid rgba(96,165,250,.2)}
+.badge-monthly{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.2)}
+.badge-yearly{background:rgba(139,115,85,.15);color:#d4b896;border:1px solid rgba(139,115,85,.3)}
+.badge-lifetime{background:rgba(167,139,250,.1);color:#a78bfa;border:1px solid rgba(167,139,250,.2)}
+.badge-expired{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.2)}
+.badge-none{background:rgba(255,255,255,.05);color:#6a6058;border:1px solid rgba(255,255,255,.08)}
+.actions-cell{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.key-box{background:rgba(0,0,0,.4);border:1px solid rgba(139,115,85,.2);border-radius:6px;padding:8px 12px;font-family:'Courier New';font-size:11px;color:#d4b896;word-break:break-all;margin-top:6px;cursor:pointer;transition:background .2s}
+.key-box:hover{background:rgba(139,115,85,.1)}
+.plan-selector{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.plan-card{border:2px solid rgba(139,115,85,.2);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;background:linear-gradient(135deg,#141416,#0f0f12)}
+.plan-card:hover,.plan-card.sel{border-color:#8b7355;background:rgba(139,115,85,.08)}
+.plan-card .price{font-family:'Cinzel',serif;font-size:20px;color:#d4b896;margin:8px 0 4px}
+.plan-card .plan-lbl{font-size:11px;color:#8b7355;font-family:'Cinzel',serif;text-transform:uppercase}
+.plan-card .plan-desc{font-size:11px;color:#4a4238;margin-top:3px}
+input,select{background:rgba(255,255,255,.04);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:7px;padding:9px 12px;font-family:'Cormorant Garamond',serif;font-size:14px;outline:none;width:100%;margin-bottom:10px}
+input:focus,select:focus{border-color:rgba(139,115,85,.5)}
+select option{background:#1a1a1e}
+.alert{padding:12px 16px;border-radius:8px;margin-bottom:16px;font-size:13px;display:none}
+.alert-ok{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.2)}
+.alert-err{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.2)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.section-label{font-family:'Cinzel',serif;font-size:10px;color:#8b7355;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;margin-top:6px}
+.empty{text-align:center;padding:40px;color:#4a4238;font-family:'Cinzel',serif;font-size:12px;letter-spacing:.08em}
+.loader{text-align:center;padding:30px;color:#8b7355;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.1em}
+.days-badge{font-size:10px;font-family:'Cinzel',serif;padding:3px 8px;border-radius:4px}
+.days-ok{color:#4ade80;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2)}
+.days-warn{color:#fbbf24;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.2)}
+.days-exp{color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2)}
+@media(max-width:768px){
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .form-row{grid-template-columns:1fr}
+  .plan-selector{grid-template-columns:1fr}
+  .actions-cell{flex-direction:column;align-items:flex-start}
+  .topbar{padding:12px 16px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">
+    <span style="font-size:22px">👑</span>
+    <div>
+      <div>LEXIA</div>
+      <span>SUPER ADMIN — CABINET JURIDIQUE MAROC</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span id="admin-name" style="font-size:12px;color:#8b7355;font-family:'Cinzel',serif"></span>
+    <a href="/" class="btn btn-outline">← Application</a>
+    <button onclick="doLogout()" class="btn btn-red">Déconnexion</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="page-title">👑 Panneau Super Admin</div>
+  <div class="page-sub" id="admin-date">Chargement...</div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="stat-card gold">
+      <div class="stat-val" id="s-total">—</div>
+      <div class="stat-lbl">Utilisateurs total</div>
+      <div class="stat-sub" id="s-actifs">—</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-val" id="s-actives">—</div>
+      <div class="stat-lbl">Licences actives</div>
+      <div class="stat-sub" id="s-lic-detail">—</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-val" id="s-expired">—</div>
+      <div class="stat-lbl">Licences expirées</div>
+      <div class="stat-sub">À renouveler</div>
+    </div>
+    <div class="stat-card blue">
+      <div class="stat-val" id="s-keys">—</div>
+      <div class="stat-lbl">Clés disponibles</div>
+      <div class="stat-sub">Non utilisées</div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('users')">👥 Utilisateurs</div>
+    <div class="tab" onclick="switchTab('licences')">🔑 Générer licences</div>
+    <div class="tab" onclick="switchTab('keys')">📋 Clés générées</div>
+    <div class="tab" onclick="switchTab('create')">➕ Créer compte</div>
+  </div>
+
+  <!-- TAB: USERS -->
+  <div id="tab-users" class="tab-panel active">
+    <div class="card">
+      <h3>GESTION DES UTILISATEURS</h3>
+      <div id="users-alert" class="alert"></div>
+      <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+        <input id="search-users" placeholder="Rechercher par nom ou email..." style="max-width:300px;margin:0" oninput="filterUsers()"/>
+        <button onclick="loadUsers()" class="btn btn-outline" style="white-space:nowrap">↺ Actualiser</button>
+      </div>
+      <div id="users-table"><div class="loader">Chargement des utilisateurs...</div></div>
+    </div>
+  </div>
+
+  <!-- TAB: LICENCES -->
+  <div id="tab-licences" class="tab-panel">
+    <div class="card">
+      <h3>GÉNÉRER DES CLÉS DE LICENCE</h3>
+      <div class="plan-selector">
+        <div class="plan-card sel" id="plan-monthly" onclick="selPlan('monthly')">
+          <div style="font-size:24px">📅</div>
+          <div class="price">249 MAD</div>
+          <div class="plan-lbl">30 jours</div>
+          <div class="plan-desc">Suffixe -30J</div>
+        </div>
+        <div class="plan-card" id="plan-yearly" onclick="selPlan('yearly')">
+          <div style="font-size:24px">📆</div>
+          <div class="price">2 490 MAD</div>
+          <div class="plan-lbl">1 an</div>
+          <div class="plan-desc">Suffixe -1AN</div>
+        </div>
+        <div class="plan-card" id="plan-lifetime" onclick="selPlan('lifetime')">
+          <div style="font-size:24px">♾</div>
+          <div class="price">8 490 MAD</div>
+          <div class="plan-lbl">À vie</div>
+          <div class="plan-desc">Suffixe -VIE</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <div>
+          <div class="section-label">Quantité à générer</div>
+          <input id="gen-count" type="number" value="1" min="1" max="20" style="width:100px;margin:0"/>
+        </div>
+        <button onclick="genLicences()" class="btn btn-gold" style="margin-top:22px">⚡ Générer</button>
+      </div>
+      <div id="gen-result" style="margin-top:16px"></div>
+    </div>
+  </div>
+
+  <!-- TAB: KEYS -->
+  <div id="tab-keys" class="tab-panel">
+    <div class="card">
+      <h3>TOUTES LES CLÉS GÉNÉRÉES</h3>
+      <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+        <select id="filter-keys" style="width:180px;margin:0" onchange="loadKeys()">
+          <option value="">Tous les plans</option>
+          <option value="monthly">30 jours</option>
+          <option value="yearly">1 an</option>
+          <option value="lifetime">À vie</option>
+        </select>
+        <select id="filter-used" style="width:180px;margin:0" onchange="loadKeys()">
+          <option value="">Toutes les clés</option>
+          <option value="available">Disponibles</option>
+          <option value="used">Utilisées</option>
+        </select>
+        <button onclick="loadKeys()" class="btn btn-outline">↺ Actualiser</button>
+      </div>
+      <div id="keys-table"><div class="loader">Chargement des clés...</div></div>
+    </div>
+  </div>
+
+  <!-- TAB: CREATE -->
+  <div id="tab-create" class="tab-panel">
+    <div class="card">
+      <h3>CRÉER UN COMPTE UTILISATEUR</h3>
+      <div id="create-alert" class="alert"></div>
+      <div class="form-row">
+        <div>
+          <div class="section-label">Nom complet</div>
+          <input id="new-nom" placeholder="Ex: Me. Ahmed Benali"/>
+        </div>
+        <div>
+          <div class="section-label">Email</div>
+          <input id="new-email" type="email" placeholder="email@cabinet.ma"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <div class="section-label">Mot de passe</div>
+          <input id="new-pass" type="password" placeholder="Minimum 6 caractères"/>
+        </div>
+        <div>
+          <div class="section-label">Plan de licence à attribuer (optionnel)</div>
+          <select id="new-plan">
+            <option value="">Aucun (activation manuelle)</option>
+            <option value="monthly">30 jours — 249 MAD</option>
+            <option value="yearly">1 an — 2 490 MAD</option>
+            <option value="lifetime">À vie — 8 490 MAD</option>
+          </select>
+        </div>
+      </div>
+      <button onclick="createAccount()" class="btn btn-gold">✓ Créer le compte</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL RESET MDP -->
+<div id="modal-reset" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999;display:none;align-items:center;justify-content:center">
+  <div style="background:#0f0f12;border:1px solid rgba(139,115,85,.3);border-radius:12px;padding:28px;width:420px;max-width:95vw">
+    <h3 style="font-family:'Cinzel',serif;color:#d4b896;font-size:13px;letter-spacing:.1em;margin-bottom:16px">RÉINITIALISER MOT DE PASSE</h3>
+    <div id="modal-reset-name" style="font-size:13px;color:#8b7355;margin-bottom:16px;font-family:'Cinzel',serif"></div>
+    <div class="section-label">Nouveau mot de passe</div>
+    <input id="reset-pass" type="password" placeholder="Minimum 6 caractères"/>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
+      <button onclick="closeModal('modal-reset')" class="btn btn-outline">Annuler</button>
+      <button onclick="doResetPass()" class="btn btn-gold">Confirmer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EXTEND -->
+<div id="modal-extend" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999;align-items:center;justify-content:center">
+  <div style="background:#0f0f12;border:1px solid rgba(139,115,85,.3);border-radius:12px;padding:28px;width:420px;max-width:95vw">
+    <h3 style="font-family:'Cinzel',serif;color:#d4b896;font-size:13px;letter-spacing:.1em;margin-bottom:16px">MODIFIER LA LICENCE</h3>
+    <div id="modal-extend-name" style="font-size:13px;color:#8b7355;margin-bottom:16px;font-family:'Cinzel',serif"></div>
+    <div class="section-label">Nouvelle licence</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
+      <div class="plan-card sel" id="ep-monthly" onclick="selExtPlan('monthly')" style="padding:10px">
+        <div class="plan-lbl">+30 jours</div><div class="price" style="font-size:14px">249 MAD</div>
+      </div>
+      <div class="plan-card" id="ep-yearly" onclick="selExtPlan('yearly')" style="padding:10px">
+        <div class="plan-lbl">+1 an</div><div class="price" style="font-size:14px">2 490 MAD</div>
+      </div>
+      <div class="plan-card" id="ep-lifetime" onclick="selExtPlan('lifetime')" style="padding:10px">
+        <div class="plan-lbl">À vie</div><div class="price" style="font-size:14px">8 490 MAD</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button onclick="closeModal('modal-extend')" class="btn btn-outline">Annuler</button>
+      <button onclick="doExtend()" class="btn btn-gold">Appliquer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '';
+let TOKEN = localStorage.getItem('lexia_token') || '';
+let currentResetId = null;
+let currentExtendId = null;
+let extPlan = 'monthly';
+let selectedPlan = 'monthly';
+let allUsers = [];
+
+function authH(){ return {'Content-Type':'application/json','Authorization':'Bearer '+TOKEN}; }
+
+async function api(method, url, body){
+  const opts={method,headers:authH()};
+  if(body) opts.body=JSON.stringify(body);
+  const r=await fetch(API+url,opts);
+  const d=await r.json();
+  if(!r.ok) throw new Error(d.error||'Erreur');
+  return d;
+}
+
+async function init(){
+  if(!TOKEN){ window.location.href='/'; return; }
+  try {
+    const d=await api('GET','/api/me');
+    if(d.user.role!=='super'){ window.location.href='/'; return; }
+    document.getElementById('admin-name').textContent='👑 '+d.user.nom;
+    document.getElementById('admin-date').textContent='Super Admin · '+new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    loadStats();
+    loadUsers();
+    loadKeys();
+  } catch(e){ window.location.href='/'; }
+}
+
+async function loadStats(){
+  try {
+    const [users,keys]=await Promise.all([api('GET','/api/admin/users'),api('GET','/api/admin/licences')]);
+    const nonSuper=users.filter(u=>u.role!=='super');
+    const active=nonSuper.filter(u=>u.licence&&u.licence.valid);
+    const expired=nonSuper.filter(u=>!u.licence||!u.licence.valid);
+    const avail=keys.filter(k=>!k.usedBy);
+    const monthly=active.filter(u=>u.licence&&u.licence.plan==='monthly').length;
+    const yearly=active.filter(u=>u.licence&&u.licence.plan==='yearly').length;
+    const life=active.filter(u=>u.licence&&u.licence.plan==='lifetime').length;
+    document.getElementById('s-total').textContent=nonSuper.length;
+    document.getElementById('s-actifs').textContent=active.length+' actifs';
+    document.getElementById('s-actives').textContent=active.length;
+    document.getElementById('s-lic-detail').textContent=monthly+'×30j · '+yearly+'×1an · '+life+'×∞';
+    document.getElementById('s-expired').textContent=expired.length;
+    document.getElementById('s-keys').textContent=avail.length;
+  } catch(e){}
+}
+
+async function loadUsers(){
+  try {
+    allUsers=await api('GET','/api/admin/users');
+    renderUsers(allUsers);
+  } catch(e){ document.getElementById('users-table').innerHTML='<div class="empty">Erreur de chargement</div>'; }
+}
+
+function filterUsers(){
+  const q=document.getElementById('search-users').value.toLowerCase();
+  const filtered=allUsers.filter(u=>(u.nom||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q));
+  renderUsers(filtered);
+}
+
+function renderUsers(users){
+  const planLabel={monthly:'30 jours',yearly:'1 an',lifetime:'À vie',super:'Super Admin'};
+  const rows=users.map(u=>{
+    const lic=u.licence||{};
+    let licBadge='<span class="badge badge-none">Aucune</span>';
+    if(u.role==='super') licBadge='<span class="badge badge-super">👑 Super Admin</span>';
+    else if(lic.valid){
+      const cls=lic.plan==='lifetime'?'badge-lifetime':lic.plan==='yearly'?'badge-yearly':'badge-monthly';
+      licBadge='<span class="badge '+cls+'">'+planLabel[lic.plan]+'</span>';
+      if(lic.daysLeft)licBadge+=' <span class="days-badge '+(lic.daysLeft<=7?'days-exp':lic.daysLeft<=30?'days-warn':'days-ok')+'">'+lic.daysLeft+'j</span>';
+    } else if(u.role!=='super') licBadge='<span class="badge badge-expired">Expirée</span>';
+    
+    const actions=u.role==='super'?'<span style="color:#4a4238;font-size:11px;font-family:Cinzel,serif">Super Admin</span>':
+      '<div class="actions-cell">'+
+      '<button onclick="openResetModal('+u.id+',\''+u.nom+'\')" class="btn btn-outline" style="padding:5px 10px;font-size:10px">🔑 MDP</button>'+
+      '<button onclick="openExtend('+u.id+',\''+u.nom+'\')" class="btn btn-green" style="padding:5px 10px;font-size:10px">📅 Licence</button>'+
+      '<button onclick="delUser('+u.id+',\''+u.nom+'\')" class="btn btn-red" style="padding:5px 10px;font-size:10px">🗑</button>'+
+      '</div>';
+    
+    return '<tr>'+
+      '<td><div style="font-size:13px;color:#e8e0d0;font-weight:600">'+u.nom+'</div><div style="font-size:11px;color:#5a5248;margin-top:2px">'+u.email+'</div></td>'+
+      '<td><span class="badge '+(u.role==='super'?'badge-super':'badge-client')+'">'+u.role+'</span></td>'+
+      '<td>'+licBadge+'</td>'+
+      '<td style="font-size:11px;color:#5a5248">'+(u.createdAt?new Date(u.createdAt).toLocaleDateString('fr-FR'):'—')+'</td>'+
+      '<td>'+actions+'</td>'+
+    '</tr>';
+  }).join('');
+  
+  document.getElementById('users-table').innerHTML=users.length
+    ?'<table><thead><tr><th>Utilisateur</th><th>Rôle</th><th>Licence</th><th>Créé le</th><th>Actions</th></tr></thead><tbody>'+rows+'</tbody></table>'
+    :'<div class="empty">Aucun utilisateur trouvé</div>';
+}
+
+async function loadKeys(){
+  try {
+    let keys=await api('GET','/api/admin/licences');
+    const planF=document.getElementById('filter-keys').value;
+    const usedF=document.getElementById('filter-used').value;
+    if(planF) keys=keys.filter(k=>k.plan===planF);
+    if(usedF==='available') keys=keys.filter(k=>!k.usedBy);
+    if(usedF==='used') keys=keys.filter(k=>!!k.usedBy);
+    const planLabel={monthly:'30 jours',yearly:'1 an',lifetime:'À vie'};
+    const rows=keys.map(k=>{
+      const exp=k.expiresAt?new Date(k.expiresAt).toLocaleDateString('fr-FR'):'∞';
+      const cls=k.plan==='lifetime'?'badge-lifetime':k.plan==='yearly'?'badge-yearly':'badge-monthly';
+      return '<tr>'+
+        '<td style="font-family:Courier New;font-size:12px;color:#d4b896">'+k.key+'</td>'+
+        '<td><span class="badge '+cls+'">'+planLabel[k.plan]+'</span></td>'+
+        '<td style="font-size:11px;color:#5a5248">'+exp+'</td>'+
+        '<td style="font-size:11px;color:'+(k.usedBy?'#4ade80':'#5a5248')+'">'+( k.usedBy||'Disponible')+'</td>'+
+        '<td><button onclick="navigator.clipboard.writeText(\''+k.key+'\').then(function(){showAlert(\'users-alert\',\'Clé copiée : '+k.key+'\',\'ok\')})" class="btn btn-outline" style="padding:4px 8px;font-size:10px">📋 Copier</button></td>'+
+      '</tr>';
+    }).join('');
+    document.getElementById('keys-table').innerHTML=keys.length
+      ?'<table><thead><tr><th>Clé</th><th>Plan</th><th>Expiration</th><th>Utilisée par</th><th></th></tr></thead><tbody>'+rows+'</tbody></table>'
+      :'<div class="empty">Aucune clé — Générez-en depuis l\'onglet "Générer licences"</div>';
+  } catch(e){ document.getElementById('keys-table').innerHTML='<div class="empty">Erreur de chargement</div>'; }
+}
+
+var selectedPlan='monthly';
+function selPlan(p){
+  selectedPlan=p;
+  ['monthly','yearly','lifetime'].forEach(x=>{
+    document.getElementById('plan-'+x).classList.toggle('sel',x===p);
+  });
+}
+
+async function genLicences(){
+  const count=parseInt(document.getElementById('gen-count').value)||1;
+  try {
+    const d=await api('POST','/api/admin/generate-licence',{plan:selectedPlan,count});
+    const planLabel={monthly:'30 jours — 249 MAD',yearly:'1 an — 2 490 MAD',lifetime:'À vie — 8 490 MAD'};
+    let html='<div style="font-family:Cinzel,serif;font-size:11px;color:#4ade80;margin-bottom:10px">✅ '+d.generated.length+' clé(s) générée(s) — '+planLabel[selectedPlan]+'</div>';
+    html+='<div style="font-size:11px;color:#5a5248;margin-bottom:8px;font-family:Cinzel,serif">Cliquez sur une clé pour la copier</div>';
+    d.generated.forEach(l=>{
+      const kb=document.createElement('div');
+      kb.className='key-box';kb.textContent=l.key;
+      kb.onclick=()=>navigator.clipboard.writeText(l.key).then(()=>{ kb.style.background='rgba(34,197,94,.15)'; setTimeout(()=>kb.style.background='',1500); });
+      document.getElementById('gen-result').innerHTML=html;
+      document.getElementById('gen-result').appendChild(kb);
+      html='';
+    });
+    if(html) document.getElementById('gen-result').innerHTML=html;
+    loadStats();loadKeys();
+  } catch(e){ showAlert('users-alert',e.message,'err'); }
+}
+
+async function createAccount(){
+  const nom=document.getElementById('new-nom').value.trim();
+  const email=document.getElementById('new-email').value.trim();
+  const pass=document.getElementById('new-pass').value;
+  const plan=document.getElementById('new-plan').value;
+  if(!nom||!email||!pass){ showAlert('create-alert','Remplir tous les champs obligatoires','err'); return; }
+  try {
+    await api('POST','/api/register',{nom,email,password:pass});
+    if(plan){
+      // Generate a key and auto-assign
+      const d=await api('POST','/api/admin/generate-licence',{plan,count:1});
+      if(d.generated&&d.generated[0]){
+        await api('POST','/api/activate-licence',{email,password:pass,licenceKey:d.generated[0].key});
+      }
+    }
+    showAlert('create-alert','✅ Compte créé avec succès pour '+email+(plan?' avec licence '+plan:''),'ok');
+    document.getElementById('new-nom').value='';
+    document.getElementById('new-email').value='';
+    document.getElementById('new-pass').value='';
+    loadUsers();loadStats();
+  } catch(e){ showAlert('create-alert',e.message,'err'); }
+}
+
+function openResetModal(id,nom){
+  currentResetId=id;
+  document.getElementById('modal-reset-name').textContent='Utilisateur : '+nom;
+  document.getElementById('reset-pass').value='';
+  document.getElementById('modal-reset').style.display='flex';
+}
+
+async function doResetPass(){
+  const pass=document.getElementById('reset-pass').value;
+  if(!pass||pass.length<6){ showAlert('users-alert','Mot de passe trop court','err'); return; }
+  try {
+    await api('POST','/api/admin/reset-password',{userId:currentResetId,newPassword:pass});
+    closeModal('modal-reset');
+    showAlert('users-alert','✅ Mot de passe réinitialisé avec succès','ok');
+  } catch(e){ showAlert('users-alert',e.message,'err'); }
+}
+
+function openExtend(id,nom){
+  currentExtendId=id;
+  extPlan='monthly';
+  document.getElementById('modal-extend-name').textContent='Utilisateur : '+nom;
+  selExtPlan('monthly');
+  document.getElementById('modal-extend').style.display='flex';
+}
+
+function selExtPlan(p){
+  extPlan=p;
+  ['monthly','yearly','lifetime'].forEach(x=>{
+    document.getElementById('ep-'+x).classList.toggle('sel',x===p);
+  });
+}
+
+async function doExtend(){
+  try {
+    // Generate a key and activate it
+    const d=await api('POST','/api/admin/generate-licence',{plan:extPlan,count:1});
+    if(!d.generated||!d.generated[0]) throw new Error('Génération échouée');
+    // Find user email
+    const user=allUsers.find(u=>u.id===currentExtendId);
+    if(!user) throw new Error('Utilisateur introuvable');
+    // Assign key directly via admin endpoint
+    await api('POST','/api/admin/assign-licence',{userId:currentExtendId,licenceKey:d.generated[0].key});
+    closeModal('modal-extend');
+    const planL={monthly:'30 jours',yearly:'1 an',lifetime:'À vie'};
+    showAlert('users-alert','✅ Licence '+planL[extPlan]+' attribuée à '+user.nom,'ok');
+    loadUsers();loadStats();
+  } catch(e){ showAlert('users-alert',e.message,'err'); }
+}
+
+async function delUser(id,nom){
+  if(!confirm('Supprimer définitivement le compte de '+nom+' ?')) return;
+  try {
+    await api('DELETE','/api/admin/user/'+id);
+    showAlert('users-alert','✅ Compte de '+nom+' supprimé','ok');
+    loadUsers();loadStats();
+  } catch(e){ showAlert('users-alert',e.message,'err'); }
+}
+
+function closeModal(id){ document.getElementById(id).style.display='none'; }
+
+function showAlert(id,msg,type){
+  const el=document.getElementById(id);
+  el.className='alert alert-'+(type==='ok'?'ok':'err');
+  el.textContent=msg;
+  el.style.display='block';
+  if(type==='ok') setTimeout(()=>el.style.display='none',5000);
+}
+
+function switchTab(tab){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['users','licences','keys','create'][i]===tab));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  if(tab==='keys') loadKeys();
+}
+
+function doLogout(){
+  localStorage.removeItem('lexia_token');
+  window.location.href='/';
+}
+
+init();
+</script>
+</body>
+</html>
