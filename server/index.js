@@ -253,7 +253,29 @@ Cite les articles de loi marocains pertinents quand c est possible.`
   }
 });
 
+
+// Admin assign licence directly to user
+app.post("/api/admin/assign-licence", auth, superOnly, (req, res) => {
+  const { userId, licenceKey } = req.body;
+  const users = loadJSON(USERS_FILE, []);
+  const user = users.find(u => u.id === parseInt(userId));
+  if (!user) return res.status(404).json({ error: "Utilisateur introuvable" });
+  const licences = loadJSON(LICENCES_FILE, []);
+  const lic = licences.find(l => l.key === licenceKey);
+  if (!lic) return res.status(404).json({ error: "Clé introuvable" });
+  lic.usedBy = user.email;
+  lic.activatedAt = new Date().toISOString();
+  saveJSON(LICENCES_FILE, licences);
+  user.licenceKey = licenceKey;
+  saveJSON(USERS_FILE, users);
+  res.json({ ok: true, licence: checkLicence(user) });
+});
+
 // ── Serve app ──
+app.get("/admin", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/admin.html"));
+});
+
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/index.html"));
 });
