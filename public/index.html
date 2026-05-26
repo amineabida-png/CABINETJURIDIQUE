@@ -434,7 +434,8 @@ var MODS=[
   {id:"conventions",label:"Devis et Conventions",icon:"🤝",grp:"Documents"},
   {id:"delais",label:"Délais légaux",icon:"⏳",grp:"Documents"},
   {id:"tresorerie",label:"Tableau de trésorerie",icon:"💳",grp:"Documents"},
-  {id:"emoluments",label:"Émoluments notariaux",icon:"⚖",grp:"Documents"}
+  {id:"emoluments",label:"Émoluments notariaux",icon:"⚖",grp:"Documents"},
+  {id:"parametres",label:"Paramètres du cabinet",icon:"⚙",grp:"Paramètres"}
 ];
 
 var DOS=[];
@@ -479,6 +480,11 @@ var PREVISIONNEL=[];
 var NOTES=[];
 var TEMPS=[];
 var PIECES=[];
+var CABINET={
+  type:"",nom:"",adresse:"",ville:"",telephone:"",email:"",
+  siteWeb:"",barreau:"",numeroBarreau:"",numeroPatente:"",
+  rib:"",tva:"",logo:"",slogan:""
+};
 var CONVENTIONS=[];
 var TRESORERIE_ENT=[];
 var TRESORERIE_SOR=[];
@@ -525,7 +531,7 @@ function goTo(id){
     dashboard:pDash,clients:pClients,agenda:pAgenda,actes:pActes,
     honoraires:pHon,procedures:pProc,bibliotheque:pBib,
     collaborateurs:pCollab,comptabilite:pCompta,conformite:pConf,portail:pPortail,
-    analytique:pAnalytique,temps:pTemps,notes:pNotes,pieces:pPieces,modeles:pModeles,conventions:pConventions,delais:pDelais,tresorerie:pTresorerie,emoluments:pEmoluments
+    analytique:pAnalytique,temps:pTemps,notes:pNotes,pieces:pPieces,modeles:pModeles,conventions:pConventions,delais:pDelais,tresorerie:pTresorerie,emoluments:pEmoluments,parametres:pParametres
   };
   if(pages[id])c.innerHTML=pages[id]();
 }
@@ -657,6 +663,42 @@ document.addEventListener("click",function(e){
     if(!lb||!mt){notif("Saisir libellé et montant");return;}
     CHG.push({lib:lb,montant:parseInt(mt),cat:document.getElementById("mch-cat").value,per:document.getElementById("mch-per").value,statut:"En attente"});
     closeM();notif("Charge enregistrée");goTo("comptabilite");
+  }
+  else if(a==="select-type"){
+    var tp=el.getAttribute("data-type");
+    var inp=document.getElementById("p-type");
+    if(inp)inp.value=tp;
+    ["Avocat","Notaire","Mixte"].forEach(function(x){
+      var d=document.getElementById("type-"+x);
+      if(!d)return;
+      var s=x===tp;
+      d.style.borderColor=s?"#8b7355":"rgba(139,115,85,.2)";
+      d.style.background=s?"rgba(139,115,85,.1)":"transparent";
+      d.querySelector("div").style.color=s?"#d4b896":"#7a7060";
+    });
+  }
+  else if(a==="save-parametres"){
+    CABINET.type=document.getElementById("p-type").value;
+    CABINET.nom=document.getElementById("p-nom").value;
+    CABINET.adresse=document.getElementById("p-adresse").value;
+    CABINET.ville=document.getElementById("p-ville").value;
+    CABINET.telephone=document.getElementById("p-tel").value;
+    CABINET.email=document.getElementById("p-email").value;
+    CABINET.siteWeb=document.getElementById("p-web").value;
+    CABINET.barreau=document.getElementById("p-barreau").value;
+    CABINET.numeroBarreau=document.getElementById("p-numbarreau").value;
+    CABINET.numeroPatente=document.getElementById("p-patente").value;
+    CABINET.rib=document.getElementById("p-rib").value;
+    CABINET.tva=document.getElementById("p-tva").value;
+    CABINET.slogan=document.getElementById("p-slogan").value;
+    // Update sidebar display
+    var sf=document.querySelector(".sfoot p");
+    var sf2=document.querySelector(".sfoot span");
+    if(sf&&CABINET.nom)sf.textContent=CABINET.nom;
+    if(sf2&&CABINET.ville)sf2.textContent=CABINET.ville+(CABINET.barreau?" · Barreau de "+CABINET.barreau:"");
+    // Update topbar date label
+    notif("Paramètres enregistrés avec succès");
+    goTo("parametres");
   }
   else if(a==="save-convention"){
     var cl=document.getElementById("cv-client").value;
@@ -1285,6 +1327,55 @@ function calcEmoHelper(v){
   t+=8000000*0.005;
   t+=(v-10000000)*0.0025;
   return t;
+}
+
+// ── PAGE PARAMETRES ──
+function pParametres(){
+  var t=CABINET.type;
+  var html="";
+
+  // Type selection
+  html+="<div class='card' style='margin-bottom:16px'><div class='stitle'>Type de cabinet</div><div class='f gap14'>";
+  var types=[["Avocat","⚖","Barreau, plaidoirie, conseil"],["Notaire","📜","Actes authentiques, répertoire"],["Mixte","⚖📜","Avocat et Notaire"]];
+  types.forEach(function(tp){
+    var sel=t===tp[0];
+    html+="<div data-action='select-type' data-type='"+tp[0]+"' id='type-"+tp[0]+"' style='cursor:pointer;padding:14px 16px;border-radius:8px;border:2px solid "+(sel?"#8b7355":"rgba(139,115,85,.2)")+";flex:1;background:"+(sel?"rgba(139,115,85,.1)":"transparent")+";transition:all .2s'>";
+    html+="<div style='font-family:Cinzel,serif;font-size:13px;color:"+(sel?"#d4b896":"#7a7060")+";margin-bottom:4px'>"+tp[1]+" "+tp[0]+"</div>";
+    html+="<div style='font-size:11px;color:#5a5248'>"+tp[2]+"</div></div>";
+  });
+  html+="</div><input type='hidden' id='p-type' value='"+t+"'/></div>";
+
+  // Preview
+  if(CABINET.nom){
+    html+="<div class='card' style='margin-bottom:16px;border-color:rgba(139,115,85,.4)'><div class='stitle'>Aperçu en-tête</div>";
+    html+="<div style='background:#fff;color:#111;padding:14px 18px;border-radius:6px;font-family:Georgia,serif'>";
+    html+="<div style='font-size:14pt;font-weight:bold'>"+CABINET.nom+"</div>";
+    if(CABINET.slogan)html+="<div style='font-size:9pt;color:#555'>"+CABINET.slogan+"</div>";
+    html+="<div style='font-size:9pt;color:#666;margin-top:4px'>"+(CABINET.adresse?CABINET.adresse+", ":"")+CABINET.ville+(CABINET.telephone?" · "+CABINET.telephone:"")+"</div>";
+    if(CABINET.barreau)html+="<div style='font-size:8pt;color:#888'>Barreau de "+CABINET.barreau+(CABINET.numeroBarreau?" · N° "+CABINET.numeroBarreau:"")+"</div>";
+    html+="</div></div>";
+  }
+
+  // Helper
+  function row(id,lbl,val,ph){return "<div><label style='display:block;font-size:10px;color:#8b7355;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px'>"+lbl+"</label><input id='"+id+"' value='"+(val||"")+"' placeholder='"+ph+"' style='width:100%'/></div>";}
+  function row2(a,b){return "<div class='g2e' style='gap:14px;margin-top:12px'>"+a+b+"</div>";}
+
+  html+="<div class='card' style='margin-bottom:16px'><div class='stitle'>Informations générales</div>";
+  html+=row2(row("p-nom","Nom du cabinet *",CABINET.nom,"Ex: Cabinet Alami & Associés"),row("p-slogan","Slogan",CABINET.slogan,"Ex: Expertise en droit des affaires"));
+  html+="<div style='margin-top:12px'>"+row("p-adresse","Adresse",CABINET.adresse,"Ex: 45 Boulevard Mohammed V")+"</div>";
+  html+=row2(row("p-ville","Ville",CABINET.ville,"Ex: Casablanca"),row("p-tel","Téléphone",CABINET.telephone,"Ex: 0522-xxx-xxx"));
+  html+=row2(row("p-email","Email",CABINET.email,"Ex: contact@cabinet.ma"),row("p-web","Site web",CABINET.siteWeb,"Ex: www.cabinet.ma"));
+  html+="</div>";
+
+  html+="<div class='card' style='margin-bottom:16px'><div class='stitle'>Informations professionnelles</div>";
+  html+=row2(row("p-barreau","Barreau / Chambre",CABINET.barreau,"Ex: Casablanca"),row("p-numbarreau","N° inscription",CABINET.numeroBarreau,"Ex: 12345"));
+  html+=row2(row("p-patente","N° patente",CABINET.numeroPatente,"Ex: 12345678"),row("p-tva","N° TVA",CABINET.tva,"Ex: MA123456"));
+  html+="<div style='margin-top:12px'>"+row("p-rib","RIB bancaire",CABINET.rib,"Ex: 123 456 0123456789012345 67")+"</div>";
+  html+="</div>";
+
+  html+="<div class='f jb ac'><div style='font-size:11px;color:#5a5248;font-family:Cinzel,serif'>* Champ obligatoire</div><button class='btn bg' data-action='save-parametres' style='padding:12px 28px;font-size:12px'>✓ Enregistrer</button></div>";
+
+  return html;
 }
 
 window.addEventListener("load",function(){buildNav();goTo("dashboard");});
