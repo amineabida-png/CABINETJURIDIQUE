@@ -1,13 +1,16 @@
 {
-  "name": "cabinet-juridique-maroc",
-  "version": "3.0.0",
+  "name": "cabinet-juridique-lexia",
+  "version": "4.0.0",
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
-    "build": "echo 'no build'"
+    "build": "echo ok"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "dotenv": "^16.4.5"
   },
   "engines": { "node": ">=18.0.0" }
 }
