@@ -2037,7 +2037,7 @@ function pParametres(){
   types.forEach(function(tp){
     var sel=t===tp[0];
     html+="<div data-action='select-type' data-type='"+tp[0]+"' id='type-"+tp[0]+"' style='cursor:pointer;padding:14px 16px;border-radius:8px;border:2px solid "+(sel?"#8b7355":"rgba(139,115,85,.2)")+";flex:1;background:"+(sel?"rgba(139,115,85,.1)":"transparent")+";transition:all .2s'>";
-    html+="<div style='font-family:Cinzel,serif;font-size:13px;color:"+(sel?"#d4b896":"#7a7060")+";margin-bottom:4px'>"+tp[1]+" "+tp[0]+"</div>";
+    html+="<div style='font-family:Cinzel,serif;font-size:13px;color:"+(sel?"#d4b896":"#7a7060")+";margin-bottom:4px'>"+tp[1]+" "+(LANG==="ar"?({"Avocat":"محامٍ","Notaire":"موثق","Mixte":"مختلط"}[tp[0]]||tp[0]):tp[0])+"</div>";
     html+="<div style='font-size:11px;color:#5a5248'>"+tp[2]+"</div></div>";
   });
   html+="</div><input type='hidden' id='p-type' value='"+t+"'/></div>";
