@@ -214,9 +214,225 @@ select option{background:#1a1a1e}
 .field select option{background:#1a1a1e}
 .confirm-box{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:10px;padding:20px;text-align:center}
 .confirm-box p{color:#f87171;font-size:14px;margin-bottom:16px;line-height:1.6}
+
+/* ── AUTH LAYER ── */
+#login-screen{position:fixed;inset:0;background:#0d0d0f;z-index:9999;display:flex;flex-direction:column;overflow-y:auto}
+#login-screen.hidden{display:none}
+.login-page{min-height:100vh;display:flex}
+.login-left{flex:1;background:linear-gradient(135deg,#0a0a0c,#141416);border-right:1px solid rgba(139,115,85,.2);display:flex;flex-direction:column;justify-content:center;padding:60px;min-width:340px}
+.login-right{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px}
+.login-logo{font-family:'Cinzel',serif;font-size:28px;color:#d4b896;letter-spacing:.15em;margin-bottom:8px}
+.login-tagline{font-size:13px;color:#5a5248;font-family:'Cinzel',serif;letter-spacing:.08em;margin-bottom:40px}
+.login-features{list-style:none}
+.login-features li{padding:10px 0;border-bottom:1px solid rgba(139,115,85,.1);font-size:13px;color:#9a8f7e;display:flex;align-items:center;gap:12px}
+.login-features li span{color:#d4b896;font-size:16px}
+.login-box{background:linear-gradient(135deg,#141416,#0f0f12);border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:36px;width:100%;max-width:420px}
+.login-box h2{font-family:'Cinzel',serif;font-size:16px;color:#d4b896;letter-spacing:.1em;margin-bottom:6px}
+.login-box p{font-size:12px;color:#5a5248;margin-bottom:24px}
+.login-box label{display:block;font-size:10px;color:#8b7355;font-family:'Cinzel',serif;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;margin-top:16px}
+.login-box input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:7px;padding:11px 14px;font-size:14px;outline:none;transition:border .2s}
+.login-box input:focus{border-color:rgba(139,115,85,.5)}
+.login-box input::placeholder{color:#3d3830}
+.btn-login{width:100%;background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;padding:13px;border-radius:7px;cursor:pointer;font-family:'Cinzel',serif;font-size:12px;letter-spacing:.08em;margin-top:20px;transition:all .2s}
+.btn-login:hover{background:linear-gradient(135deg,#9a8060,#b09070)}
+.btn-login:disabled{opacity:.5;cursor:not-allowed}
+.login-tabs{display:flex;gap:4px;margin-bottom:24px}
+.login-tab{flex:1;padding:9px;border-radius:7px;cursor:pointer;font-family:'Cinzel',serif;font-size:11px;text-align:center;border:1px solid rgba(139,115,85,.2);color:#6a6058;background:transparent;transition:all .2s}
+.login-tab.active{background:rgba(139,115,85,.15);color:#d4b896;border-color:rgba(139,115,85,.35)}
+.auth-error{color:#f87171;font-size:12px;margin-top:10px;font-family:'Cinzel',serif;text-align:center}
+.auth-success{color:#4ade80;font-size:12px;margin-top:10px;font-family:'Cinzel',serif;text-align:center}
+.licence-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;font-size:10px;font-family:'Cinzel',serif}
+.lic-monthly{background:rgba(96,165,250,.12);color:#60a5fa;border:1px solid rgba(96,165,250,.25)}
+.lic-yearly{background:rgba(139,115,85,.15);color:#d4b896;border:1px solid rgba(139,115,85,.3)}
+.lic-lifetime{background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.25)}
+.lic-super{background:rgba(251,191,36,.12);color:#fbbf24;border:1px solid rgba(251,191,36,.25)}
+
+/* ── SUPER ADMIN PANEL ── */
+#admin-panel{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:8888;display:none;align-items:center;justify-content:center}
+#admin-panel.show{display:flex}
+.admin-box{background:#0f0f12;border:1px solid rgba(251,191,36,.3);border-radius:14px;width:900px;max-width:96vw;max-height:90vh;overflow:hidden;display:flex;flex-direction:column}
+.admin-header{padding:18px 24px;border-bottom:1px solid rgba(251,191,36,.2);display:flex;justify-content:space-between;align-items:center;background:rgba(251,191,36,.04)}
+.admin-header h2{font-family:'Cinzel',serif;color:#fbbf24;font-size:14px;letter-spacing:.1em}
+.admin-tabs{display:flex;gap:4px;padding:12px 16px;border-bottom:1px solid rgba(139,115,85,.15);flex-shrink:0}
+.admin-tab{padding:8px 16px;border-radius:6px;cursor:pointer;font-family:'Cinzel',serif;font-size:11px;color:#6a6058;border:1px solid transparent;background:transparent;transition:all .2s}
+.admin-tab.active{background:rgba(251,191,36,.12);color:#fbbf24;border-color:rgba(251,191,36,.25)}
+.admin-content{flex:1;overflow-y:auto;padding:16px}
+.admin-table{width:100%;border-collapse:collapse;font-size:12px}
+.admin-table th{text-align:left;padding:8px 12px;color:#8b7355;font-size:10px;font-family:'Cinzel',serif;text-transform:uppercase;border-bottom:1px solid rgba(139,115,85,.2)}
+.admin-table td{padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.04);color:#c8bfb0}
+.admin-table tr:hover td{background:rgba(139,115,85,.04)}
+.key-box{background:rgba(0,0,0,.4);border:1px solid rgba(139,115,85,.2);border-radius:6px;padding:10px 14px;margin-top:8px;font-family:'Courier New';font-size:12px;color:#d4b896;word-break:break-all}
+.plan-card{border:1px solid rgba(139,115,85,.2);border-radius:10px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;background:linear-gradient(135deg,#141416,#0f0f12)}
+.plan-card:hover,.plan-card.sel{border-color:#8b7355;background:rgba(139,115,85,.08)}
+.plan-card .price{font-family:'Cinzel',serif;font-size:22px;color:#d4b896;margin:8px 0 4px}
+.plan-card .label{font-size:11px;color:#8b7355;font-family:'Cinzel',serif}
+.plan-card .desc{font-size:11px;color:#5a5248;margin-top:4px}
+
+/* ── USER BADGE IN TOPBAR ── */
+#user-badge{display:flex;align-items:center;gap:8px;cursor:pointer;padding:6px 12px;border-radius:7px;border:1px solid rgba(139,115,85,.2);transition:all .2s}
+#user-badge:hover{background:rgba(139,115,85,.1)}
+#user-badge .uname{font-family:'Cinzel',serif;font-size:11px;color:#d4b896}
+#user-badge .urole{font-size:10px;color:#5a5248}
+.logout-btn{background:transparent;border:1px solid rgba(239,68,68,.2);color:#f87171;padding:5px 12px;border-radius:6px;cursor:pointer;font-family:'Cinzel',serif;font-size:10px}
+.logout-btn:hover{background:rgba(239,68,68,.1)}
+
+@media(max-width:700px){
+  .login-left{display:none}
+  .login-box{padding:24px 20px}
+}
 </style>
 </head>
 <body>
+<div id="login-screen">
+  <div class="login-page">
+    <div class="login-left">
+      <div class="login-logo">LEXIA</div>
+      <div class="login-tagline">CABINET JURIDIQUE MAROC</div>
+      <ul class="login-features">
+        <li><span>⚖</span> Gestion complète des dossiers avocat et notaire</li>
+        <li><span>🏛</span> Suivi des procédures judiciaires marocaines</li>
+        <li><span>📋</span> Modèles de documents et actes notariés</li>
+        <li><span>⚖</span> Calcul des émoluments selon barème officiel</li>
+        <li><span>💰</span> Honoraires, facturation et trésorerie</li>
+        <li><span>📱</span> Compatible mobile, tablette et desktop</li>
+        <li><span>🖨</span> Impression A4 professionnelle</li>
+      </ul>
+      <div style="margin-top:40px;padding:16px;background:rgba(139,115,85,.08);border:1px solid rgba(139,115,85,.2);border-radius:8px">
+        <div style="font-family:'Cinzel',serif;font-size:11px;color:#8b7355;margin-bottom:12px;letter-spacing:.08em">TARIFS</div>
+        <div style="font-size:13px;color:#c8bfb0;margin-bottom:6px">📅 30 jours — <strong style="color:#d4b896">249 MAD</strong></div>
+        <div style="font-size:13px;color:#c8bfb0;margin-bottom:6px">📆 1 an — <strong style="color:#d4b896">2 490 MAD</strong></div>
+        <div style="font-size:13px;color:#c8bfb0">♾ À vie — <strong style="color:#d4b896">8 490 MAD</strong></div>
+      </div>
+    </div>
+    <div class="login-right">
+      <div class="login-box">
+        <div style="text-align:center;margin-bottom:20px">
+          <div style="font-family:'Cinzel',serif;font-size:20px;color:#d4b896;letter-spacing:.12em">LEXIA</div>
+          <div style="font-size:10px;color:#4a4238;font-family:'Cinzel',serif;margin-top:3px">CABINET JURIDIQUE MAROC</div>
+        </div>
+        <div class="login-tabs">
+          <button class="login-tab active" onclick="switchAuthTab('login')">Connexion</button>
+          <button class="login-tab" onclick="switchAuthTab('register')">Créer un compte</button>
+          <button class="login-tab" onclick="switchAuthTab('activate')">Activer licence</button>
+        </div>
+
+        <!-- LOGIN -->
+        <div id="tab-login">
+          <h2>Connexion</h2>
+          <p>Accédez à votre espace cabinet</p>
+          <label>Email</label>
+          <input id="l-email" type="email" placeholder="votre@email.ma" autocomplete="email"/>
+          <label>Mot de passe</label>
+          <input id="l-pass" type="password" placeholder="••••••••" autocomplete="current-password"/>
+          <button class="btn-login" onclick="doLogin()">Se connecter</button>
+          <div id="l-error" class="auth-error"></div>
+        </div>
+
+        <!-- REGISTER -->
+        <div id="tab-register" style="display:none">
+          <h2>Créer un compte</h2>
+          <p>Inscription gratuite — activez ensuite votre licence</p>
+          <label>Nom complet</label>
+          <input id="r-nom" type="text" placeholder="Ex: Me. Ahmed Benali"/>
+          <label>Email</label>
+          <input id="r-email" type="email" placeholder="votre@email.ma"/>
+          <label>Mot de passe</label>
+          <input id="r-pass" type="password" placeholder="Minimum 6 caractères"/>
+          <button class="btn-login" onclick="doRegister()">Créer mon compte</button>
+          <div id="r-msg"></div>
+        </div>
+
+        <!-- ACTIVATE -->
+        <div id="tab-activate" style="display:none">
+          <h2>Activer une licence</h2>
+          <p>Entrez vos identifiants et votre clé de licence</p>
+          <label>Email</label>
+          <input id="a-email" type="email" placeholder="votre@email.ma"/>
+          <label>Mot de passe</label>
+          <input id="a-pass" type="password" placeholder="••••••••"/>
+          <label>Clé de licence</label>
+          <input id="a-key" type="text" placeholder="LEXIA-XXXXX-XXXXX-30J" style="text-transform:uppercase;font-family:'Courier New';letter-spacing:.05em"/>
+          <button class="btn-login" onclick="doActivate()">Activer</button>
+          <div id="a-msg"></div>
+        </div>
+
+        <div style="margin-top:20px;text-align:center;font-size:11px;color:#3d3830">
+          Pour obtenir une licence, contactez <span style="color:#8b7355">admin@lexia.ma</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUPER ADMIN PANEL -->
+<div id="admin-panel">
+  <div class="admin-box">
+    <div class="admin-header">
+      <h2>👑 SUPER ADMIN — LEXIA</h2>
+      <button onclick="document.getElementById('admin-panel').classList.remove('show')" style="background:transparent;border:none;color:#fbbf24;cursor:pointer;font-size:18px">✕</button>
+    </div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="adminTab('licences')">Générer licences</button>
+      <button class="admin-tab" onclick="adminTab('users')">Utilisateurs</button>
+      <button class="admin-tab" onclick="adminTab('keys')">Clés générées</button>
+    </div>
+    <div class="admin-content">
+
+      <!-- LICENCES -->
+      <div id="atab-licences">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
+          <div class="plan-card sel" id="plan-monthly" onclick="selPlan('monthly')">
+            <div style="font-size:20px">📅</div>
+            <div class="price">249 MAD</div>
+            <div class="label">30 jours</div>
+            <div class="desc">Mensuel</div>
+          </div>
+          <div class="plan-card" id="plan-yearly" onclick="selPlan('yearly')">
+            <div style="font-size:20px">📆</div>
+            <div class="price">2 490 MAD</div>
+            <div class="label">1 an</div>
+            <div class="desc">Annuel</div>
+          </div>
+          <div class="plan-card" id="plan-lifetime" onclick="selPlan('lifetime')">
+            <div style="font-size:20px">♾</div>
+            <div class="price">8 490 MAD</div>
+            <div class="label">À vie</div>
+            <div class="desc">Illimité</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px">
+          <label style="font-size:11px;color:#8b7355;font-family:'Cinzel',serif">Quantité :</label>
+          <input id="gen-count" type="number" value="1" min="1" max="20" style="width:70px"/>
+          <button class="btn bg" onclick="genLicences()" style="padding:9px 18px;font-size:11px">Générer</button>
+        </div>
+        <div id="gen-result"></div>
+      </div>
+
+      <!-- USERS -->
+      <div id="atab-users" style="display:none">
+        <div style="margin-bottom:12px;display:flex;gap:10px">
+          <button class="btn bg" onclick="loadAdminUsers()" style="font-size:11px;padding:8px 14px">↺ Actualiser</button>
+        </div>
+        <table class="admin-table">
+          <thead><tr><th>Nom</th><th>Email</th><th>Rôle</th><th>Licence</th><th>Créé le</th><th></th></tr></thead>
+          <tbody id="admin-users-tbody"><tr><td colspan="6" style="text-align:center;padding:20px;color:#4a4238">Cliquez sur Actualiser</td></tr></tbody>
+        </table>
+      </div>
+
+      <!-- KEYS -->
+      <div id="atab-keys" style="display:none">
+        <div style="margin-bottom:12px">
+          <button class="btn bg" onclick="loadAdminKeys()" style="font-size:11px;padding:8px 14px">↺ Actualiser</button>
+        </div>
+        <table class="admin-table">
+          <thead><tr><th>Clé</th><th>Plan</th><th>Expiration</th><th>Utilisée par</th></tr></thead>
+          <tbody id="admin-keys-tbody"><tr><td colspan="4" style="text-align:center;padding:20px;color:#4a4238">Cliquez sur Actualiser</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
 <button id="menu-toggle" onclick="toggleMenu()">☰</button>
 <div id="overlay" onclick="closeMenu()"></div>
 <div id="sidebar">
@@ -231,7 +447,17 @@ select option{background:#1a1a1e}
 <div id="main">
   <div id="topbar">
     <div><div id="ptitle">Tableau de bord</div><div id="pdate">Lundi 25 mai 2026</div></div>
-    <button class="btn bg" data-action="new-dossier">+ Nouveau dossier</button>
+    <div style="display:flex;gap:10px;align-items:center">
+      <div id="user-badge" onclick="if(window.currentUser&&window.currentUser.role==='super')document.getElementById('admin-panel').classList.add('show')">
+        <div>
+          <div class="uname" id="topbar-uname">—</div>
+          <div class="urole" id="topbar-ulicence">—</div>
+        </div>
+        <div id="topbar-crown" style="display:none;color:#fbbf24;font-size:16px">👑</div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">Déconnexion</button>
+      <button class="btn bg" data-action="new-dossier">+ Nouveau dossier</button>
+    </div>
   </div>
   <div id="content">
   <div id="print-header">
@@ -697,7 +923,7 @@ document.addEventListener("click",function(e){
     if(sf&&CABINET.nom)sf.textContent=CABINET.nom;
     if(sf2&&CABINET.ville)sf2.textContent=CABINET.ville+(CABINET.barreau?" · Barreau de "+CABINET.barreau:"");
     // Update topbar date label
-    notif("Paramètres enregistrés avec succès");
+    saveUserKey("CABINET");notif("Paramètres enregistrés avec succès");
     goTo("parametres");
   }
   else if(a==="save-convention"){
@@ -1378,7 +1604,241 @@ function pParametres(){
   return html;
 }
 
-window.addEventListener("load",function(){buildNav();goTo("dashboard");});
+
+// ── AUTH ──
+var API = "";
+var TOKEN = localStorage.getItem("lexia_token") || "";
+window.currentUser = null;
+
+function authHeaders() { return {"Content-Type":"application/json","Authorization":"Bearer "+TOKEN}; }
+
+async function apiCall(method, url, body) {
+  try {
+    var opts = {method: method, headers: authHeaders()};
+    if(body) opts.body = JSON.stringify(body);
+    var r = await fetch(API + url, opts);
+    var data = await r.json();
+    if(!r.ok) throw new Error(data.error || "Erreur");
+    return data;
+  } catch(e) { throw e; }
+}
+
+function switchAuthTab(tab) {
+  ["login","register","activate"].forEach(function(t){
+    document.getElementById("tab-"+t).style.display = t===tab?"block":"none";
+    document.querySelectorAll(".login-tab").forEach(function(b,i){
+      b.classList.toggle("active", ["login","register","activate"][i]===tab);
+    });
+  });
+}
+
+async function doLogin() {
+  var email = document.getElementById("l-email").value.trim();
+  var pass = document.getElementById("l-pass").value;
+  var err = document.getElementById("l-error");
+  err.textContent = "";
+  if(!email||!pass){err.textContent="Remplir tous les champs";return;}
+  try {
+    var data = await apiCall("POST","/api/login",{email,password:pass});
+    TOKEN = data.token;
+    localStorage.setItem("lexia_token", TOKEN);
+    enterApp(data.user, data.licence);
+  } catch(e) {
+    err.textContent = e.message;
+    if(e.message && e.message.includes("licence")) {
+      err.textContent = e.message + " — Activez votre licence dans l'onglet 'Activer licence'";
+    }
+  }
+}
+
+async function doRegister() {
+  var nom = document.getElementById("r-nom").value.trim();
+  var email = document.getElementById("r-email").value.trim();
+  var pass = document.getElementById("r-pass").value;
+  var msg = document.getElementById("r-msg");
+  msg.textContent="";
+  if(!nom||!email||!pass){msg.className="auth-error";msg.textContent="Remplir tous les champs";return;}
+  if(pass.length<6){msg.className="auth-error";msg.textContent="Mot de passe trop court (min 6 caractères)";return;}
+  try {
+    await apiCall("POST","/api/register",{email,password:pass,nom});
+    msg.className="auth-success";
+    msg.textContent="✅ Compte créé ! Activez maintenant votre licence.";
+    setTimeout(function(){switchAuthTab("activate");document.getElementById("a-email").value=email;},2000);
+  } catch(e){msg.className="auth-error";msg.textContent=e.message;}
+}
+
+async function doActivate() {
+  var email = document.getElementById("a-email").value.trim();
+  var pass = document.getElementById("a-pass").value;
+  var key = document.getElementById("a-key").value.trim().toUpperCase();
+  var msg = document.getElementById("a-msg");
+  msg.textContent="";
+  if(!email||!pass||!key){msg.className="auth-error";msg.textContent="Remplir tous les champs";return;}
+  try {
+    var data = await apiCall("POST","/api/activate-licence",{email,password:pass,licenceKey:key});
+    TOKEN = data.token;
+    localStorage.setItem("lexia_token", TOKEN);
+    msg.className="auth-success";msg.textContent="✅ Licence activée !";
+    setTimeout(function(){enterApp(data.user, data.licence);},1000);
+  } catch(e){msg.className="auth-error";msg.textContent=e.message;}
+}
+
+function enterApp(user, licence) {
+  window.currentUser = user;
+  document.getElementById("login-screen").classList.add("hidden");
+  document.getElementById("topbar-uname").textContent = user.nom;
+  var licPlan = {"monthly":"30 jours","yearly":"1 an","lifetime":"À vie","super":"Super Admin"};
+  document.getElementById("topbar-ulicence").textContent = user.role==="super"?"👑 Super Admin":("Licence " + (licPlan[licence.plan]||"") + (licence.daysLeft?" · "+licence.daysLeft+"j":""));
+  if(user.role==="super") document.getElementById("topbar-crown").style.display="block";
+  loadUserData();
+}
+
+function doLogout() {
+  TOKEN="";
+  localStorage.removeItem("lexia_token");
+  window.currentUser=null;
+  document.getElementById("login-screen").classList.remove("hidden");
+  document.getElementById("topbar-crown").style.display="none";
+}
+
+// ── USER DATA PERSISTENCE ──
+var DIRTY_KEYS = {};
+var SAVE_TIMER = null;
+
+function loadUserData() {
+  if(!window.currentUser) return;
+  var keys=["DOS","AGD","ACT","HON","PROC","COL","CHG","LCB","PMSG","PDOC","PACCES","NOTES","TEMPS","PIECES","CONVENTIONS","TRESORERIE_ENT","TRESORERIE_SOR","CABINET"];
+  var promises = keys.map(function(k){
+    return fetch(API+"/api/data/"+k, {headers:authHeaders()})
+      .then(function(r){return r.json();})
+      .then(function(d){if(d!==null && d!==undefined && Array.isArray(window[k])!==undefined){if(Array.isArray(d))window[k]=d;else if(typeof d==="object")Object.assign(window[k],d);}})
+      .catch(function(){});
+  });
+  Promise.all(promises).then(function(){
+    buildNav();goTo("dashboard");
+  });
+}
+
+function saveUserKey(key) {
+  if(!window.currentUser||!TOKEN) return;
+  fetch(API+"/api/data/"+key,{method:"POST",headers:authHeaders(),body:JSON.stringify(window[key])}).catch(function(){});
+}
+
+function autoSave(key) {
+  clearTimeout(SAVE_TIMER);
+  SAVE_TIMER = setTimeout(function(){ saveUserKey(key); }, 800);
+}
+
+// Patch all data mutations to auto-save
+var _origNotif = null;
+
+// ── SUPER ADMIN ──
+var selectedPlan = "monthly";
+
+function selPlan(p) {
+  selectedPlan = p;
+  ["monthly","yearly","lifetime"].forEach(function(x){
+    var el=document.getElementById("plan-"+x);
+    if(el) el.classList.toggle("sel",x===p);
+  });
+}
+
+function adminTab(tab) {
+  ["licences","users","keys"].forEach(function(t){
+    var el=document.getElementById("atab-"+t);if(el)el.style.display=t===tab?"block":"none";
+    document.querySelectorAll(".admin-tab").forEach(function(b,i){
+      b.classList.toggle("active",["licences","users","keys"][i]===tab);
+    });
+  });
+  if(tab==="users")loadAdminUsers();
+  if(tab==="keys")loadAdminKeys();
+}
+
+async function genLicences() {
+  var count = parseInt(document.getElementById("gen-count").value)||1;
+  try {
+    var data = await apiCall("POST","/api/admin/generate-licence",{plan:selectedPlan,count});
+    var res=document.getElementById("gen-result");
+    var planLabel={"monthly":"30 jours — 249 MAD","yearly":"1 an — 2 490 MAD","lifetime":"À vie — 8 490 MAD"};
+    res.innerHTML="<div style='font-family:Cinzel,serif;font-size:11px;color:#4ade80;margin-bottom:8px'>✅ "+data.generated.length+" clé(s) générée(s) — "+planLabel[selectedPlan]+"</div>";
+    data.generated.forEach(function(l){
+      var kd=document.createElement('div');kd.className='key-box';kd.title='Cliquer pour copier';kd.textContent=l.key;kd.onclick=(function(k){return function(){navigator.clipboard.writeText(k).then(function(){notif('Clé copiée');});}})(l.key);res.appendChild(kd);
+    });
+  } catch(e){notif("Erreur: "+e.message);}
+}
+
+async function loadAdminUsers() {
+  try {
+    var users = await apiCall("GET","/api/admin/users");
+    var planLabel={"monthly":"30j","yearly":"1an","lifetime":"À vie","super":"Super Admin"};
+    var licCls={"monthly":"lic-monthly","yearly":"lic-yearly","lifetime":"lic-lifetime","super":"lic-super"};
+    document.getElementById("admin-users-tbody").innerHTML = users.map(function(u){
+      var lic=u.licence;
+      var licBadge=lic&&lic.valid?"<span class='licence-badge "+(licCls[lic.plan]||"")+"'>"+(planLabel[lic.plan]||lic.plan)+(lic.daysLeft?" · "+lic.daysLeft+"j":"")+"</span>":"<span style='color:#f87171;font-size:11px'>Aucune</span>";
+      var del=u.role!=="super"?"<button onclick='delUser("+u.id+")' style='background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.2);padding:3px 8px;border-radius:4px;cursor:pointer;font-size:10px'>🗑</button>":"";
+      return "<tr><td>"+u.nom+"</td><td style='color:#8b7355'>"+u.email+"</td><td><span class='badge "+(u.role==="super"?"bat":"bec")+"'>"+u.role+"</span></td><td>"+licBadge+"</td><td style='font-size:11px;color:#5a5248'>"+(u.createdAt?new Date(u.createdAt).toLocaleDateString("fr-FR"):"—")+"</td><td>"+del+"</td></tr>";
+    }).join("") || "<tr><td colspan='6' style='text-align:center;color:#4a4238'>Aucun utilisateur</td></tr>";
+  } catch(e){notif("Erreur: "+e.message);}
+}
+
+async function loadAdminKeys() {
+  try {
+    var keys = await apiCall("GET","/api/admin/licences");
+    var planLabel={"monthly":"30 jours","yearly":"1 an","lifetime":"À vie"};
+    document.getElementById("admin-keys-tbody").innerHTML = keys.map(function(k){
+      var exp=k.expiresAt?new Date(k.expiresAt).toLocaleDateString("fr-FR"):"∞";
+      return "<tr><td style='font-family:Courier New;color:#d4b896;font-size:11px'>"+k.key+"</td><td>"+planLabel[k.plan]+"</td><td style='font-size:11px'>"+exp+"</td><td style='font-size:11px;color:"+(k.usedBy?"#4ade80":"#5a5248")+"'>"+( k.usedBy||"Disponible")+"</td></tr>";
+    }).join("") || "<tr><td colspan='4' style='text-align:center;color:#4a4238'>Aucune clé</td></tr>";
+  } catch(e){notif("Erreur: "+e.message);}
+}
+
+async function delUser(id) {
+  if(!confirm("Supprimer cet utilisateur ?")) return;
+  try {
+    await apiCall("DELETE","/api/admin/user/"+id);
+    notif("Utilisateur supprimé");
+    loadAdminUsers();
+  } catch(e){notif("Erreur: "+e.message);}
+}
+
+// ── AUTO-SAVE patches ──
+// Wrap goTo to save current data before navigating
+var _origGoTo = null;
+
+// Patch saves into actions
+var _origSave = saveUserKey;
+// After each data mutation, auto-save relevant array
+document.addEventListener("lexia-data-changed", function(e){
+  if(e.detail) saveUserKey(e.detail);
+});
+function dataSaved(key){ document.dispatchEvent(new CustomEvent("lexia-data-changed",{detail:key})); }
+
+// Auto-save all user data every 30s
+setInterval(function(){
+  if(!window.currentUser||!TOKEN) return;
+  var keys=["DOS","AGD","ACT","HON","PROC","COL","CHG","LCB","PMSG","PDOC","PACCES","NOTES","TEMPS","PIECES","CONVENTIONS","TRESORERIE_ENT","TRESORERIE_SOR","CABINET"];
+  keys.forEach(function(k){ if(window[k]!==undefined) saveUserKey(k); });
+}, 30000);
+
+// ── STARTUP ──
+window.addEventListener("load", async function(){
+  if(TOKEN) {
+    try {
+      var data = await apiCall("GET","/api/me");
+      enterApp(data.user, data.licence);
+    } catch(e){
+      TOKEN="";localStorage.removeItem("lexia_token");
+    }
+  }
+  // Add Enter key support
+  document.addEventListener("keydown",function(e){
+    if(e.key==="Enter"){
+      var active=document.querySelector("#tab-login:not([style*='none'])");
+      if(active) doLogin();
+    }
+  });
+});
+
 </script>
 </body>
 </html>
