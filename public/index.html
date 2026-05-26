@@ -1502,10 +1502,226 @@ function pModeles(){
        {id:"cr_premiere_echeance",label:"Date 1ère échéance",ph:"Ex: 01/06/2026"},
        {id:"cr_cabinet",label:"Cabinet / Avocat",ph:"Ex: Cabinet Alami & Associés"},
      ]},
+,
+    // ── AVOCAT PROCEDURE ──
+    {id:9,cat:"Avocat",titre:"Assignation en justice",desc:"Acte introductif d instance devant le TPI",icone:"⚖",
+     fields:[
+       {id:"as_demandeur",label:"Demandeur (Nom complet, adresse)",ph:"Ex: M. Ahmed Benali, 45 Bd Mohammed V, Casablanca"},
+       {id:"as_defendeur",label:"Défendeur (Nom complet, adresse)",ph:"Ex: SARL Benali & Fils, RC n°12345"},
+       {id:"as_tribunal",label:"Tribunal compétent",ph:"Ex: TPI Casablanca"},
+       {id:"as_objet",label:"Objet de la demande",ph:"Ex: Paiement de la somme de 50 000 MAD"},
+       {id:"as_faits",label:"Exposé des faits",ph:"Décrivez les faits...",type:"textarea"},
+       {id:"as_base",label:"Base légale",ph:"Ex: Articles 77 et suivants du DOC"},
+       {id:"as_demandes",label:"Demandes au tribunal",ph:"Ex: Condamner le défendeur à payer...",type:"textarea"},
+       {id:"as_avocat",label:"Avocat",ph:"Ex: Me. Nadia Alami"}]},
+    {id:10,cat:"Avocat",titre:"Mémoire d appel",desc:"Mémoire devant la Cour d appel",icone:"🏛",
+     fields:[
+       {id:"ma_appelant",label:"Appelant",ph:"Ex: SARL Benali & Fils"},
+       {id:"ma_intime",label:"Intimé",ph:"Ex: M. Hassan Tazi"},
+       {id:"ma_cour",label:"Cour d appel",ph:"Ex: Cour d appel de Casablanca"},
+       {id:"ma_jugement",label:"Jugement attaqué",ph:"Ex: Jugement n°123 du TPI Casablanca du 15/01/2024"},
+       {id:"ma_griefs",label:"Griefs contre le jugement",ph:"Pourquoi le jugement est contesté...",type:"textarea"},
+       {id:"ma_demandes",label:"Demandes à la Cour",ph:"Ex: Infirmer le jugement et condamner..."},
+       {id:"ma_avocat",label:"Avocat",ph:"Ex: Me. Nadia Alami"}]},
+    {id:11,cat:"Avocat",titre:"Demande de mainlevée de saisie",desc:"Levée d une mesure conservatoire",icone:"🔓",
+     fields:[
+       {id:"ml_demandeur",label:"Demandeur",ph:"Ex: M. Hassan Tazi"},
+       {id:"ml_creancier",label:"Créancier saisissant",ph:"Ex: SARL Benali & Fils"},
+       {id:"ml_objet",label:"Objet de la saisie",ph:"Ex: Compte bancaire n°..., Véhicule..."},
+       {id:"ml_motif",label:"Motif de la mainlevée",ph:"Ex: Dette payée intégralement"},
+       {id:"ml_avocat",label:"Avocat",ph:"Ex: Me. Nadia Alami"}]},
+    {id:12,cat:"Avocat",titre:"Opposition injonction de payer",desc:"Opposition à ordonnance d injonction de payer",icone:"🛑",
+     fields:[
+       {id:"oi_opposant",label:"Opposant",ph:"Ex: M. Hassan Tazi"},
+       {id:"oi_creancier",label:"Créancier",ph:"Ex: SARL Benali & Fils"},
+       {id:"oi_ordonnance",label:"N° ordonnance contestée",ph:"Ex: Ordonnance n°456 du 01/03/2024"},
+       {id:"oi_montant",label:"Montant réclamé (MAD)",ph:"Ex: 25000",type:"number"},
+       {id:"oi_motifs",label:"Motifs de l opposition",ph:"La dette est inexistante car...",type:"textarea"},
+       {id:"oi_avocat",label:"Avocat",ph:"Ex: Me. Nadia Alami"}]},
+    {id:13,cat:"Avocat",titre:"Demande de référé urgence",desc:"Procédure d urgence devant le président du tribunal",icone:"⚡",
+     fields:[
+       {id:"rf_demandeur",label:"Demandeur",ph:"Ex: M. Ahmed Benali"},
+       {id:"rf_defendeur",label:"Défendeur",ph:"Ex: SARL Al Yasmine"},
+       {id:"rf_urgence",label:"Motif d urgence",ph:"Ex: Risque de préjudice imminent et irréparable"},
+       {id:"rf_mesures",label:"Mesures demandées",ph:"Ex: Ordonner la suspension immédiate de..."},
+       {id:"rf_avocat",label:"Avocat",ph:"Ex: Me. Nadia Alami"}]},
+    {id:14,cat:"Notaire",titre:"Donation entre époux",desc:"Donation entre conjoints de bien immobilier ou mobilier",icone:"💝",
+     fields:[
+       {id:"de_donateur",label:"Donateur (époux donateur)",ph:"Ex: M. Ahmed Benali, CIN A123456"},
+       {id:"de_donataire",label:"Donataire (époux bénéficiaire)",ph:"Ex: Mme. Fatima Benali, CIN B789012"},
+       {id:"de_bien",label:"Bien donné",ph:"Ex: Appartement TF n°12345, valeur 500 000 MAD"},
+       {id:"de_conditions",label:"Conditions éventuelles",ph:"Ex: Réserve d usufruit..."},
+       {id:"de_notaire",label:"Nom du notaire",ph:"Ex: Me. Karim Berrada"}]},
+    {id:15,cat:"Notaire",titre:"Contrat de mariage",desc:"Régime matrimonial entre époux",icone:"💍",
+     fields:[
+       {id:"cm_epoux",label:"Époux (Nom, CIN, adresse)",ph:"Ex: M. Youssef Bennani, CIN C456789"},
+       {id:"cm_epouse",label:"Épouse (Nom, CIN, adresse)",ph:"Ex: Mme. Houda Tazi, CIN D123456"},
+       {id:"cm_regime",label:"Régime matrimonial",ph:"Ex: Séparation de biens"},
+       {id:"cm_apports",label:"Apports de chaque époux",ph:"Ex: Époux apporte : ... / Épouse apporte : ..."},
+       {id:"cm_clauses",label:"Clauses particulières",ph:"Ex: Clause de préciput..."},
+       {id:"cm_notaire",label:"Nom du notaire",ph:"Ex: Me. Karim Berrada"}]},
+    {id:16,cat:"Notaire",titre:"Constitution de SCI",desc:"Statuts de Société Civile Immobilière",icone:"🏢",
+     fields:[
+       {id:"sci_nom",label:"Dénomination sociale",ph:"Ex: SCI Al Yasmine"},
+       {id:"sci_siege",label:"Siège social",ph:"Ex: 45 Bd Mohammed V, Casablanca"},
+       {id:"sci_capital",label:"Capital social (MAD)",ph:"Ex: 100000",type:"number"},
+       {id:"sci_associes",label:"Associés et répartition des parts",ph:"Ex: M. Benali 60% / Mme. Tazi 40%"},
+       {id:"sci_gerant",label:"Gérant désigné",ph:"Ex: M. Ahmed Benali"},
+       {id:"sci_notaire",label:"Nom du notaire",ph:"Ex: Me. Karim Berrada"}]},
+    {id:17,cat:"Notaire",titre:"Cession de parts sociales",desc:"Acte de cession entre associés",icone:"📊",
+     fields:[
+       {id:"cp_cedant",label:"Cédant",ph:"Ex: M. Hassan Tazi"},
+       {id:"cp_cessionnaire",label:"Cessionnaire",ph:"Ex: Mme. Fatima Chraibi"},
+       {id:"cp_societe",label:"Société",ph:"Ex: SARL Benali & Fils"},
+       {id:"cp_nb_parts",label:"Nombre de parts cédées",ph:"Ex: 50",type:"number"},
+       {id:"cp_prix",label:"Prix de cession (MAD)",ph:"Ex: 500000",type:"number"},
+       {id:"cp_notaire",label:"Nom du notaire",ph:"Ex: Me. Karim Berrada"}]},
+    {id:18,cat:"Notaire",titre:"Mainlevée d hypothèque",desc:"Radiation d une inscription hypothécaire",icone:"🔑",
+     fields:[
+       {id:"mh_debiteur",label:"Débiteur propriétaire",ph:"Ex: M. Youssef Bennani"},
+       {id:"mh_creancier",label:"Créancier hypothécaire",ph:"Ex: Banque Populaire"},
+       {id:"mh_bien",label:"Bien hypothéqué",ph:"Ex: Immeuble TF n°12345 à Casablanca"},
+       {id:"mh_montant",label:"Montant hypothèque (MAD)",ph:"Ex: 800000",type:"number"},
+       {id:"mh_notaire",label:"Nom du notaire",ph:"Ex: Me. Karim Berrada"}]},
+    {id:19,cat:"Notaire",titre:"Attestation de célibat",desc:"Certificat de situation matrimoniale",icone:"📜",
+     fields:[
+       {id:"ac_beneficiaire",label:"Bénéficiaire",ph:"Ex: M. Ahmed Benali, né le 15/03/1985 à Casablanca"},
+       {id:"ac_usage",label:"Usage de l attestation",ph:"Ex: Pour servir et valoir auprès de l ambassade de France"},
+       {id:"ac_notaire",label:"Nom du notaire",ph:"Ex: Me. Karim Berrada"}]},
+    {id:20,cat:"Commercial",titre:"Bail commercial 3-6-9",desc:"Contrat de bail avec révision triennale",icone:"🏪",
+     fields:[
+       {id:"bc_bailleur",label:"Bailleur",ph:"Ex: SCI Al Yasmine"},
+       {id:"bc_locataire",label:"Locataire",ph:"Ex: SARL Tazi & Frères"},
+       {id:"bc_bien",label:"Description des locaux",ph:"Ex: Local 120m² au rez-de-chaussée, 45 Bd Mohammed V"},
+       {id:"bc_loyer",label:"Loyer mensuel HT (MAD)",ph:"Ex: 8000",type:"number"},
+       {id:"bc_depot",label:"Dépôt de garantie (MAD)",ph:"Ex: 16000",type:"number"},
+       {id:"bc_debut",label:"Date de début",ph:"Ex: 01/07/2026"},
+       {id:"bc_activite",label:"Activité exercée",ph:"Ex: Commerce de détail alimentaire"}]},
+    {id:21,cat:"Commercial",titre:"Contrat de travail CDI",desc:"CDI selon Code du Travail marocain",icone:"👷",
+     fields:[
+       {id:"ct_employeur",label:"Employeur",ph:"Ex: SARL Benali & Fils, RC 12345"},
+       {id:"ct_employe",label:"Employé (Nom, CIN)",ph:"Ex: M. Hassan Tazi, CIN B789012"},
+       {id:"ct_poste",label:"Poste et fonctions",ph:"Ex: Comptable principal"},
+       {id:"ct_salaire",label:"Salaire mensuel brut (MAD)",ph:"Ex: 8000",type:"number"},
+       {id:"ct_debut",label:"Date de prise de fonction",ph:"Ex: 01/06/2026"},
+       {id:"ct_essai",label:"Période d essai",ph:"Ex: 3 mois renouvelables une fois"},
+       {id:"ct_lieu",label:"Lieu de travail",ph:"Ex: Casablanca, siège social"}]},
+    {id:22,cat:"Commercial",titre:"Contrat de prestation de services",desc:"Convention prestataire / client",icone:"🤝",
+     fields:[
+       {id:"ps_prestataire",label:"Prestataire",ph:"Ex: Cabinet Alami & Associés"},
+       {id:"ps_client",label:"Client",ph:"Ex: SARL Benali & Fils"},
+       {id:"ps_mission",label:"Description de la mission",ph:"Détaillez la mission...",type:"textarea"},
+       {id:"ps_duree",label:"Durée",ph:"Ex: 6 mois à compter du 01/06/2026"},
+       {id:"ps_honoraires",label:"Honoraires (MAD HT)",ph:"Ex: 15000 forfaitaires",type:"number"},
+       {id:"ps_paiement",label:"Modalités de paiement",ph:"Ex: 50% à la signature, 50% à la livraison"}]},
+    {id:23,cat:"Commercial",titre:"Accord de confidentialité (NDA)",desc:"Non-Disclosure Agreement",icone:"🔐",
+     fields:[
+       {id:"nda_p1",label:"Partie divulgatrice",ph:"Ex: SARL Benali & Fils"},
+       {id:"nda_p2",label:"Partie réceptrice",ph:"Ex: M. Hassan Tazi"},
+       {id:"nda_objet",label:"Informations confidentielles",ph:"Ex: Données financières, stratégie commerciale..."},
+       {id:"nda_duree",label:"Durée",ph:"Ex: 3 ans à compter de la signature"},
+       {id:"nda_penalite",label:"Pénalité violation (MAD)",ph:"Ex: 100000",type:"number"}]},
+    {id:24,cat:"Commercial",titre:"Lettre d intention (LOI)",desc:"Letter of Intent pour opération commerciale",icone:"📝",
+     fields:[
+       {id:"loi_acheteur",label:"Acquéreur",ph:"Ex: SARL Al Yasmine Invest"},
+       {id:"loi_vendeur",label:"Vendeur",ph:"Ex: M. Ahmed Benali"},
+       {id:"loi_cible",label:"Actif / Société ciblée",ph:"Ex: 100% des parts de SARL Benali & Fils"},
+       {id:"loi_valeur",label:"Valorisation envisagée (MAD)",ph:"Ex: 2000000",type:"number"},
+       {id:"loi_conditions",label:"Conditions suspensives",ph:"Ex: Due diligence satisfaisante"},
+       {id:"loi_validite",label:"Validité",ph:"Ex: 30 jours à compter de la signature"}]},
+    {id:25,cat:"Famille",titre:"Requête en divorce",desc:"Demande de divorce devant le tribunal de famille",icone:"⚖",
+     fields:[
+       {id:"div_demandeur",label:"Demandeur(se)",ph:"Ex: Mme. Fatima Chraibi"},
+       {id:"div_defendeur",label:"Défendeur(se)",ph:"Ex: M. Hassan Tazi"},
+       {id:"div_type",label:"Type de divorce",ph:"Ex: Talaq / Khol / Chiqaq / Pour faute"},
+       {id:"div_mariage",label:"Date et lieu du mariage",ph:"Ex: 15/06/2015 à Casablanca"},
+       {id:"div_enfants",label:"Enfants (prénoms, âges)",ph:"Ex: Youssef 8 ans, Sara 5 ans"},
+       {id:"div_motifs",label:"Motifs",ph:"Exposez les motifs...",type:"textarea"},
+       {id:"div_demandes",label:"Demandes accessoires",ph:"Ex: Garde, pension de 3000 MAD/mois"},
+       {id:"div_avocat",label:"Avocat",ph:"Ex: Me. Nadia Alami"}]},
+    {id:26,cat:"Famille",titre:"Convention pension alimentaire",desc:"Accord fixant la pension alimentaire",icone:"👨‍👩‍👧",
+     fields:[
+       {id:"pa_debiteur",label:"Débiteur de la pension",ph:"Ex: M. Hassan Tazi"},
+       {id:"pa_beneficiaire",label:"Bénéficiaire",ph:"Ex: Mme. Fatima Chraibi et les enfants"},
+       {id:"pa_montant",label:"Montant mensuel (MAD)",ph:"Ex: 4000",type:"number"},
+       {id:"pa_enfants",label:"Enfants concernés",ph:"Ex: Youssef et Sara Tazi"},
+       {id:"pa_debut",label:"Date de début",ph:"Ex: 01/06/2026"},
+       {id:"pa_avocat",label:"Avocat",ph:"Ex: Me. Nadia Alami"}]},
+    {id:27,cat:"Famille",titre:"Autorisation de voyage mineur",desc:"Autorisation parentale pour voyage seul",icone:"✈",
+     fields:[
+       {id:"av_parent",label:"Parent autorisateur (Nom, CIN)",ph:"Ex: M. Ahmed Benali, CIN A123456"},
+       {id:"av_enfant",label:"Enfant (Nom, date naissance)",ph:"Ex: Youssef Benali, né le 15/05/2015"},
+       {id:"av_destination",label:"Destination",ph:"Ex: France (Paris)"},
+       {id:"av_dates",label:"Dates du voyage",ph:"Ex: Du 01/07/2026 au 31/08/2026"},
+       {id:"av_accompagnateur",label:"Accompagnateur",ph:"Ex: Mme. Fatima Benali (tante), CIN B789012"},
+       {id:"av_notaire",label:"Nom du notaire",ph:"Ex: Me. Karim Berrada"}]},
+    {id:28,cat:"Famille",titre:"Acte d héritage (Warathah)",desc:"Déclaration successorale et héritiers",icone:"📋",
+     fields:[
+       {id:"ah_defunt",label:"Défunt(e) (Nom, date décès)",ph:"Ex: M. Mohamed Tazi, décédé le 01/01/2026"},
+       {id:"ah_heritiers",label:"Héritiers légaux",ph:"Ex: Épouse, Fils Hassan, Fille Sara"},
+       {id:"ah_biens",label:"Biens successoraux",ph:"Ex: Appartement TF n°12345, Compte bancaire..."},
+       {id:"ah_valeur",label:"Valeur estimée (MAD)",ph:"Ex: 1500000",type:"number"},
+       {id:"ah_notaire",label:"Nom du notaire",ph:"Ex: Me. Karim Berrada"}]},
+    {id:29,cat:"Administratif",titre:"Recours gracieux",desc:"Recours amiable auprès d une administration",icone:"🏛",
+     fields:[
+       {id:"rg_requerant",label:"Requérant",ph:"Ex: M. Ahmed Benali"},
+       {id:"rg_administration",label:"Administration destinataire",ph:"Ex: Direction Régionale des Impôts, Casablanca"},
+       {id:"rg_objet",label:"Objet du recours",ph:"Ex: Contestation avis de redressement n°..."},
+       {id:"rg_faits",label:"Exposé et arguments",ph:"Détaillez votre situation...",type:"textarea"},
+       {id:"rg_demande",label:"Ce que vous demandez",ph:"Ex: Annulation de la décision du..."},
+       {id:"rg_avocat",label:"Avocat",ph:"Ex: Me. Nadia Alami"}]},
+    {id:30,cat:"Administratif",titre:"Recours contentieux administratif",desc:"Recours devant le tribunal administratif",icone:"⚖",
+     fields:[
+       {id:"ca_requerant",label:"Requérant",ph:"Ex: M. Ahmed Benali"},
+       {id:"ca_administration",label:"Administration défenderesse",ph:"Ex: Commune de Casablanca"},
+       {id:"ca_decision",label:"Décision contestée",ph:"Ex: Refus de permis de construire du 01/03/2026"},
+       {id:"ca_moyens",label:"Moyens juridiques",ph:"Argumentation...",type:"textarea"},
+       {id:"ca_demandes",label:"Demandes",ph:"Ex: Annulation de la décision"},
+       {id:"ca_avocat",label:"Avocat",ph:"Ex: Me. Nadia Alami"}]},
+    {id:31,cat:"Administratif",titre:"Contestation redressement fiscal",desc:"Réclamation fiscale auprès de la DGI",icone:"💶",
+     fields:[
+       {id:"cf_contribuable",label:"Contribuable",ph:"Ex: SARL Benali & Fils, IF n°12345678"},
+       {id:"cf_avis",label:"N° avis de redressement",ph:"Ex: Avis n°2024-001 du 01/03/2026"},
+       {id:"cf_montant",label:"Montant contesté (MAD)",ph:"Ex: 150000",type:"number"},
+       {id:"cf_impot",label:"Nature de l impôt",ph:"Ex: IS / TVA / IR"},
+       {id:"cf_motifs",label:"Motifs de la contestation",ph:"Pourquoi ce redressement est contesté...",type:"textarea"},
+       {id:"cf_avocat",label:"Avocat",ph:"Ex: Me. Nadia Alami"}]},
+    {id:32,cat:"Recouvrement",titre:"Injonction de payer",desc:"Requête en injonction de payer au TPI",icone:"💰",
+     fields:[
+       {id:"ip_creancier",label:"Créancier requérant",ph:"Ex: SARL Benali & Fils"},
+       {id:"ip_debiteur",label:"Débiteur",ph:"Ex: M. Hassan Tazi, adresse..."},
+       {id:"ip_montant",label:"Montant principal (MAD)",ph:"Ex: 85000",type:"number"},
+       {id:"ip_origine",label:"Origine de la créance",ph:"Ex: Facture n°2024-001 impayée depuis le..."},
+       {id:"ip_preuves",label:"Pièces justificatives",ph:"Ex: Factures, bons de livraison, contrat..."},
+       {id:"ip_avocat",label:"Avocat",ph:"Ex: Me. Nadia Alami"}]},
+    {id:33,cat:"Recouvrement",titre:"Commandement de payer",desc:"Mise en demeure formelle avant saisie",icone:"📨",
+     fields:[
+       {id:"cdp_creancier",label:"Créancier",ph:"Ex: SARL Benali & Fils"},
+       {id:"cdp_debiteur",label:"Débiteur",ph:"Ex: M. Hassan Tazi"},
+       {id:"cdp_montant",label:"Montant total dû (MAD)",ph:"Ex: 90000",type:"number"},
+       {id:"cdp_titre",label:"Titre exécutoire",ph:"Ex: Jugement n°123 du TPI Casablanca du 15/01/2026"},
+       {id:"cdp_delai",label:"Délai de paiement",ph:"Ex: 8 jours"},
+       {id:"cdp_avocat",label:"Avocat",ph:"Ex: Me. Nadia Alami"}]},
+    {id:34,cat:"Recouvrement",titre:"Saisie-arrêt sur salaire",desc:"Demande de saisie sur rémunération",icone:"💼",
+     fields:[
+       {id:"sas_creancier",label:"Créancier saisissant",ph:"Ex: SARL Benali & Fils"},
+       {id:"sas_debiteur",label:"Débiteur saisi",ph:"Ex: M. Hassan Tazi"},
+       {id:"sas_employeur",label:"Employeur tiers saisi",ph:"Ex: SARL Al Yasmine (employeur du débiteur)"},
+       {id:"sas_montant",label:"Montant à recouvrer (MAD)",ph:"Ex: 50000",type:"number"},
+       {id:"sas_titre",label:"Titre exécutoire",ph:"Ex: Jugement n°123 du TPI Casablanca"},
+       {id:"sas_avocat",label:"Avocat",ph:"Ex: Me. Nadia Alami"}]},
+    {id:35,cat:"Recouvrement",titre:"Déclaration de créance",desc:"Déclaration dans une procédure collective",icone:"📊",
+     fields:[
+       {id:"dc_creancier",label:"Créancier déclarant",ph:"Ex: SARL Benali & Fils"},
+       {id:"dc_debiteur",label:"Débiteur en procédure collective",ph:"Ex: SARL Al Yasmine (en redressement)"},
+       {id:"dc_montant",label:"Montant de la créance (MAD)",ph:"Ex: 120000",type:"number"},
+       {id:"dc_nature",label:"Nature de la créance",ph:"Ex: Fournitures impayées, loyers, prêt..."},
+       {id:"dc_syndic",label:"Nom du syndic désigné",ph:"Ex: Maître Ahmed Benali"},
+       {id:"dc_avocat",label:"Avocat",ph:"Ex: Me. Nadia Alami"}]}
   ];
   window._MODELES=MODELES;
 
-  var cats=["Avocat","Notaire","Général"];
+  var cats=["Avocat","Notaire","Commercial","Famille","Administratif","Recouvrement","Général"];
   var html="<div class='f gap8 ac' style='margin-bottom:16px'>";
   cats.forEach(function(cat){
     html+="<button class='tb' data-action='filter-modele' data-cat='"+cat+"'>"+cat+"</button>";
@@ -1591,6 +1807,21 @@ function generateModele(idx){
     corps="CONVENTION DE RÈGLEMENT ÉCHELONNÉ\n\nEntre :\nLE DÉBITEUR : "+vals.cr_debiteur+"\nLE CRÉANCIER : "+vals.cr_creancier+"\n\nARTICLE 1 — MONTANT\nLe débiteur reconnaît devoir au créancier la somme totale de "+total+".\n\nARTICLE 2 — ÉCHELONNEMENT\nLe règlement sera effectué en "+vals.cr_nb_echeances+" versements égaux de "+echeance+" chacun.\nLa première échéance est fixée au "+vals.cr_premiere_echeance+".\n\nARTICLE 3 — CLAUSE RÉSOLUTOIRE\nTout défaut de paiement d une échéance rendra l intégralité de la dette exigible immédiatement.\n\nFait à "+cabVille+", le "+today+"\n\nSignature du débiteur : "+vals.cr_debiteur+"\nSignature du créancier : "+vals.cr_creancier+"\n\nPar : "+vals.cr_cabinet;
   }
 
+  // Generic template generator for all other templates
+  if(!corps) {
+    corps = m.titre.toUpperCase() + "\n\n";
+    corps += "Casablanca, le " + today + "\n\n";
+    m.fields.forEach(function(f){
+      if(vals[f.id] && vals[f.id] !== "["+f.label+"]") {
+        corps += f.label.toUpperCase() + " : " + vals[f.id] + "\n";
+      }
+    });
+    corps += "\n\nFait à " + (window.CABINET&&window.CABINET.ville?window.CABINET.ville:"Casablanca") + ", le " + today;
+    if(vals[Object.keys(vals).find(function(k){return k.endsWith("_avocat")||k.endsWith("_notaire");})||""]) {
+      var signataire = vals[Object.keys(vals).find(function(k){return k.endsWith("_avocat")||k.endsWith("_notaire");})||""];
+      corps += "\n\n" + signataire;
+    }
+  }
   document.getElementById("m-modele-form").remove();
 
   var w=window.open("","_blank","width=860,height=750");
