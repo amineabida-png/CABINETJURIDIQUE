@@ -347,9 +347,99 @@ body.rtl .action-btns { flex-direction: row-reverse; }
   transition: all .2s; letter-spacing: 0;
 }
 #lang-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(139,115,85,.5); }
+
+/* ── SEARCH BAR ── */
+#search-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:7777;display:none;align-items:flex-start;justify-content:center;padding-top:80px}
+#search-overlay.show{display:flex}
+.search-box{background:#0f0f12;border:1px solid rgba(139,115,85,.35);border-radius:14px;width:680px;max-width:95vw;overflow:hidden}
+.search-input-wrap{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid rgba(139,115,85,.15)}
+.search-input-wrap span{font-size:20px;color:#8b7355}
+#global-search-input{flex:1;background:transparent;border:none;outline:none;color:#e8e0d0;font-size:16px;font-family:'Cormorant Garamond',serif}
+#global-search-input::placeholder{color:#4a4238}
+.search-results{max-height:420px;overflow-y:auto;padding:10px}
+.search-result-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;cursor:pointer;transition:background .15s}
+.search-result-item:hover{background:rgba(139,115,85,.1)}
+.search-result-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.search-result-title{font-size:13px;color:#e8e0d0}
+.search-result-sub{font-size:11px;color:#5a5248;margin-top:2px}
+.search-result-badge{margin-left:auto;flex-shrink:0}
+.search-empty{text-align:center;padding:30px;color:#4a4238;font-family:'Cinzel',serif;font-size:12px}
+.search-section{font-family:'Cinzel',serif;font-size:9px;color:#8b7355;text-transform:uppercase;letter-spacing:.1em;padding:8px 14px 4px}
+
+/* ── ALERTS ── */
+.alert-card{border-radius:10px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;border:1px solid}
+.alert-urgent{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.25)}
+.alert-warning{background:rgba(251,191,36,.06);border-color:rgba(251,191,36,.2)}
+.alert-info{background:rgba(96,165,250,.06);border-color:rgba(96,165,250,.2)}
+.alert-ok{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.2)}
+.alert-icon{font-size:22px;flex-shrink:0}
+.alert-title{font-size:13px;color:#e8e0d0;font-weight:600}
+.alert-sub{font-size:11px;margin-top:3px}
+
+/* ── FICHE CLIENT ── */
+.fc-tabs{display:flex;gap:4px;margin-bottom:16px}
+.fc-tab{padding:9px 16px;border-radius:7px;cursor:pointer;font-family:'Cinzel',serif;font-size:11px;color:#6a6058;border:1px solid rgba(139,115,85,.15);background:transparent;transition:all .2s}
+.fc-tab.active{background:rgba(139,115,85,.15);color:#d4b896;border-color:rgba(139,115,85,.3)}
+.fc-stat{text-align:center;padding:16px;background:rgba(255,255,255,.03);border:1px solid rgba(139,115,85,.12);border-radius:8px}
+.fc-stat .val{font-family:'Cinzel',serif;font-size:20px;color:#d4b896;margin-bottom:4px}
+.fc-stat .lbl{font-size:10px;color:#5a5248;text-transform:uppercase;letter-spacing:.06em}
+
+/* ── RECU ── */
+.recu-preview{background:#fff;color:#111;border-radius:8px;padding:20px;font-family:Georgia,serif}
 </style>
 </head>
 <body>
+
+<!-- SEARCH OVERLAY -->
+<div id="search-overlay" onclick="if(event.target===this)closeSearch()">
+  <div class="search-box">
+    <div class="search-input-wrap">
+      <span>🔍</span>
+      <input id="global-search-input" placeholder="Rechercher dossier, client, acte, honoraire..." oninput="doSearch(this.value)" onkeydown="if(event.key==='Escape')closeSearch()"/>
+      <button onclick="closeSearch()" style="background:transparent;border:none;color:#5a5248;cursor:pointer;font-size:18px">✕</button>
+    </div>
+    <div id="search-results" class="search-results">
+      <div class="search-empty">Tapez pour rechercher dans tous les modules</div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL RECU -->
+<div class="modal-bg" id="m-recu">
+  <div class="modal">
+    <h3>NOUVEAU REÇU / QUITTANCE</h3>
+    <label>Client</label><input id="rc-client" placeholder="Nom complet du client"/>
+    <label>Dossier lié</label><input id="rc-dossier" placeholder="Ex: D-2024-001 (optionnel)"/>
+    <label>Motif du paiement</label><input id="rc-motif" placeholder="Ex: Honoraires consultation, Provision dossier..."/>
+    <label>Montant reçu (MAD)</label><input id="rc-montant" type="number" placeholder="Ex: 15000"/>
+    <label>Mode de paiement</label>
+    <select id="rc-mode"><option>Espèces</option><option>Virement bancaire</option><option>Chèque</option><option>CB / TPE</option><option>Mobile Payment</option></select>
+    <label>Date de paiement</label><input id="rc-date" type="date"/>
+    <label>Reçu par</label><select id="rc-par"><option>Me. Alami</option><option>Me. Berrada</option><option>Me. Idrissi</option><option>Me. Lahlou</option></select>
+    <div class="modal-btns">
+      <button class="btn bgh" data-action="close-modal">Annuler</button>
+      <button class="btn bg" data-action="save-recu">Générer le reçu</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ALERTE CUSTOM -->
+<div class="modal-bg" id="m-alerte">
+  <div class="modal">
+    <h3>NOUVEAU RAPPEL</h3>
+    <label>Titre du rappel</label><input id="al-titre" placeholder="Ex: Audience TPI Casablanca"/>
+    <label>Dossier / Client</label><input id="al-dossier" placeholder="Ex: D-2024-001 / M. Benali"/>
+    <label>Date d échéance</label><input id="al-date" type="date"/>
+    <label>Priorité</label>
+    <select id="al-prio"><option value="urgent">🔴 Urgente</option><option value="warning">🟡 Importante</option><option value="info">🔵 Information</option></select>
+    <label>Note</label><textarea id="al-note" rows="2" placeholder="Détails supplémentaires..."></textarea>
+    <div class="modal-btns">
+      <button class="btn bgh" data-action="close-modal">Annuler</button>
+      <button class="btn bg" data-action="save-alerte">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
 <div id="login-screen">
   <div class="login-page">
     <div class="login-left">
@@ -525,7 +615,7 @@ body.rtl .action-btns { flex-direction: row-reverse; }
         </div>
         <div id="topbar-crown" style="display:none;color:#fbbf24;font-size:16px">👑</div>
       </div>
-      <button class="logout-btn" onclick="doLogout()">Déconnexion</button>
+      <button onclick="openSearch()" style="background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#8b7355;padding:6px 12px;border-radius:7px;cursor:pointer;font-size:13px" title="Recherche globale (Ctrl+K)">🔍</button><button class="logout-btn" onclick="doLogout()">Déconnexion</button>
       <button class="btn bg" data-action="new-dossier">+ Nouveau dossier</button>
     </div>
   </div>
@@ -732,7 +822,11 @@ var MODS=[
   {id:"tresorerie",label:"Tableau de trésorerie",icon:"💳",grp:"Documents"},
   {id:"emoluments",label:"Émoluments notariaux",icon:"⚖",grp:"Documents"},
   {id:"parametres",label:"Paramètres du cabinet",icon:"⚙",grp:"Paramètres"},
-  {id:"ai",label:"Assistant LEXIA IA",icon:"🤖",grp:"Intelligence Artificielle"}
+  {id:"ai",label:"Assistant LEXIA IA",icon:"🤖",grp:"Intelligence Artificielle"},
+  {id:"alertes",label:"Alertes et Rappels",icon:"🔔",grp:"Gestion"},
+  {id:"ficheclient",label:"Fiche client complète",icon:"👤",grp:"Gestion"},
+  {id:"recherche",label:"Recherche globale",icon:"🔍",grp:"Gestion"},
+  {id:"recus",label:"Reçus et Quittances",icon:"🧾",grp:"Gestion"}
 ];
 
 var DOS=[];
@@ -783,6 +877,8 @@ var CABINET={
   rib:"",tva:"",logo:"",slogan:""
 };
 var CONVENTIONS=[];
+var RECUS=[];
+var ALERTES_CUSTOM=[];
 var TRESORERIE_ENT=[];
 var TRESORERIE_SOR=[];
 
@@ -828,7 +924,7 @@ function goTo(id){
     dashboard:pDash,clients:pClients,agenda:pAgenda,actes:pActes,
     honoraires:pHon,procedures:pProc,bibliotheque:pBib,
     collaborateurs:pCollab,comptabilite:pCompta,conformite:pConf,portail:pPortail,
-    analytique:pAnalytique,temps:pTemps,notes:pNotes,pieces:pPieces,modeles:pModeles,conventions:pConventions,delais:pDelais,tresorerie:pTresorerie,emoluments:pEmoluments,parametres:pParametres,ai:pAI
+    analytique:pAnalytique,temps:pTemps,notes:pNotes,pieces:pPieces,modeles:pModeles,conventions:pConventions,delais:pDelais,tresorerie:pTresorerie,emoluments:pEmoluments,parametres:pParametres,ai:pAI,alertes:pAlertes,ficheclient:pFicheClient,recherche:pRecherche,recus:pRecus
   };
   if(pages[id])c.innerHTML=pages[id]();
 }
@@ -849,6 +945,57 @@ document.addEventListener("click",function(e){
   else if(a==="new-charge")openM("m-charge");
   else if(a==="new-client-lcb")openM("m-client-lcb");
   else if(a==="open-modele"){openModeleForm(parseInt(el.getAttribute("data-idx")));}
+  else if(a==="save-recu"){
+    var cl=document.getElementById("rc-client").value;
+    var mt=parseInt(document.getElementById("rc-montant").value)||0;
+    if(!cl||!mt){notif("Saisir client et montant");return;}
+    var recu={
+      ref:"REC-"+String(RECUS.length+1).padStart(3,"0"),
+      client:cl,dossier:document.getElementById("rc-dossier").value,
+      motif:document.getElementById("rc-motif").value,
+      montant:mt,mode:document.getElementById("rc-mode").value,
+      date:document.getElementById("rc-date").value||new Date().toLocaleDateString("fr-FR"),
+      par:document.getElementById("rc-par").value,
+      createdAt:new Date().toISOString()
+    };
+    RECUS.push(recu);saveUserKey("RECUS");
+    closeM();printRecu(RECUS.length-1);notif("Reçu généré");goTo("recus");
+  }
+  else if(a==="save-alerte"){
+    var titre=document.getElementById("al-titre").value;
+    var date=document.getElementById("al-date").value;
+    if(!titre||!date){notif("Saisir titre et date");return;}
+    ALERTES_CUSTOM.push({titre:titre,dossier:document.getElementById("al-dossier").value,date:date,prio:document.getElementById("al-prio").value,note:document.getElementById("al-note").value,done:false,createdAt:new Date().toISOString()});
+    saveUserKey("ALERTES_CUSTOM");
+    closeM();notif("Rappel enregistré");goTo("alertes");
+  }
+  else if(a==="search-goto"){closeSearch();goTo(el.getAttribute("data-page"));}
+  else if(a==="done-alerte"){
+    var i=parseInt(el.getAttribute("data-idx"));
+    if(ALERTES_CUSTOM[i])ALERTES_CUSTOM[i].done=true;
+    saveUserKey("ALERTES_CUSTOM");notif("Rappel marqué terminé");goTo("alertes");
+  }
+  else if(a==="del-alerte"){
+    var i=parseInt(el.getAttribute("data-idx"));
+    ALERTES_CUSTOM.splice(i,1);saveUserKey("ALERTES_CUSTOM");notif("Rappel supprimé");goTo("alertes");
+  }
+  else if(a==="del-recu"){
+    var i=parseInt(el.getAttribute("data-idx"));
+    RECUS.splice(i,1);saveUserKey("RECUS");notif("Reçu supprimé");goTo("recus");
+  }
+  else if(a==="print-recu"){
+    printRecu(parseInt(el.getAttribute("data-idx")));
+  }
+  else if(a==="open-fiche"){
+    var client=el.getAttribute("data-client");
+    window._ficheClient=client;goTo("ficheclient");
+  }
+  else if(a==="fc-tab"){
+    document.querySelectorAll(".fc-tab").forEach(function(b){b.classList.remove("active");});
+    el.classList.add("active");
+    var tab=el.getAttribute("data-tab");
+    document.querySelectorAll("[data-fc-panel]").forEach(function(p){p.style.display=p.getAttribute("data-fc-panel")===tab?"block":"none";});
+  }
   else if(a==="ai-shortcut"){
     goTo("ai");
     setTimeout(function(){
@@ -2230,7 +2377,7 @@ var SAVE_TIMER = null;
 
 function loadUserData() {
   if(!window.currentUser) return;
-  var keys=["DOS","AGD","ACT","HON","PROC","COL","CHG","LCB","PMSG","PDOC","PACCES","NOTES","TEMPS","PIECES","CONVENTIONS","TRESORERIE_ENT","TRESORERIE_SOR","CABINET"];
+  var keys=["DOS","AGD","ACT","HON","PROC","COL","CHG","LCB","PMSG","PDOC","PACCES","NOTES","TEMPS","PIECES","CONVENTIONS","TRESORERIE_ENT","TRESORERIE_SOR","CABINET","RECUS","ALERTES_CUSTOM"];
   var promises = keys.map(function(k){
     return fetch(API+"/api/data/"+k, {headers:authHeaders()})
       .then(function(r){return r.json();})
@@ -2339,7 +2486,7 @@ function dataSaved(key){ document.dispatchEvent(new CustomEvent("lexia-data-chan
 // Auto-save all user data every 30s
 setInterval(function(){
   if(!window.currentUser||!TOKEN) return;
-  var keys=["DOS","AGD","ACT","HON","PROC","COL","CHG","LCB","PMSG","PDOC","PACCES","NOTES","TEMPS","PIECES","CONVENTIONS","TRESORERIE_ENT","TRESORERIE_SOR","CABINET"];
+  var keys=["DOS","AGD","ACT","HON","PROC","COL","CHG","LCB","PMSG","PDOC","PACCES","NOTES","TEMPS","PIECES","CONVENTIONS","TRESORERIE_ENT","TRESORERIE_SOR","CABINET","RECUS","ALERTES_CUSTOM"];
   keys.forEach(function(k){ if(window[k]!==undefined) saveUserKey(k); });
 }, 30000);
 
@@ -2665,6 +2812,262 @@ function toggleLang() {
   var cur = document.getElementById("ptitle").textContent;
   var mod = MODS.find(function(m){ return m.label === cur || t(m.label) === cur; });
   if(mod) goTo(mod.id);
+}
+
+
+
+// ── SEARCH ──
+function openSearch(){
+  document.getElementById("search-overlay").classList.add("show");
+  setTimeout(function(){document.getElementById("global-search-input").focus();},100);
+}
+function closeSearch(){
+  document.getElementById("search-overlay").classList.remove("show");
+  document.getElementById("global-search-input").value="";
+  document.getElementById("search-results").innerHTML="<div class='search-empty'>Tapez pour rechercher dans tous les modules</div>";
+}
+document.addEventListener("keydown",function(e){
+  if((e.ctrlKey||e.metaKey)&&e.key==="k"){e.preventDefault();openSearch();}
+  if(e.key==="Escape")closeSearch();
+});
+
+function doSearch(q){
+  var res=document.getElementById("search-results");
+  if(!q||q.length<2){res.innerHTML="<div class='search-empty'>Tapez au moins 2 caractères</div>";return;}
+  q=q.toLowerCase();
+  var results=[];
+
+  // Search dossiers
+  DOS.forEach(function(d,i){
+    if(d.client.toLowerCase().includes(q)||d.id.toLowerCase().includes(q)||d.matiere.toLowerCase().includes(q)){
+      results.push({icon:"👤",color:"rgba(96,165,250,.15)",title:d.client,sub:d.id+" · "+d.matiere+" · "+d.statut,badge:d.statut,page:"clients",type:"Dossier"});
+    }
+  });
+
+  // Search honoraires
+  HON.forEach(function(h,i){
+    if(h.client.toLowerCase().includes(q)||h.dossier.toLowerCase().includes(q)){
+      results.push({icon:"💰",color:"rgba(139,115,85,.15)",title:h.client,sub:h.dossier+" · "+h.montant+" · "+h.statut,badge:h.statut,page:"honoraires",type:"Honoraire"});
+    }
+  });
+
+  // Search actes
+  ACT.forEach(function(a,i){
+    if(a.titre.toLowerCase().includes(q)||a.client.toLowerCase().includes(q)||a.ref.toLowerCase().includes(q)){
+      results.push({icon:"📜",color:"rgba(212,184,150,.1)",title:a.titre,sub:a.ref+" · "+a.client+" · "+a.statut,badge:a.type,page:"actes",type:"Acte"});
+    }
+  });
+
+  // Search procedures
+  PROC.forEach(function(p,i){
+    if(p.client.toLowerCase().includes(q)||p.ref.toLowerCase().includes(q)||p.juridiction.toLowerCase().includes(q)){
+      results.push({icon:"🏛",color:"rgba(251,191,36,.08)",title:p.client,sub:p.ref+" · "+p.juridiction+" · "+p.etape,badge:p.statut,page:"procedures",type:"Procédure"});
+    }
+  });
+
+  // Search notes
+  NOTES.forEach(function(n,i){
+    if(n.titre.toLowerCase().includes(q)||(n.contenu&&n.contenu.toLowerCase().includes(q))){
+      results.push({icon:"📝",color:"rgba(34,197,94,.08)",title:n.titre,sub:(n.dossier||"Note libre")+" · "+n.date,badge:n.prio,page:"notes",type:"Note"});
+    }
+  });
+
+  // Search recus
+  RECUS.forEach(function(r,i){
+    if(r.client.toLowerCase().includes(q)||r.ref.toLowerCase().includes(q)){
+      results.push({icon:"🧾",color:"rgba(139,115,85,.12)",title:r.client,sub:r.ref+" · "+r.montant.toLocaleString("fr-FR")+" MAD · "+r.date,badge:r.mode,page:"recus",type:"Reçu"});
+    }
+  });
+
+  if(!results.length){res.innerHTML="<div class='search-empty'>Aucun résultat</div>";return;}
+
+  var html="<div class='search-section'>"+results.length+" résultat"+(results.length>1?"s":"")+" trouvé"+(results.length>1?"s":"")+"</div>";
+  results.slice(0,15).forEach(function(r){
+    html+="<div class='search-result-item' data-action='search-goto' data-page='"+(r.page)+"'>"+
+      "<div class='search-result-icon' style='background:"+r.color+"'>"+r.icon+"</div>"+
+      "<div><div class='search-result-title'>"+r.title+"</div><div class='search-result-sub'>"+r.type+" · "+r.sub+"</div></div>"+
+      "<div class='search-result-badge'>"+sb(r.badge)+"</div>"+
+    "</div>";
+  });
+  res.innerHTML=html;
+}
+
+// ── PRINT RECU ──
+function printRecu(idx){
+  var r=RECUS[idx];if(!r)return;
+  var cabNom=window.CABINET&&window.CABINET.nom?window.CABINET.nom:"Cabinet Alami & Associés";
+  var cabVille=window.CABINET&&window.CABINET.ville?window.CABINET.ville:"Casablanca";
+  var cabTel=window.CABINET&&window.CABINET.telephone?window.CABINET.telephone:"";
+  var cabBar=window.CABINET&&window.CABINET.barreau?"Barreau de "+window.CABINET.barreau:"Barreau de Casablanca";
+  var isAr=LANG==="ar";
+  var w=window.open("","_blank","width=720,height=600");
+  var arFont=isAr?"<link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap'>":"";
+  w.document.write("<!DOCTYPE html><html dir='"+(isAr?"rtl":"ltr")+"'><head><meta charset='UTF-8'>"+arFont+"<title>"+r.ref+"</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:"+(isAr?"'Tajawal'":"Georgia")+",serif;background:#fff;color:#111;padding:15mm;direction:"+(isAr?"rtl":"ltr")+"}.header{text-align:center;border-bottom:3px double #8b7355;padding-bottom:12px;margin-bottom:20px}.cab-name{font-size:16pt;font-weight:bold;letter-spacing:.05em}.cab-sub{font-size:9pt;color:#666;margin-top:4px}.recu-title{text-align:center;margin:20px 0;font-size:14pt;font-weight:bold;text-transform:uppercase;letter-spacing:.1em;color:#8b7355}.recu-ref{text-align:center;font-size:11pt;color:#555;margin-bottom:24px}.amount-box{border:2px solid #8b7355;border-radius:6px;text-align:center;padding:16px;margin:20px 0}.amount-label{font-size:9pt;color:#666;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}.amount-val{font-size:22pt;font-weight:bold;color:#8b7355}.fields{margin:20px 0}.field{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0}.field label{color:#666;font-size:10pt}.field span{font-weight:600;font-size:10pt}.signatures{display:flex;justify-content:space-between;margin-top:40px}.sig-box{text-align:center;width:45%}.sig-line{border-top:1px solid #333;margin-top:50px;padding-top:6px;font-size:9pt;color:#666}.footer{margin-top:30px;text-align:center;font-size:8pt;color:#999;border-top:1px solid #eee;padding-top:10px}.stamp{border:2px solid #8b7355;border-radius:50%;width:80px;height:80px;display:flex;align-items:center;justify-content:center;margin:0 auto;color:#8b7355;font-size:9pt;text-align:center;padding:8px}@page{size:A5;margin:10mm}</style></head><body>");
+  w.document.write("<div class='header'><div class='cab-name'>"+cabNom+"</div><div class='cab-sub'>"+cabBar+(cabTel?" · "+cabTel:"")+"</div></div>");
+  w.document.write("<div class='recu-title'>"+(isAr?"وصل استلام أداء":"REÇU DE PAIEMENT")+"</div>");
+  w.document.write("<div class='recu-ref'>"+r.ref+" — "+r.date+"</div>");
+  w.document.write("<div class='amount-box'><div class='amount-label'>"+(isAr?"المبلغ المستلم":"MONTANT REÇU")+"</div><div class='amount-val'>"+r.montant.toLocaleString("fr-FR")+" MAD</div></div>");
+  w.document.write("<div class='fields'>");
+  if(isAr){
+    w.document.write("<div class='field'><label>العميل</label><span>"+r.client+"</span></div>");
+    if(r.dossier)w.document.write("<div class='field'><label>الملف</label><span>"+r.dossier+"</span></div>");
+    w.document.write("<div class='field'><label>موضوع الأداء</label><span>"+r.motif+"</span></div>");
+    w.document.write("<div class='field'><label>طريقة الأداء</label><span>"+r.mode+"</span></div>");
+    w.document.write("<div class='field'><label>تاريخ الأداء</label><span>"+r.date+"</span></div>");
+    w.document.write("<div class='field'><label>تسلمه</label><span>"+r.par+"</span></div>");
+  } else {
+    w.document.write("<div class='field'><label>Client</label><span>"+r.client+"</span></div>");
+    if(r.dossier)w.document.write("<div class='field'><label>Dossier</label><span>"+r.dossier+"</span></div>");
+    w.document.write("<div class='field'><label>Motif du paiement</label><span>"+r.motif+"</span></div>");
+    w.document.write("<div class='field'><label>Mode de paiement</label><span>"+r.mode+"</span></div>");
+    w.document.write("<div class='field'><label>Date du paiement</label><span>"+r.date+"</span></div>");
+    w.document.write("<div class='field'><label>Reçu par</label><span>"+r.par+"</span></div>");
+  }
+  w.document.write("</div>");
+  w.document.write("<div class='signatures'><div class='sig-box'><div class='stamp'><div>"+(isAr?"ختم":"CACHET")+"</div></div></div><div class='sig-box'><div class='sig-line'>"+(isAr?"توقيع المحامي":"Signature de l Avocat")+"<br>"+r.par+"</div></div></div>");
+  w.document.write("<div class='footer'>"+cabNom+" · "+cabVille+" · "+(isAr?"طبع بتاريخ":"Imprimé le ")+" "+new Date().toLocaleDateString("fr-FR")+"</div>");
+  w.document.write("</body></html>");
+  w.document.close();setTimeout(function(){w.print();},600);
+}
+
+// ── PAGE ALERTES ──
+function pAlertes(){
+  var today=new Date();
+  today.setHours(0,0,0,0);
+
+  // Auto-generate alerts from data
+  var autoAlerts=[];
+
+  // Procedures urgentes / échéances proches
+  PROC.forEach(function(p){
+    if(!p.echeance)return;
+    var parts=p.echeance.split("/");
+    var d=parts.length===3?new Date(parts[2],parts[1]-1,parts[0]):new Date(p.echeance);
+    if(isNaN(d))return;
+    var diff=Math.ceil((d-today)/86400000);
+    if(diff<0)autoAlerts.push({icon:"🔴",cls:"alert-urgent",title:"ÉCHÉANCE DÉPASSÉE — "+p.client,sub:p.ref+" · "+p.juridiction+" · "+p.etape,date:p.echeance,diff:diff});
+    else if(diff<=7)autoAlerts.push({icon:"🟠",cls:"alert-urgent",title:"Échéance dans "+diff+"j — "+p.client,sub:p.ref+" · "+p.juridiction+" · "+p.etape,date:p.echeance,diff:diff});
+    else if(diff<=30)autoAlerts.push({icon:"🟡",cls:"alert-warning",title:"Procédure — "+p.client,sub:p.ref+" · "+p.etape+" · dans "+diff+" jours",date:p.echeance,diff:diff});
+  });
+
+  // Honoraires impayés
+  HON.forEach(function(h){
+    if(h.statut!=="Payé"){
+      autoAlerts.push({icon:"💰",cls:"alert-warning",title:"Honoraire en attente — "+h.client,sub:h.dossier+" · "+h.montant+" · "+h.statut,date:h.date,diff:999});
+    }
+  });
+
+  // Agenda aujourd hui
+  AGD.forEach(function(a){
+    autoAlerts.push({icon:"📅",cls:"alert-info",title:"RDV aujourd hui — "+a.client,sub:a.heure+" · "+a.type+" · "+a.salle,date:"Aujourd hui",diff:0});
+  });
+
+  // Pièces à recevoir dépassées
+  PIECES.forEach(function(p){
+    if(p.type==="À recevoir"&&p.echeance){
+      var d=new Date(p.echeance);
+      if(!isNaN(d)&&d<today){
+        autoAlerts.push({icon:"📎",cls:"alert-urgent",title:"Pièce manquante — "+(p.client||p.dossier||"Dossier"),sub:p.lib+" · Échéance dépassée",date:p.echeance,diff:-1});
+      }
+    }
+  });
+
+  autoAlerts.sort(function(a,b){return a.diff-b.diff;});
+
+  var autoHTML=autoAlerts.length?autoAlerts.map(function(a){
+    return "<div class='alert-card "+a.cls+"'><div class='alert-icon'>"+a.icon+"</div><div style='flex:1'><div class='alert-title'>"+a.title+"</div><div class='alert-sub' style='color:#6a6058'>"+a.sub+"</div></div><div style='font-size:10px;color:#5a5248;font-family:Cinzel,serif;flex-shrink:0'>"+a.date+"</div></div>";
+  }).join(""):"<div style='text-align:center;padding:24px;color:#4a4238;font-family:Cinzel,serif;font-size:11px'>Aucune alerte automatique — Ajoutez des procédures et honoraires</div>";
+
+  var customHTML=ALERTES_CUSTOM.filter(function(a){return !a.done;}).map(function(a,i){
+    var realIdx=ALERTES_CUSTOM.indexOf(a);
+    var cls=a.prio==="urgent"?"alert-urgent":a.prio==="warning"?"alert-warning":"alert-info";
+    var icon=a.prio==="urgent"?"🔴":a.prio==="warning"?"🟡":"🔵";
+    return "<div class='alert-card "+cls+"'><div class='alert-icon'>"+icon+"</div><div style='flex:1'><div class='alert-title'>"+a.titre+"</div><div class='alert-sub' style='color:#6a6058'>"+(a.dossier||"Rappel personnel")+(a.note?" · "+a.note:"")+"</div></div><div style='display:flex;flex-direction:column;align-items:flex-end;gap:6px'><div style='font-size:10px;color:#5a5248;font-family:Cinzel,serif'>"+a.date+"</div><div class='action-btns'><button class='btn-xs btn-edit' data-action='done-alerte' data-idx='"+realIdx+"'>✓</button><button class='btn-xs btn-del' data-action='del-alerte' data-idx='"+realIdx+"'>🗑</button></div></div></div>";
+  }).join("")||"<div style='text-align:center;padding:16px;color:#4a4238;font-family:Cinzel,serif;font-size:11px'>Aucun rappel manuel</div>";
+
+  var doneHTML=ALERTES_CUSTOM.filter(function(a){return a.done;}).length
+    ?"<div style='font-size:11px;color:#4a4238;font-family:Cinzel,serif;text-align:right;margin-top:8px'>"+ALERTES_CUSTOM.filter(function(a){return a.done;}).length+" rappel(s) terminé(s)</div>":"";
+
+  var urgCount=autoAlerts.filter(function(a){return a.cls==="alert-urgent";}).length;
+  var warnCount=autoAlerts.filter(function(a){return a.cls==="alert-warning";}).length;
+
+  return "<div class='g3' style='margin-bottom:16px'><div class='sc'><div class='sv' style='color:#f87171'>"+urgCount+"</div><div class='sl'>Alertes urgentes</div></div><div class='sc'><div class='sv' style='color:#fbbf24'>"+warnCount+"</div><div class='sl'>Importantes</div></div><div class='sc'><div class='sv' style='color:#d4b896'>"+(autoAlerts.length+ALERTES_CUSTOM.filter(function(a){return !a.done;}).length)+"</div><div class='sl'>Total actives</div></div></div>"
+    +"<div class='card' style='margin-bottom:14px'><div class='f jb ac' style='margin-bottom:12px'><div class='stitle' style='margin:0'>Alertes automatiques</div><div style='font-size:11px;color:#5a5248;font-family:Cinzel,serif'>Générées depuis vos données</div></div>"+autoHTML+"</div>"
+    +"<div class='card'><div class='f jb ac' style='margin-bottom:12px'><div class='stitle' style='margin:0'>Rappels manuels</div><button class='btn bg' data-action='new-alerte' style='font-size:11px;padding:7px 14px'>+ Nouveau rappel</button></div>"+customHTML+doneHTML+"</div>";
+}
+
+// ── PAGE FICHE CLIENT ──
+function selectFicheClient(v){window._ficheClient=v;goTo('ficheclient');}
+function pFicheClient(){
+  // Get unique clients from all data
+  var allClients=[...new Set([
+    ...DOS.map(function(d){return d.client;}),
+    ...HON.map(function(h){return h.client;}),
+    ...ACT.map(function(a){return a.client;}),
+    ...PROC.map(function(p){return p.client;}),
+    ...RECUS.map(function(r){return r.client;}),
+  ])].filter(Boolean).sort();
+
+  var selected=window._ficheClient||"";
+
+  var clientSelect="<div class='card' style='margin-bottom:16px'><div class='stitle'>Sélectionner un client</div><div class='f gap10 ac'><select id='fiche-select' style='flex:1' onchange='selectFicheClient(this.value)'><option value=''>-- Choisir un client --</option>"+allClients.map(function(c){return "<option value='"+c+"' "+(c===selected?"selected":"")+">"+c+"</option>";}).join("")+"</select></div></div>";
+
+  if(!selected||!allClients.length){
+    return clientSelect+"<div class='card' style='text-align:center;padding:40px;color:#4a4238;font-family:Cinzel,serif;font-size:12px'>"+(allClients.length?"Sélectionnez un client pour afficher sa fiche":"Aucun client — Ajoutez des dossiers d abord")+"</div>";
+  }
+
+  var dos=DOS.filter(function(d){return d.client===selected;});
+  var hon=HON.filter(function(h){return h.client===selected;});
+  var act=ACT.filter(function(a){return a.client===selected;});
+  var proc=PROC.filter(function(p){return p.client===selected;});
+  var recs=RECUS.filter(function(r){return r.client===selected;});
+  var totalHon=hon.reduce(function(s,h){return s+parseInt((h.montant||"").replace(/[^0-9]/g,"")||0);},0);
+  var totalPaye=hon.filter(function(h){return h.statut==="Payé";}).reduce(function(s,h){return s+parseInt((h.montant||"").replace(/[^0-9]/g,"")||0);},0);
+  var totalRec=recs.reduce(function(s,r){return s+(r.montant||0);},0);
+
+  var tabHTML="<div class='fc-tabs'><button class='fc-tab active' data-action='fc-tab' data-tab='dos'>Dossiers ("+dos.length+")</button><button class='fc-tab' data-action='fc-tab' data-tab='hon'>Honoraires ("+hon.length+")</button><button class='fc-tab' data-action='fc-tab' data-tab='act'>Actes ("+act.length+")</button><button class='fc-tab' data-action='fc-tab' data-tab='proc'>Procédures ("+proc.length+")</button><button class='fc-tab' data-action='fc-tab' data-tab='rec'>Reçus ("+recs.length+")</button></div>";
+
+  var dosPanel=dos.length?dos.map(function(d){return "<tr><td class='mono'>"+d.id+"</td><td style='color:#e8e0d0'>"+d.matiere+"</td><td>"+sb(d.statut)+"</td><td style='color:#5a5248;font-size:11px'>"+d.date+"</td><td style='font-size:11px'>"+d.avocat+"</td></tr>";}).join(""):"<tr><td colspan='5' style='text-align:center;color:#4a4238;padding:20px'>Aucun dossier</td></tr>";
+  var honPanel=hon.length?hon.map(function(h){return "<tr><td class='mono'>"+h.dossier+"</td><td style='color:#d4b896;font-family:Courier New'>"+h.montant+"</td><td>"+sb(h.statut)+"</td><td style='color:#5a5248;font-size:11px'>"+h.date+"</td></tr>";}).join(""):"<tr><td colspan='4' style='text-align:center;color:#4a4238;padding:20px'>Aucun honoraire</td></tr>";
+  var actPanel=act.length?act.map(function(a){return "<tr><td class='mono'>"+a.ref+"</td><td style='color:#e8e0d0'>"+a.titre+"</td><td>"+sb(a.statut)+"</td><td style='color:#5a5248;font-size:11px'>"+a.date+"</td></tr>";}).join(""):"<tr><td colspan='4' style='text-align:center;color:#4a4238;padding:20px'>Aucun acte</td></tr>";
+  var procPanel=proc.length?proc.map(function(p){return "<tr><td class='mono'>"+p.ref+"</td><td style='font-size:12px'>"+p.juridiction+"</td><td style='font-size:12px'>"+p.etape+"</td><td>"+sb(p.statut)+"</td><td style='color:#5a5248;font-size:11px'>"+p.echeance+"</td></tr>";}).join(""):"<tr><td colspan='5' style='text-align:center;color:#4a4238;padding:20px'>Aucune procédure</td></tr>";
+  var recPanel=recs.length?recs.map(function(r,i){var realIdx=RECUS.indexOf(r);return "<tr><td class='mono'>"+r.ref+"</td><td style='color:#d4b896;font-family:Courier New'>"+r.montant.toLocaleString("fr-FR")+" MAD</td><td style='font-size:11px'>"+r.mode+"</td><td style='color:#5a5248;font-size:11px'>"+r.date+"</td><td><button class='btn-xs btn-print' data-action='print-recu' data-idx='"+realIdx+"'>🖨</button></td></tr>";}).join(""):"<tr><td colspan='5' style='text-align:center;color:#4a4238;padding:20px'>Aucun reçu</td></tr>";
+
+  return clientSelect
+    +"<div class='g4' style='margin-bottom:16px'><div class='fc-stat'><div class='val'>"+dos.length+"</div><div class='lbl'>Dossiers</div></div><div class='fc-stat'><div class='val' style='color:#4ade80'>"+totalPaye.toLocaleString("fr-FR")+" MAD</div><div class='lbl'>Honoraires payés</div></div><div class='fc-stat'><div class='val' style='color:#fbbf24'>"+(totalHon-totalPaye).toLocaleString("fr-FR")+" MAD</div><div class='lbl'>En attente</div></div><div class='fc-stat'><div class='val' style='color:#60a5fa'>"+totalRec.toLocaleString("fr-FR")+" MAD</div><div class='lbl'>Reçus émis</div></div></div>"
+    +"<div class='card'>"+tabHTML
+    +"<div data-fc-panel='dos'><table><thead><tr><th>Réf.</th><th>Matière</th><th>Statut</th><th>Date</th><th>Professionnel</th></tr></thead><tbody>"+dosPanel+"</tbody></table></div>"
+    +"<div data-fc-panel='hon' style='display:none'><table><thead><tr><th>Dossier</th><th>Montant HT</th><th>Statut</th><th>Date</th></tr></thead><tbody>"+honPanel+"</tbody></table></div>"
+    +"<div data-fc-panel='act' style='display:none'><table><thead><tr><th>Réf.</th><th>Titre</th><th>Statut</th><th>Date</th></tr></thead><tbody>"+actPanel+"</tbody></table></div>"
+    +"<div data-fc-panel='proc' style='display:none'><table><thead><tr><th>Réf.</th><th>Juridiction</th><th>Étape</th><th>Statut</th><th>Échéance</th></tr></thead><tbody>"+procPanel+"</tbody></table></div>"
+    +"<div data-fc-panel='rec' style='display:none'><table><thead><tr><th>Réf.</th><th>Montant</th><th>Mode</th><th>Date</th><th></th></tr></thead><tbody>"+recPanel+"</tbody></table></div>"
+    +"</div>";
+}
+
+// ── PAGE RECHERCHE ──
+function pRecherche(){
+  return "<div class='card' style='margin-bottom:16px'><div class='stitle'>Recherche globale</div><div class='f ac gap12'><div style='font-size:20px'>🔍</div><input id='page-search-input' placeholder='Rechercher dans tous les modules...' style='flex:1;font-size:15px' oninput='doPageSearch(this.value)'/></div><div style='font-size:11px;color:#5a5248;font-family:Cinzel,serif;margin-top:8px'>Conseil : utilisez aussi <kbd style='background:rgba(139,115,85,.15);padding:2px 6px;border-radius:3px;font-size:10px'>Ctrl+K</kbd> depuis n importe où</div></div><div id='page-search-results'><div style='text-align:center;padding:40px;color:#4a4238;font-family:Cinzel,serif;font-size:12px'>Tapez pour rechercher dans dossiers, honoraires, actes, procédures, notes et reçus</div></div>";
+}
+
+function doPageSearch(q){
+  var res=document.getElementById("page-search-results");if(!res)return;
+  if(!q||q.length<2){res.innerHTML="<div style='text-align:center;padding:30px;color:#4a4238;font-family:Cinzel,serif;font-size:12px'>Tapez au moins 2 caractères</div>";return;}
+  var tmp=document.getElementById("search-results");
+  document.getElementById("global-search-input").value=q;
+  doSearch(q);
+  if(tmp)res.innerHTML=tmp.innerHTML;
+  document.getElementById("global-search-input").value="";
+}
+
+// ── PAGE RECUS ──
+function pRecus(){
+  var totalRec=RECUS.reduce(function(s,r){return s+(r.montant||0);},0);
+  var rows=RECUS.length?[...RECUS].reverse().map(function(r,ri){
+    var realIdx=RECUS.length-1-ri;
+    return "<tr><td class='mono' style='color:#8b7355'>"+r.ref+"</td><td style='color:#e8e0d0'>"+r.client+"</td><td style='font-size:12px;color:#c8bfb0'>"+r.motif+"</td><td style='font-family:Courier New;color:#d4b896;font-weight:600'>"+r.montant.toLocaleString("fr-FR")+" MAD</td><td>"+bd(r.mode,"bat")+"</td><td class='mono' style='color:#5a5248'>"+r.date+"</td><td><div class='action-btns'><button class='btn-xs btn-print' data-action='print-recu' data-idx='"+realIdx+"'>🖨</button><button class='btn-xs btn-del' data-action='del-recu' data-idx='"+realIdx+"'>🗑</button></div></td></tr>";
+  }).join(""):"<tr><td colspan='7' style='text-align:center;padding:40px;color:#4a4238;font-family:Cinzel,serif;font-size:11px'>Aucun reçu — Cliquez sur + Nouveau reçu</td></tr>";
+
+  return "<div class='g3'><div class='sc'><div class='sv' style='color:#d4b896'>"+RECUS.length+"</div><div class='sl'>Reçus émis</div></div><div class='sc'><div class='sv' style='color:#4ade80'>"+totalRec.toLocaleString("fr-FR")+" MAD</div><div class='sl'>Total encaissé</div></div><div class='sc'><div class='sv' style='color:#60a5fa'>"+(RECUS.length?Math.round(totalRec/RECUS.length).toLocaleString("fr-FR")+" MAD":"0 MAD")+"</div><div class='sl'>Moyenne / reçu</div></div></div><div class='card'><div class='f jb ac' style='margin-bottom:14px'><div class='stitle' style='margin:0'>Registre des reçus et quittances</div><button class='btn bg' data-action='new-recu'>+ Nouveau reçu</button></div><table><thead><tr><th>Réf.</th><th>Client</th><th>Motif</th><th>Montant</th><th>Mode</th><th>Date</th><th></th></tr></thead><tbody>"+rows+"</tbody></table></div>";
 }
 
 
