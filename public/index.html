@@ -304,6 +304,49 @@ select option{background:#1a1a1e}
 .ai-shortcut:hover{background:rgba(139,115,85,.1);color:#d4b896;border-color:rgba(139,115,85,.3)}
 .ai-header{padding:14px 18px;border-bottom:1px solid rgba(139,115,85,.15);display:flex;align-items:center;gap:12px;flex-shrink:0;background:rgba(0,0,0,.15)}
 .ai-usage{font-size:10px;color:#4a4238;font-family:'Cinzel',serif;margin-left:auto}
+
+/* ── ARABIC / RTL ── */
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap');
+
+body.rtl { direction: rtl; font-family: 'Tajawal', 'Cormorant Garamond', serif; }
+body.rtl #sidebar { border-right: none; border-left: 1px solid rgba(139,115,85,.15); order: 2; }
+body.rtl #main { order: 1; }
+body.rtl .nb { text-align: right; }
+body.rtl .grp { text-align: right; }
+body.rtl .login-left { border-right: none; border-left: 1px solid rgba(139,115,85,.2); order: 2; }
+body.rtl .login-right { order: 1; }
+body.rtl .ai-bubble-user { border-radius: 12px 12px 12px 3px; align-self: flex-start; }
+body.rtl .ai-bubble-bot { border-radius: 12px 12px 3px 12px; align-self: flex-end; }
+body.rtl table { direction: rtl; }
+body.rtl th, body.rtl td { text-align: right; }
+body.rtl .modal { direction: rtl; }
+body.rtl .modal-btns { flex-direction: row-reverse; }
+body.rtl .f { flex-direction: row-reverse; }
+body.rtl .jb { flex-direction: row-reverse; }
+body.rtl input, body.rtl select, body.rtl textarea { text-align: right; direction: rtl; }
+body.rtl .login-box { text-align: right; }
+body.rtl .login-tabs { flex-direction: row-reverse; }
+body.rtl .stitle { text-align: right; letter-spacing: 0; }
+body.rtl .badge { font-family: 'Tajawal', serif; }
+body.rtl .btn { font-family: 'Tajawal', serif; letter-spacing: 0; }
+body.rtl .login-tab { font-family: 'Tajawal', serif; }
+body.rtl .grp-label { font-family: 'Tajawal', serif; }
+body.rtl #topbar { flex-direction: row-reverse; }
+body.rtl .admin-tabs { flex-direction: row-reverse; }
+body.rtl .sfoot { text-align: right; }
+body.rtl .action-btns { flex-direction: row-reverse; }
+
+/* Lang switcher button */
+#lang-btn {
+  position: fixed; bottom: 80px; right: 20px; z-index: 88;
+  background: linear-gradient(135deg, #8b7355, #a08060);
+  color: #fff; border: none; border-radius: 50px;
+  padding: 10px 16px; cursor: pointer;
+  font-family: 'Tajawal', 'Cinzel', serif; font-size: 13px;
+  box-shadow: 0 4px 15px rgba(139,115,85,.4);
+  transition: all .2s; letter-spacing: 0;
+}
+#lang-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(139,115,85,.5); }
 </style>
 </head>
 <body>
@@ -335,7 +378,7 @@ select option{background:#1a1a1e}
           <div style="font-size:10px;color:#4a4238;font-family:'Cinzel',serif;margin-top:3px">CABINET JURIDIQUE MAROC</div>
         </div>
         <div class="login-tabs">
-          <button class="login-tab active" onclick="switchAuthTab('login')">Connexion</button>
+          <button class="login-tab active" onclick="switchAuthTab('login')" id="lt-login">Connexion</button>
           <button class="login-tab" onclick="switchAuthTab('register')">Créer un compte</button>
           <button class="login-tab" onclick="switchAuthTab('activate')">Activer licence</button>
         </div>
@@ -456,6 +499,9 @@ select option{background:#1a1a1e}
     </div>
   </div>
 </div>
+
+
+<button id="lang-btn" onclick="toggleLang()">العربية 🌐</button>
 
 <button id="menu-toggle" onclick="toggleMenu()">☰</button>
 <div id="overlay" onclick="closeMenu()"></div>
@@ -760,9 +806,9 @@ function buildNav(){
   MODS.forEach(function(m){if(grps.indexOf(m.grp)<0)grps.push(m.grp);});
   var h="";
   grps.forEach(function(g){
-    h+='<div class="grp">'+g+'</div>';
+    h+='<div class="grp">'+t(g)+'</div>';
     MODS.filter(function(m){return m.grp===g;}).forEach(function(m){
-      h+='<button class="nb" data-id="'+m.id+'">'+m.icon+" "+m.label+'</button>';
+      h+='<button class="nb" data-id="'+m.id+'">'+m.icon+" "+t(m.label)+'</button>';
     });
   });
   document.getElementById("nav").innerHTML=h;
@@ -776,7 +822,7 @@ function goTo(id){
   var nb=document.querySelector('[data-id="'+id+'"]');
   if(nb)nb.classList.add("active");
   var mod=MODS.find(function(m){return m.id===id;});
-  document.getElementById("ptitle").textContent=mod?mod.label:id;
+  document.getElementById("ptitle").textContent=mod?t(mod.label):id;
   var c=document.getElementById("content");
   var pages={
     dashboard:pDash,clients:pClients,agenda:pAgenda,actes:pActes,
@@ -2372,6 +2418,201 @@ async function sendAI(){
     var msgs=document.getElementById("ai-msgs");
     if(msgs)msgs.scrollTop=msgs.scrollHeight;
   }
+}
+
+
+
+// ── ARABIC TRANSLATIONS ──
+var LANG = "fr";
+
+var AR = {
+  // Navigation modules
+  "Tableau de bord": "لوحة التحكم",
+  "Clients et Dossiers": "العملاء والملفات",
+  "Agenda": "الأجندة",
+  "Actes et Documents": "العقود والوثائق",
+  "Honoraires et Facturation": "الأتعاب والفواتير",
+  "Suivi des procédures": "متابعة الإجراءات",
+  "Bibliothèque juridique": "المكتبة القانونية",
+  "Collaborateurs et RH": "المتعاونون والموارد البشرية",
+  "Comptabilité interne": "المحاسبة الداخلية",
+  "Conformité et LAB-FT": "الامتثال ومكافحة غسل الأموال",
+  "Portail client": "بوابة العميل",
+  "Analytique et KPIs": "التحليلات ومؤشرات الأداء",
+  "Temps et Facturation": "الوقت والفوترة",
+  "Notes et Mémos": "الملاحظات والمذكرات",
+  "Pièces justificatives": "الوثائق الإثباتية",
+  "Modèles de documents": "نماذج الوثائق",
+  "Devis et Conventions": "العروض والاتفاقيات",
+  "Délais légaux": "الآجال القانونية",
+  "Tableau de trésorerie": "جدول الخزينة",
+  "Émoluments notariaux": "أتعاب الموثق",
+  "Paramètres du cabinet": "إعدادات المكتب",
+  "Assistant LEXIA IA": "مساعد ليكسيا الذكي",
+  // Groups
+  "Principal": "الرئيسية",
+  "Juridique": "القانونية",
+  "Cabinet": "المكتب",
+  "Conformité": "الامتثال",
+  "Relation Client": "علاقة العملاء",
+  "Analyse": "التحليل",
+  "Documents": "الوثائق",
+  "Paramètres": "الإعدادات",
+  "Intelligence Artificielle": "الذكاء الاصطناعي",
+  // Topbar
+  "+ Nouveau dossier": "+ ملف جديد",
+  "Déconnexion": "تسجيل الخروج",
+  "Super Admin": "المدير العام",
+  // Login
+  "Connexion": "تسجيل الدخول",
+  "Créer un compte": "إنشاء حساب",
+  "Activer licence": "تفعيل الترخيص",
+  "Se connecter": "دخول",
+  "Créer mon compte": "إنشاء الحساب",
+  "Activer": "تفعيل",
+  "Email": "البريد الإلكتروني",
+  "Mot de passe": "كلمة المرور",
+  "Nom complet": "الاسم الكامل",
+  "Clé de licence": "مفتاح الترخيص",
+  // Dashboard stats
+  "Dossiers actifs": "الملفات النشطة",
+  "RDV aujourd hui": "مواعيد اليوم",
+  "Procédures urgentes": "إجراءات عاجلة",
+  "Honoraires à encaisser": "الأتعاب المستحقة",
+  "Dossiers récents": "الملفات الأخيرة",
+  "Agenda du jour": "أجندة اليوم",
+  // Buttons
+  "+ Nouveau RDV": "+ موعد جديد",
+  "+ Nouvel acte": "+ عقد جديد",
+  "+ Nouvelle facture": "+ فاتورة جديدة",
+  "+ Nouvelle procédure": "+ إجراء جديد",
+  "+ Nouveau collaborateur": "+ متعاون جديد",
+  "+ Nouvelle charge": "+ تكلفة جديدة",
+  "+ Évaluer un client": "+ تقييم عميل",
+  "+ Nouvelle note": "+ ملاحظة جديدة",
+  "+ Nouvelle saisie": "+ إدخال جديد",
+  "+ Ajouter une pièce": "+ إضافة وثيقة",
+  "+ Nouvelle convention": "+ اتفاقية جديدة",
+  "+ Nouveau mouvement": "+ حركة جديدة",
+  "Enregistrer": "حفظ",
+  "Annuler": "إلغاء",
+  "Imprimer": "طباعة",
+  "Fermer": "إغلاق",
+  "Modifier": "تعديل",
+  "Supprimer": "حذف",
+  "Voir": "عرض",
+  "Générer": "إنشاء",
+  "Calculer": "احتساب",
+  "Relancer": "متابعة",
+  "Télécharger": "تحميل",
+  "Vérifier": "تحقق",
+  "Enregistrer les paramètres": "حفظ الإعدادات",
+  // Table headers
+  "Réf.": "المرجع",
+  "Client": "العميل",
+  "Type": "النوع",
+  "Matière": "المجال",
+  "Statut": "الحالة",
+  "Date": "التاريخ",
+  "Professionnel": "المختص",
+  "Actions": "الإجراءات",
+  "Dossier": "الملف",
+  "Montant HT": "المبلغ ق.ض",
+  "Juridiction": "الجهة القضائية",
+  "Instance": "الدرجة",
+  "Étape": "المرحلة",
+  "Échéance": "الأجل",
+  "N° Rôle": "رقم القضية",
+  "Collaborateur": "المتعاون",
+  "Rôle": "المهمة",
+  "Spécialité": "التخصص",
+  "Dossiers": "الملفات",
+  "Taux occupation": "نسبة الانشغال",
+  "Libellé": "البيان",
+  "Catégorie": "الفئة",
+  "Montant": "المبلغ",
+  "Périodicité": "الدورية",
+  "Niveau de risque": "مستوى الخطر",
+  "KYC": "التحقق من الهوية",
+  "Déclaration UTRF": "تصريح وحدة معالجة المعلومات المالية",
+  // Status
+  "En cours": "جارٍ",
+  "Clôturé": "مغلق",
+  "En attente": "في الانتظار",
+  "Urgent": "عاجل",
+  "Partiel": "جزئي",
+  "Payé": "مدفوع",
+  "Signé": "موقع",
+  "Planifiée": "مجدولة",
+  "Conforme": "مطابق",
+  "Déclaré": "مصرح به",
+  "À compléter": "يستوجب الإكمال",
+  "Avocat": "محامٍ",
+  "Notaire": "موثق",
+  "Reçu": "مستلم",
+  "Envoyé": "مرسل",
+  "Actif": "نشط",
+  "Congé": "إجازة",
+  // Sidebar footer
+  "Cabinet Alami & Associés": "مكتب علمي وشركاؤه",
+  "Casablanca · Barreau de Casablanca": "الدار البيضاء · هيئة المحامين بالدار البيضاء",
+  // Tariffs
+  "30 jours": "30 يوماً",
+  "1 an": "سنة واحدة",
+  "À vie": "مدى الحياة",
+  // AI
+  "Raccourcis": "اختصارات",
+  "Effacer conversation": "مسح المحادثة",
+  "Posez votre question juridique à LEXIA IA...": "اطرح سؤالك القانوني على ليكسيا...",
+  "Envoyer ▶": "إرسال ▶",
+  // Parametres
+  "Type de cabinet": "نوع المكتب",
+  "Cabinet d Avocat": "مكتب محاماة",
+  "Cabinet de Notaire": "مكتب التوثيق",
+  "Cabinet Mixte": "مكتب مختلط",
+  "Informations générales": "المعلومات العامة",
+  "Informations professionnelles": "المعلومات المهنية",
+  "Aperçu en-tête": "معاينة الترويسة",
+  "Barreau / Chambre": "هيئة المحامين / الغرفة",
+  "N° inscription": "رقم التسجيل",
+  "N° patente": "رقم الباتنتا",
+  "N° TVA": "رقم الضريبة على القيمة المضافة",
+  "RIB bancaire": "معلومات الحساب البنكي",
+  "Nom du cabinet *": "اسم المكتب *",
+  "Slogan": "الشعار",
+  "Adresse": "العنوان",
+  "Ville": "المدينة",
+  "Téléphone": "الهاتف",
+  "Site web": "الموقع الإلكتروني",
+};
+
+function t(key) {
+  if(LANG === "ar" && AR[key]) return AR[key];
+  return key;
+}
+
+function toggleLang() {
+  LANG = LANG === "fr" ? "ar" : "fr";
+  var btn = document.getElementById("lang-btn");
+  if(LANG === "ar") {
+    document.body.classList.add("rtl");
+    document.documentElement.setAttribute("lang","ar");
+    document.documentElement.setAttribute("dir","rtl");
+    if(btn) btn.textContent = "Français 🌐";
+    document.title = "ليكسيا - مكتب قانوني";
+  } else {
+    document.body.classList.remove("rtl");
+    document.documentElement.setAttribute("lang","fr");
+    document.documentElement.setAttribute("dir","ltr");
+    if(btn) btn.textContent = "العربية 🌐";
+    document.title = "LEXIA — Cabinet Juridique Maroc";
+  }
+  // Rebuild navigation with translated labels
+  buildNav();
+  // Re-render current page
+  var cur = document.getElementById("ptitle").textContent;
+  var mod = MODS.find(function(m){ return m.label === cur || t(m.label) === cur; });
+  if(mod) goTo(mod.id);
 }
 
 
