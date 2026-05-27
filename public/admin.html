@@ -370,7 +370,9 @@ function renderUsers(users){
     const actions=u.role==='super'?'<span style="color:#4a4238;font-size:11px;font-family:Cinzel,serif">Super Admin</span>':
       '<div class="actions-cell">'+
       '<button onclick="openResetModal('+u.id+',\''+u.nom+'\')" class="btn btn-outline" style="padding:5px 10px;font-size:10px">🔑 MDP</button>'+
-      '<button onclick="openExtend('+u.id+',\''+u.nom+'\')" class="btn btn-green" style="padding:5px 10px;font-size:10px">📅 Licence</button>'+
+      '<button onclick="extend('+u.id+',30)" class="btn btn-green" style="padding:5px 10px;font-size:10px">🔄 +30j</button>'+
+      '<button onclick="extend('+u.id+',365)" class="btn btn-blue" style="padding:5px 10px;font-size:10px">📅 +1an</button>'+
+      '<button onclick="setLifetime('+u.id+')" class="btn btn-purple" style="padding:5px 10px;font-size:10px">♾️ À vie</button>'+
       '<button onclick="delUser('+u.id+',\''+u.nom+'\')" class="btn btn-red" style="padding:5px 10px;font-size:10px">🗑</button>'+
       '</div>';
     
@@ -512,6 +514,25 @@ async function doExtend(){
     showAlert('users-alert','✅ Licence '+planL[extPlan]+' attribuée à '+user.nom,'ok');
     loadUsers();loadStats();
   } catch(e){ showAlert('users-alert',e.message,'err'); }
+}
+
+async function extend(userId, days){
+  const label = days===30 ? '+30 jours' : '+1 an';
+  if(!confirm('Ajouter '+label+' à cet utilisateur ?')) return;
+  try {
+    await api('POST','/api/admin/extend',{userId, days});
+    showAlert('users-alert','✅ '+label+' ajouté avec succès','ok');
+    loadUsers();
+  } catch(e){ showAlert('users-alert','Erreur : '+e.message,'err'); }
+}
+
+async function setLifetime(userId){
+  if(!confirm('Attribuer un abonnement À VIE à cet utilisateur ?')) return;
+  try {
+    await api('POST','/api/admin/lifetime',{userId});
+    showAlert('users-alert','✅ Abonnement à vie attribué','ok');
+    loadUsers();
+  } catch(e){ showAlert('users-alert','Erreur : '+e.message,'err'); }
 }
 
 async function delUser(id,nom){

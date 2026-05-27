@@ -254,6 +254,47 @@ Cite les articles de loi marocains pertinents quand c est possible.`
 });
 
 
+// ── Direct subscription extension (like Madrasati/PayMaroc/ERP) ──
+app.post("/api/admin/extend", auth, superOnly, (req, res) => {
+  const { userId, days } = req.body;
+  const users = loadJSON(USERS_FILE, []);
+  const user = users.find(u => u.id === parseInt(userId));
+  if (!user) return res.status(404).json({ error: "Utilisateur introuvable" });
+
+  // Generate and assign a new licence key
+  const licences = loadJSON(LICENCES_FILE, []);
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const seg = () => Array.from({length:5}, () => chars[Math.floor(Math.random()*chars.length)]).join("");
+  const key = `LEXIA-${seg()}-${seg()}-AUTO`;
+  const now = new Date();
+  const expiresAt = new Date(now.getTime() + days * 86400000).toISOString();
+  const lic = { key, plan: days === 30 ? "monthly" : "yearly", createdAt: now.toISOString(), expiresAt, usedBy: user.email, activatedAt: now.toISOString() };
+  licences.push(lic);
+  saveJSON(LICENCES_FILE, licences);
+  user.licenceKey = key;
+  saveJSON(USERS_FILE, users);
+  res.json({ ok: true, expiresAt, licence: checkLicence(user) });
+});
+
+app.post("/api/admin/lifetime", auth, superOnly, (req, res) => {
+  const { userId } = req.body;
+  const users = loadJSON(USERS_FILE, []);
+  const user = users.find(u => u.id === parseInt(userId));
+  if (!user) return res.status(404).json({ error: "Utilisateur introuvable" });
+
+  const licences = loadJSON(LICENCES_FILE, []);
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const seg = () => Array.from({length:5}, () => chars[Math.floor(Math.random()*chars.length)]).join("");
+  const key = `LEXIA-${seg()}-${seg()}-VIE`;
+  const now = new Date();
+  const lic = { key, plan: "lifetime", createdAt: now.toISOString(), expiresAt: null, usedBy: user.email, activatedAt: now.toISOString() };
+  licences.push(lic);
+  saveJSON(LICENCES_FILE, licences);
+  user.licenceKey = key;
+  saveJSON(USERS_FILE, users);
+  res.json({ ok: true, licence: checkLicence(user) });
+});
+
 // Admin assign licence directly to user
 app.post("/api/admin/assign-licence", auth, superOnly, (req, res) => {
   const { userId, licenceKey } = req.body;
