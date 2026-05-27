@@ -2,13 +2,35 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#0a0a0c"/>
 <title>Cabinet Juridique Maroc</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:wght@300;400;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Cormorant Garamond',Georgia,serif;background:#0d0d0f;color:#e8e0d0;display:flex;height:100vh;overflow:hidden}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#8b7355;border-radius:2px}
+
+/* ── FIXES MOBILE iOS / ANDROID ── */
+*{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+input,select,textarea{-webkit-appearance:none;-moz-appearance:none;appearance:none;font-size:16px !important;/* iOS zoom fix */border-radius:7px}
+input[type="number"]{-moz-appearance:textfield}
+input:focus,select:focus,textarea:focus{outline:none}
+button{-webkit-appearance:none;touch-action:manipulation;cursor:pointer}
+#content{-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+#sidebar{-webkit-overflow-scrolling:touch}
+.modal-bg{-webkit-overflow-scrolling:touch}
+/* Prevent pull-to-refresh */
+body{overscroll-behavior-y:none}
+/* Safe area for iPhone notch */
+#topbar{padding-top:max(15px,env(safe-area-inset-top))}
+@supports(padding-top:env(safe-area-inset-top)){
+  #login-screen{padding-top:env(safe-area-inset-top)}
+  #sidebar{padding-top:env(safe-area-inset-top)}
+}
 #sidebar{width:230px;background:#080809;border-right:1px solid rgba(139,115,85,.15);display:flex;flex-direction:column;height:100vh;overflow-y:auto;flex-shrink:0}
 #main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden}
 .logo{padding:22px 20px 14px}
@@ -90,41 +112,138 @@ select option{background:#1a1a1e}
 #overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:149}
 #overlay.show{display:block}
 
+/* ══ TABLETTE (≤1024px) ══ */
+@media(max-width:1024px){
+  #sidebar{width:210px}
+  #content{padding:18px 20px}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .admin-box{width:98vw}
+}
+
+/* ══ TABLETTE PORTRAIT / GRAND MOBILE (≤900px) ══ */
 @media(max-width:900px){
-  #menu-toggle{display:block}
-  #sidebar{position:fixed;left:-240px;top:0;height:100%;z-index:150;transition:left .3s ease;box-shadow:4px 0 20px rgba(0,0,0,.5)}
-  #sidebar.open{left:0}
-  #main{width:100%}
-  #topbar{padding:12px 16px 12px 60px}
-  #ptitle{font-size:14px}
-  #content{padding:14px 14px}
+  /* Sidebar coulissante */
+  #menu-toggle{display:flex}
+  #sidebar{position:fixed;left:-250px;top:0;height:100%;width:250px;z-index:200;transition:transform .3s ease;box-shadow:6px 0 30px rgba(0,0,0,.7)}
+  #sidebar.open{left:0;transform:translateX(0)}
+  #overlay{display:none}
+  #overlay.show{display:block}
+  #main{width:100%;min-width:0}
+
+  /* Topbar */
+  #topbar{padding:12px 14px 12px 58px;gap:8px;flex-wrap:nowrap}
+  #ptitle{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40vw}
+  #pdate{display:none}
+
+  /* Topbar droite : masquer boutons secondaires, garder essentiels */
+  .logout-btn{font-size:10px;padding:5px 10px}
+  #topbar .btn.bg[data-action="new-dossier"]{display:none}
+
+  /* Grilles */
   .g4{grid-template-columns:repeat(2,1fr)}
   .g3{grid-template-columns:repeat(2,1fr)}
   .g2{grid-template-columns:1fr}
   .g2e{grid-template-columns:1fr}
   .g3c{grid-template-columns:1fr}
+
+  /* Tableaux */
   table{font-size:12px}
   th,td{padding:8px 10px}
   .sv{font-size:18px}
-  .modal{width:95vw;padding:20px}
+
+  /* Modals */
+  .modal{width:96vw;padding:20px;max-height:90vh}
+  .view-modal{width:96vw;padding:20px}
+  .admin-box{width:98vw;max-height:95vh}
+
+  /* Contenu */
+  #content{padding:14px}
+  .card{padding:16px}
+  .sc{padding:14px}
+
+  /* Action buttons dans les lignes de table */
+  .action-btns{flex-wrap:wrap;gap:4px}
+  .btn-xs{padding:4px 7px;font-size:9px}
+
+  /* Bibliothèque */
   #bib-codes{grid-template-columns:repeat(2,1fr) !important}
+
+  /* AI */
+  .ai-container{height:calc(100vh - 120px)}
 }
 
-@media(max-width:480px){
-  #topbar{padding:10px 14px 10px 56px}
-  #ptitle{font-size:13px}
+/* ══ MOBILE (≤600px) ══ */
+@media(max-width:600px){
+  /* Topbar compacte */
+  #topbar{padding:10px 10px 10px 52px}
+  #ptitle{font-size:13px;max-width:35vw}
+  #user-badge .uname{font-size:10px}
+  #user-badge .urole{display:none}
+  #topbar button[onclick*="openSearch"]{display:none}
+
+  /* Contenu */
   #content{padding:10px}
+  .card{padding:13px}
+  .sc{padding:12px}
+
+  /* Grilles : tout en 1 colonne sauf .g4 en 2 */
   .g4{grid-template-columns:1fr 1fr}
-  .g3{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:1fr}
   .g2{grid-template-columns:1fr}
   .g2e{grid-template-columns:1fr}
-  .btn{padding:8px 12px;font-size:10px}
+  .g3c{grid-template-columns:1fr}
   .sv{font-size:16px}
-  table{display:block;overflow-x:auto;white-space:nowrap}
+
+  /* Tableaux scrollables */
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;font-size:11px}
+  th,td{padding:7px 8px}
+
+  /* Boutons */
+  .btn{padding:8px 12px;font-size:10px}
+  .action-btns{gap:3px}
+  .btn-xs{padding:3px 6px;font-size:9px}
+
+  /* Agenda rows */
   .ar{flex-wrap:wrap;gap:8px}
+
+  /* Modals full screen sur mobile */
+  .modal{width:100vw;max-width:100vw;border-radius:12px 12px 0 0;position:fixed;bottom:0;max-height:92vh;padding:18px 16px}
+  .modal-bg{align-items:flex-end}
+  .view-modal{width:100vw;max-width:100vw;border-radius:12px 12px 0 0;position:fixed;bottom:0;max-height:92vh;padding:18px 16px}
+  .field-row{flex-direction:column;gap:10px}
+  .field{min-width:unset}
+
+  /* Admin panel */
+  .admin-box{width:100vw;max-width:100vw;border-radius:12px 12px 0 0;position:fixed;bottom:0;max-height:95vh}
+  .admin-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;padding:8px 12px}
+  .admin-tab{white-space:nowrap;font-size:10px;padding:7px 12px}
+
+  /* Bibliothèque */
   #bib-codes{grid-template-columns:1fr !important}
-  .card{padding:16px}
-  .sc{padding:16px}
+
+  /* AI */
+  .ai-container{height:calc(100vh - 110px)}
+  .ai-bubble-user,.ai-bubble-bot{max-width:95%;font-size:13px}
+  .ai-input-area{padding:10px 12px;gap:8px}
+  .ai-input-area textarea{font-size:13px;padding:9px 12px}
+  .ai-send-btn{padding:9px 14px;font-size:11px}
+
+  /* Timeline / AR */
+  .tlr{flex-direction:column;gap:8px}
+
+  /* Print button */
+  #print-btn-area{bottom:12px;right:12px}
+}
+
+/* ══ TRÈS PETIT MOBILE (≤380px) ══ */
+@media(max-width:380px){
+  #topbar{padding:9px 8px 9px 48px}
+  #ptitle{font-size:12px;max-width:28vw}
+  .g4{grid-template-columns:1fr}
+  .sv{font-size:14px}
+  .card,.sc{padding:10px}
+  .btn{padding:7px 10px;font-size:9px}
 }
 
 /* ── IMPRESSION A4 ── */
@@ -276,9 +395,25 @@ select option{background:#1a1a1e}
 .logout-btn{background:transparent;border:1px solid rgba(239,68,68,.2);color:#f87171;padding:5px 12px;border-radius:6px;cursor:pointer;font-family:'Cinzel',serif;font-size:10px}
 .logout-btn:hover{background:rgba(239,68,68,.1)}
 
+/* ══ LOGIN PAGE RESPONSIVE ══ */
+@media(max-width:900px){
+  .login-left{padding:40px 30px;min-width:280px}
+  .login-right{padding:30px 20px}
+  .login-box{padding:28px 22px}
+}
 @media(max-width:700px){
+  .login-page{flex-direction:column;min-height:100vh}
   .login-left{display:none}
-  .login-box{padding:24px 20px}
+  .login-right{flex:1;padding:24px 16px;justify-content:flex-start;padding-top:40px}
+  .login-box{width:100%;max-width:100%;padding:24px 18px;border-radius:12px}
+  .login-tabs{flex-wrap:nowrap;gap:3px}
+  .login-tab{font-size:10px;padding:8px 6px}
+}
+@media(max-width:400px){
+  .login-right{padding:16px 12px}
+  .login-box{padding:20px 14px}
+  .login-tabs{gap:2px}
+  .login-tab{font-size:9px;padding:7px 4px}
 }
 
 /* ── AI MODULE ── */
@@ -1545,15 +1680,38 @@ function toggleMenu(){
   var o=document.getElementById("overlay");
   s.classList.toggle("open");
   o.classList.toggle("show");
+  document.body.style.overflow = s.classList.contains("open") ? "hidden" : "";
 }
 function closeMenu(){
   document.getElementById("sidebar").classList.remove("open");
   document.getElementById("overlay").classList.remove("show");
+  document.body.style.overflow = "";
 }
 // Close menu after nav click on mobile
 document.addEventListener("click",function(e){
   if(e.target.closest(".nb")){closeMenu();}
 });
+
+// Swipe to open/close sidebar on mobile
+(function(){
+  var startX=0, startY=0, dragging=false;
+  document.addEventListener("touchstart",function(e){
+    startX=e.touches[0].clientX;
+    startY=e.touches[0].clientY;
+    dragging=true;
+  },{passive:true});
+  document.addEventListener("touchend",function(e){
+    if(!dragging) return;
+    var dx=e.changedTouches[0].clientX-startX;
+    var dy=e.changedTouches[0].clientY-startY;
+    if(Math.abs(dx)>Math.abs(dy)*1.5 && Math.abs(dx)>50){
+      var sidebar=document.getElementById("sidebar");
+      if(dx>0 && startX<40 && !sidebar.classList.contains("open")) toggleMenu();
+      else if(dx<0 && sidebar.classList.contains("open")) closeMenu();
+    }
+    dragging=false;
+  },{passive:true});
+})();
 
 function doPrint(){
   // Update print header with current module
