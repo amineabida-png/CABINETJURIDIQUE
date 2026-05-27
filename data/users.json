@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1,
+    "email": "super@lexia.ma",
+    "password": "$2a$10$nZT9nMFKaI8aZRgmXUoJhOTVXnR3u33u4BdyII0Zowiodp5r4Dikm",
+    "role": "super",
+    "nom": "Super Admin",
+    "createdAt": "2026-05-27T10:28:40.396Z"
+  }
+]
