@@ -1164,6 +1164,10 @@ document.addEventListener("click",function(e){
     saveUserKey("CABINET");notif("Paramètres enregistrés avec succès");
     goTo("parametres");
   }
+  else if(a==="new-convention"){openM("m-convention");}
+  else if(a==="new-treso"){openM("m-treso");}
+  else if(a==="new-alerte"){openM("m-alerte");}
+  else if(a==="new-recu"){openM("m-recu");}
   else if(a==="save-convention"){
     var cl=document.getElementById("cv-client").value;
     if(!cl){notif("Saisir le nom du client");return;}
