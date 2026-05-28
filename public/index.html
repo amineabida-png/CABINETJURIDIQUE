@@ -2707,7 +2707,10 @@ function pAI(){
     +"<div class='ai-messages' id='ai-msgs'>"+msgs+"</div>"
     +"<div class='ai-input-area'>"
     +"<textarea id='ai-input' placeholder='Posez votre question juridique...' rows='2' onkeydown='aiKeyDown(event)'></textarea>"
+    +"<div style='display:flex;flex-direction:column;gap:6px;align-self:flex-end'>"
     +"<button class='ai-send-btn' id='ai-send-btn' onclick='sendAI()'>Envoyer ▶</button>"
+    +"<button class='ai-send-btn' onclick='printAI()' style='background:rgba(139,115,85,.25);border:1px solid rgba(139,115,85,.3);font-size:11px;padding:7px 14px'>🖨 Imprimer</button>"
+    +"</div>"
     +"</div></div></div>";
 }
 
@@ -2724,6 +2727,57 @@ function mdToHtml(t){
 
 function aiKeyDown(e){
   if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendAI();}
+}
+
+function printAI(){
+  var msgs = document.getElementById("ai-msgs");
+  if(!msgs || msgs.children.length === 0){
+    alert("Aucune conversation à imprimer."); return;
+  }
+  var date = new Date().toLocaleDateString("fr-FR", {day:"2-digit",month:"long",year:"numeric"});
+  var html = "<!DOCTYPE html><html><head><meta charset='UTF-8'>"
+    +"<title>Consultation IA — GESTION JURIDIQUE</title>"
+    +"<style>"
+    +"*{margin:0;padding:0;box-sizing:border-box}"
+    +"body{font-family:Georgia,serif;color:#111;padding:15mm;background:#fff;font-size:11pt;line-height:1.7}"
+    +".header{text-align:center;border-bottom:3px double #8b7355;padding-bottom:12px;margin-bottom:24px}"
+    +".cab{font-size:16pt;font-weight:bold;letter-spacing:.08em;color:#1a1208}"
+    +".sub{font-size:9pt;color:#666;margin-top:4px}"
+    +".title{font-size:13pt;font-weight:bold;text-transform:uppercase;letter-spacing:.1em;color:#8b7355;margin:16px 0 4px}"
+    +".date{font-size:9pt;color:#888;margin-bottom:20px;text-align:center}"
+    +".msg{margin-bottom:16px;padding:12px 16px;border-radius:6px}"
+    +".user{background:#f5f0e8;border-left:3px solid #8b7355}"
+    +".bot{background:#fafafa;border-left:3px solid #ccc}"
+    +".role{font-size:8pt;font-weight:bold;text-transform:uppercase;letter-spacing:.05em;color:#8b7355;margin-bottom:6px}"
+    +".bot .role{color:#666}"
+    +"p{margin-bottom:6px}"
+    +".footer{margin-top:30px;text-align:center;font-size:8pt;color:#aaa;border-top:1px solid #eee;padding-top:10px}"
+    +"@page{size:A4;margin:15mm}"
+    +"@media print{body{padding:0}}"
+    +"</style></head><body>"
+    +"<div class='header'><div class='cab'>GESTION JURIDIQUE</div><div class='sub'>Cabinet Juridique Maroc</div></div>"
+    +"<div style='text-align:center'><div class='title'>Consultation — Assistant Juridique IA</div>"
+    +"<div class='date'>Imprimée le "+date+"</div></div>";
+
+  // Extraire les bulles de conversation
+  Array.from(msgs.children).forEach(function(el){
+    var isUser = el.classList.contains("ai-bubble-user");
+    var isBot  = el.classList.contains("ai-bubble-bot");
+    if(!isUser && !isBot) return;
+    html += "<div class='msg "+(isUser?"user":"bot")+"'>"
+      +"<div class='role'>"+(isUser?"🧑 Votre question":"⚖️ Assistant Juridique IA")+"</div>"
+      +"<div>"+el.innerHTML+"</div>"
+      +"</div>";
+  });
+
+  html += "<div class='footer'>Document généré par GESTION JURIDIQUE · Assistant IA Groq Llama 3.1 · "+date+"</div>"
+    +"</body></html>";
+
+  var w = window.open("","_blank","width=800,height=900");
+  w.document.write(html);
+  w.document.close();
+  w.focus();
+  setTimeout(function(){ w.print(); }, 600);
 }
 
 async function sendAI(){
