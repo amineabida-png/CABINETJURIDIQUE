@@ -124,7 +124,15 @@ function checkLicence(user) {
 
 // ── Middleware ──
 app.use(express.json({ limit: "5mb" }));
-app.use(express.static(path.join(__dirname, "../public")));
+app.use(express.static(path.join(__dirname, "../public"), {
+  setHeaders: function(res, filePath) {
+    if (filePath.endsWith('index.html') || filePath.endsWith('admin.html')) {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+    }
+  }
+}));
 
 function auth(req, res, next) {
   const token = (req.headers.authorization || "").replace("Bearer ", "");

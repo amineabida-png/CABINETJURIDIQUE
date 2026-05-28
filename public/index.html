@@ -1840,13 +1840,14 @@ async function doActivate() {
 
 function enterApp(user, licence) {
   window.currentUser = user;
-  document.getElementById("login-screen").classList.add("hidden");
+  var ls = document.getElementById("login-screen");
+  if (ls) { ls.style.display = "none"; ls.classList.add("hidden"); }
   try {
     document.getElementById("topbar-uname").textContent = user.nom;
     var licPlan = {"monthly":"30 jours","yearly":"1 an","lifetime":"À vie","super":"Super Admin"};
     document.getElementById("topbar-ulicence").textContent = user.role==="super"?"👑 Super Admin":("Licence " + (licPlan[licence.plan]||"") + (licence.daysLeft?" · "+licence.daysLeft+"j":""));
     if(user.role==="super") document.getElementById("topbar-crown").style.display="block";
-  } catch(e) { console.warn("enterApp UI error:", e); }
+  } catch(e) { console.warn("enterApp UI:", e); }
   loadUserData();
 }
 
