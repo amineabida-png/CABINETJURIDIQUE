@@ -439,6 +439,43 @@ app.post("/api/ai/pdf-scan", auth, upload.single("pdf"), async (req, res) => {
   }
 });
 
+// ── WHISPER — Transcription audio universelle (tous navigateurs) ──
+const uploadAudio = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 25 * 1024 * 1024 }
+});
+
+app.post("/api/ai/transcribe", auth, uploadAudio.single("audio"), async (req, res) => {
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) return res.status(500).json({ error: "Clé API Groq non configurée" });
+  if (!req.file) return res.status(400).json({ error: "Aucun fichier audio reçu" });
+
+  try {
+    const lang = req.body.lang || "fr";
+    const FormData = (await import("form-data")).default;
+    const form = new FormData();
+    form.append("file", req.file.buffer, {
+      filename: "audio.webm",
+      contentType: req.file.mimetype || "audio/webm"
+    });
+    form.append("model", "whisper-large-v3-turbo");
+    form.append("language", lang);
+    form.append("response_format", "json");
+
+    const response = await fetch("https://api.groq.com/openai/v1/audio/transcriptions", {
+      method: "POST",
+      headers: { "Authorization": "Bearer " + apiKey, ...form.getHeaders() },
+      body: form
+    });
+
+    const data = await response.json();
+    if (!response.ok) return res.status(response.status).json({ error: data.error?.message || "Erreur Whisper" });
+    res.json({ text: data.text });
+  } catch(e) {
+    res.status(500).json({ error: "Erreur transcription : " + e.message });
+  }
+});
+
 // ── AI Route (Groq — Llama 3.1 70B — 100% Gratuit) ──
 app.post("/api/ai", auth, async (req, res) => {
   const { messages } = req.body;

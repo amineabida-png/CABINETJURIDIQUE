@@ -2789,76 +2789,100 @@ function clearPDF() {
   if (input) input.value = "";
 }
 
-// ── RECONNAISSANCE VOCALE ──
-var AI_RECOGNITION = null;
+// ── RECONNAISSANCE VOCALE UNIVERSELLE (MediaRecorder + Whisper Groq) ──
 var AI_VOICE_ACTIVE = false;
-var AI_VOICE_LANG = 'fr-MA'; // langue par défaut
+var AI_MEDIA_RECORDER = null;
+var AI_AUDIO_CHUNKS = [];
+var AI_VOICE_LANG = 'fr';
 
 function setVoiceLang(lang) {
   AI_VOICE_LANG = lang;
   var btnFr = document.getElementById('voice-lang-fr');
   var btnAr = document.getElementById('voice-lang-ar');
-  if (btnFr) { btnFr.style.opacity = lang === 'fr-MA' ? '1' : '0.4'; btnFr.style.border = lang === 'fr-MA' ? '1px solid rgba(139,115,85,.6)' : '1px solid rgba(139,115,85,.2)'; }
-  if (btnAr) { btnAr.style.opacity = lang === 'ar-MA' ? '1' : '0.4'; btnAr.style.border = lang === 'ar-MA' ? '1px solid rgba(139,115,85,.6)' : '1px solid rgba(139,115,85,.2)'; }
+  if (btnFr) { btnFr.style.opacity = lang==='fr'?'1':'0.4'; btnFr.style.borderColor = lang==='fr'?'rgba(139,115,85,.6)':'rgba(139,115,85,.2)'; }
+  if (btnAr) { btnAr.style.opacity = lang==='ar'?'1':'0.4'; btnAr.style.borderColor = lang==='ar'?'rgba(139,115,85,.6)':'rgba(139,115,85,.2)'; }
 }
 
 function toggleVoice() {
-  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-    alert("La reconnaissance vocale n'est pas supportée par ce navigateur.\nUtilisez Chrome ou Safari.");
-    return;
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    alert("Votre navigateur ne supporte pas l'enregistrement audio.
+Mettez à jour votre navigateur."); return;
   }
-
   if (AI_VOICE_ACTIVE) {
-    if (AI_RECOGNITION) AI_RECOGNITION.stop();
+    if (AI_MEDIA_RECORDER && AI_MEDIA_RECORDER.state !== 'inactive') AI_MEDIA_RECORDER.stop();
     return;
   }
 
-  var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  AI_RECOGNITION = new SpeechRecognition();
-  AI_RECOGNITION.lang = AI_VOICE_LANG;
-  AI_RECOGNITION.continuous = false;
-  AI_RECOGNITION.interimResults = true;
-  AI_RECOGNITION.maxAlternatives = 1;
-
-  var btn = document.getElementById('ai-mic-btn');
-  var ta  = document.getElementById('ai-input');
-  var isAr = AI_VOICE_LANG === 'ar-MA';
-
-  AI_RECOGNITION.onstart = function() {
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+    AI_AUDIO_CHUNKS = [];
     AI_VOICE_ACTIVE = true;
-    if (btn) { btn.classList.add('recording'); btn.title = 'Cliquer pour arrêter'; btn.textContent = '⏹'; }
+
+    // Choisir le meilleur format supporté
+    var mimeType = 'audio/webm';
+    if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) mimeType = 'audio/webm;codecs=opus';
+    else if (MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) mimeType = 'audio/ogg;codecs=opus';
+    else if (MediaRecorder.isTypeSupported('audio/mp4')) mimeType = 'audio/mp4';
+
+    AI_MEDIA_RECORDER = new MediaRecorder(stream, { mimeType: mimeType });
+
+    var btn = document.getElementById('ai-mic-btn');
+    var ta  = document.getElementById('ai-input');
+    var isAr = AI_VOICE_LANG === 'ar';
+
+    if (btn) { btn.classList.add('recording'); btn.textContent = '⏹'; btn.title = 'Cliquer pour arrêter'; }
     if (ta)  { ta.placeholder = isAr ? '🎤 تحدث الآن...' : '🎤 Parlez maintenant...'; ta.style.direction = isAr ? 'rtl' : 'ltr'; }
-  };
 
-  AI_RECOGNITION.onresult = function(e) {
-    var transcript = '';
-    for (var i = e.resultIndex; i < e.results.length; i++) {
-      transcript += e.results[i][0].transcript;
-    }
-    if (ta) { ta.value = transcript; ta.style.direction = isAr ? 'rtl' : 'ltr'; }
-  };
+    AI_MEDIA_RECORDER.ondataavailable = function(e) {
+      if (e.data.size > 0) AI_AUDIO_CHUNKS.push(e.data);
+    };
 
-  AI_RECOGNITION.onend = function() {
+    AI_MEDIA_RECORDER.onstop = function() {
+      AI_VOICE_ACTIVE = false;
+      stream.getTracks().forEach(function(t){ t.stop(); });
+      if (btn) { btn.classList.remove('recording'); btn.textContent = '🎤'; btn.title = 'Message vocal'; }
+      if (ta)  { ta.placeholder = 'Posez votre question juridique...'; }
+
+      if (AI_AUDIO_CHUNKS.length === 0) return;
+      var blob = new Blob(AI_AUDIO_CHUNKS, { type: mimeType });
+      if (blob.size < 1000) return; // trop court
+
+      // Envoyer à Whisper via serveur
+      if (btn) { btn.textContent = '⏳'; btn.disabled = true; }
+      var fd = new FormData();
+      fd.append('audio', blob, 'audio.webm');
+      fd.append('lang', AI_VOICE_LANG);
+
+      fetch('/api/ai/transcribe', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + TOKEN },
+        body: fd
+      }).then(function(r){ return r.json(); }).then(function(data) {
+        if (btn) { btn.textContent = '🎤'; btn.disabled = false; }
+        if (data.text && data.text.trim()) {
+          if (ta) { ta.value = data.text.trim(); ta.style.direction = isAr ? 'rtl' : 'ltr'; }
+          setTimeout(sendAI, 300);
+        } else if (data.error) {
+          alert('Erreur transcription : ' + data.error);
+        }
+      }).catch(function(e) {
+        if (btn) { btn.textContent = '🎤'; btn.disabled = false; }
+        alert('Erreur réseau : ' + e.message);
+      });
+    };
+
+    AI_MEDIA_RECORDER.start();
+
+    // Arrêt automatique après 60 secondes
+    setTimeout(function(){
+      if (AI_MEDIA_RECORDER && AI_MEDIA_RECORDER.state === 'recording') AI_MEDIA_RECORDER.stop();
+    }, 60000);
+
+  }).catch(function(e) {
     AI_VOICE_ACTIVE = false;
-    if (btn) { btn.classList.remove('recording'); btn.title = 'Message vocal'; btn.textContent = '🎤'; }
-    if (ta)  { ta.placeholder = 'Posez votre question juridique...'; ta.style.direction = 'ltr'; }
-    if (ta && ta.value.trim().length > 2) {
-      setTimeout(sendAI, 300);
-    }
-  };
-
-  AI_RECOGNITION.onerror = function(e) {
-    AI_VOICE_ACTIVE = false;
-    if (btn) { btn.classList.remove('recording'); btn.textContent = '🎤'; }
-    if (ta)  { ta.placeholder = 'Posez votre question juridique...'; ta.style.direction = 'ltr'; }
-    if (e.error === 'not-allowed') {
-      alert("Accès au microphone refusé.\nAutorisez le microphone dans les paramètres du navigateur.");
-    } else if (e.error !== 'no-speech') {
-      alert("Erreur microphone : " + e.error);
-    }
-  };
-
-  AI_RECOGNITION.start();
+    if (e.name === 'NotAllowedError') alert("Accès au microphone refusé.
+Autorisez le microphone dans les paramètres du navigateur.");
+    else alert("Impossible d'accéder au microphone : " + e.message);
+  });
 }
 
 function printAI(){
