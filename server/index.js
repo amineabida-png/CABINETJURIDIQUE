@@ -11,6 +11,45 @@ const { createWorker } = require("tesseract.js");
 const { execFile, exec } = require("child_process");
 const os = require("os");
 
+// ── Extraction texte PDF native (fallback sans librairie) ──
+function extractPDFTextNative(buffer) {
+  try {
+    const str = buffer.toString("latin1");
+    const texts = [];
+    // Extraire blocs BT...ET
+    let i = 0;
+    while (i < str.length) {
+      const bt = str.indexOf("BT", i);
+      if (bt === -1) break;
+      const et = str.indexOf("ET", bt + 2);
+      if (et === -1) break;
+      const block = str.slice(bt + 2, et);
+      // Extraire strings entre parenthèses
+      let j = 0;
+      while (j < block.length) {
+        const ps = block.indexOf("(", j);
+        if (ps === -1) break;
+        let pe = ps + 1, depth = 1;
+        while (pe < block.length && depth > 0) {
+          if (block[pe] === "(" && block[pe-1] !== "\\") depth++;
+          else if (block[pe] === ")" && block[pe-1] !== "\\") depth--;
+          pe++;
+        }
+        const raw = block.slice(ps + 1, pe - 1)
+          .replace(/\\n/g, " ").replace(/\\r/g, " ")
+          .replace(/\\t/g, " ").replace(/\\\\/g, "\\")
+          .replace(/\\[()]/g, "");
+        if (raw.trim().length > 0) texts.push(raw.trim());
+        j = pe;
+      }
+      i = et + 2;
+    }
+    return texts.join(" ").replace(/\s+/g, " ").trim();
+  } catch(e) {
+    return "";
+  }
+}
+
 // Multer : stockage en mémoire (pas de fichier sur disque)
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -233,11 +272,23 @@ app.post("/api/ai/pdf", auth, upload.single("pdf"), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: "Aucun fichier PDF reçu" });
 
   try {
-    const pdfData = await pdfParse(req.file.buffer);
-    let texte = pdfData.text.trim();
+    // Extraction texte : essayer pdf-parse, sinon méthode native
+    let texte = "";
+    let numpages = 1;
+    let charCount = 0;
+    try {
+      const pdfData = await pdfParse(req.file.buffer);
+      texte = (pdfData.text || "").trim();
+      numpages = pdfData.numpages || 1;
+      charCount = pdfData.text ? pdfData.text.length : 0;
+    } catch(e) {
+      // Fallback extraction native
+      texte = extractPDFTextNative(req.file.buffer);
+      charCount = texte.length;
+    }
 
     if (!texte || texte.length < 50)
-      return res.status(400).json({ error: "Impossible d'extraire le texte de ce PDF (PDF scanné ou protégé)" });
+      return res.status(400).json({ error: "Impossible d'extraire le texte de ce PDF. Si c'est un PDF scanné, activez le mode 📷 scanné." });
 
     const MAX_CHARS = 12000;
     const tronque = texte.length > MAX_CHARS;
@@ -265,15 +316,8 @@ app.post("/api/ai/pdf", auth, upload.single("pdf"), async (req, res) => {
     res.json({
       reply: data.choices[0].message.content,
       filename: req.file.originalname,
-      pages: pdfData.numpages,
-      chars: pdfData.text.length,
-      tronque
-    });
-  } catch (e) {
-    res.status(500).json({ error: "Erreur traitement PDF : " + e.message });
-  }
-});
-
+      pages: numpages,
+      chars: charCount,
       tronque
     });
   } catch (e) {
