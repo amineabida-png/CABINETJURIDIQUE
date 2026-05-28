@@ -554,7 +554,7 @@ body.rtl .action-btns { flex-direction: row-reverse; }
     <label>Mode de paiement</label>
     <select id="rc-mode"><option>Espèces</option><option>Virement bancaire</option><option>Chèque</option><option>CB / TPE</option><option>Mobile Payment</option></select>
     <label>Date de paiement</label><input id="rc-date" type="date"/>
-    <label>Reçu par</label><input id="rc-par" placeholder="Ex: Me. Alami, Me. Berrada..."/>
+    <label>Reçu par</label><input id="rc-par" placeholder="Ex: Me. Dupont, Me. Benali..."/>
     <div class="modal-btns">
       <button class="btn bgh" data-action="close-modal">Annuler</button>
       <button class="btn bg" data-action="save-recu">Générer le reçu</button>
@@ -670,12 +670,12 @@ body.rtl .action-btns { flex-direction: row-reverse; }
 <div id="overlay" onclick="closeMenu()"></div>
 <div id="sidebar">
   <div class="logo">
-    <div class="logo-title">CABINET</div>
+    <div class="logo-title" id="sb-logo-title">CABINET</div>
     <div class="logo-sub">JURIDIQUE MAROC</div>
     <hr class="logo-hr"/>
   </div>
   <div id="nav"></div>
-  <div class="sfoot"><p>Cabinet Alami &amp; Associés</p><span>Casablanca · Barreau de Casablanca</span></div>
+  <div class="sfoot"><p id="sf-nom">Mon Cabinet</p><span id="sf-ville"></span></div>
 </div>
 <div id="main">
   <div id="topbar">
@@ -694,7 +694,7 @@ body.rtl .action-btns { flex-direction: row-reverse; }
   </div>
   <div id="content">
   <div id="print-header">
-    <h1>CABINET ALAMI &amp; ASSOCIÉS</h1>
+    <h1 id="topbar-cabnom">MON CABINET</h1>
     <p id="print-module-title">Document imprimé le 25/05/2026</p>
   </div>
 </div>
@@ -717,7 +717,7 @@ body.rtl .action-btns { flex-direction: row-reverse; }
     <label>Honoraires forfaitaires (MAD)</label><input id="cv-forfait" type="number" placeholder="Ex: 15000"/>
     <label>Taux horaire (MAD/h)</label><input id="cv-taux" type="number" placeholder="Ex: 1500"/>
     <label>Provision à verser (MAD)</label><input id="cv-provision" type="number" placeholder="Ex: 5000"/>
-    <label>Professionnel responsable</label><select id="cv-avocat"><option>Me. Alami</option><option>Me. Berrada</option><option>Me. Idrissi</option><option>Me. Lahlou</option></select>
+    <label>Professionnel responsable</label><input id="cv-avocat" placeholder="Nom du professionnel"/>
     <div class="modal-btns"><button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" data-action="save-convention">Générer</button></div>
   </div>
 </div>
@@ -788,7 +788,7 @@ body.rtl .action-btns { flex-direction: row-reverse; }
     <label>Client</label><input id="md-client" placeholder="Nom complet du client"/>
     <label>Type</label><select id="md-type"><option>Avocat</option><option>Notaire</option></select>
     <label>Matière juridique</label><input id="md-matiere" placeholder="Ex: Droit commercial"/>
-    <label>Professionnel responsable</label><select id="md-avocat"><option>Me. Alami</option><option>Me. Berrada</option><option>Me. Idrissi</option><option>Me. Lahlou</option></select>
+    <label>Professionnel responsable</label><input id="md-avocat" placeholder="Nom du professionnel"/>
     <label>Statut</label><select id="md-statut"><option>En cours</option><option>En attente</option></select>
     <div class="modal-btns"><button class="btn bgh" data-action="close-modal">Annuler</button><button class="btn bg" data-action="save-dossier">Enregistrer</button></div>
   </div>
@@ -1242,6 +1242,7 @@ document.addEventListener("click",function(e){
     if(sf&&CABINET.nom)sf.textContent=CABINET.nom;
     if(sf2&&CABINET.ville)sf2.textContent=CABINET.ville+(CABINET.barreau?" · Barreau de "+CABINET.barreau:"");
     // Update topbar date label
+    applyCabinet();
     saveUserKey("CABINET");notif("Paramètres enregistrés avec succès");
     goTo("parametres");
   }
@@ -1512,7 +1513,7 @@ function printItem(type, idx){
   var nom = item.client || item.nom || item.titre || item.ref || "";
   var fields = buildPrintFields(type, item);
   w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+ nom +'</title><style>body{font-family:Georgia,serif;padding:20mm;color:#111;max-width:180mm;margin:0 auto}h1{font-size:14pt;border-bottom:2px solid #8b7355;padding-bottom:8px;margin-bottom:20px;color:#333;letter-spacing:.05em}h2{font-size:11pt;color:#555;margin:0 0 16px 0;font-weight:normal}.field{margin-bottom:12px;display:flex;gap:20px}.field label{font-size:9pt;color:#666;text-transform:uppercase;letter-spacing:.06em;min-width:140px;padding-top:2px}.field .val{font-size:11pt;color:#111;flex:1;border-bottom:1px solid #e5e7eb;padding-bottom:4px}.badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:9pt;border:1px solid #999}.footer{margin-top:30px;padding-top:12px;border-top:1px solid #e5e7eb;font-size:8pt;color:#999;display:flex;justify-content:space-between}@page{size:A4;margin:15mm 12mm}</style></head><body>');
-  w.document.write('<h1>CABINET ALAMI &amp; ASSOCIÉS</h1>');
+  w.document.write('<h1 id="topbar-cabnom">MON CABINET</h1>');
   w.document.write('<h2>'+type.toUpperCase()+' — '+nom+'</h2>');
   w.document.write(fields);
   w.document.write('<div class="footer"><span>Cabinet Alami &amp; Associés · Casablanca · Barreau de Casablanca</span><span>Imprimé le '+new Date().toLocaleDateString("fr-FR")+'</span></div>
@@ -1631,7 +1632,7 @@ function printConvention(idx){
   var cv=CONVENTIONS[idx];if(!cv)return;
   var w=window.open("","_blank","width=850,height=750");
   w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Convention — '+cv.client+'</title><style>body{font-family:Georgia,serif;padding:20mm;color:#111;max-width:185mm;margin:0 auto}h1{font-size:16pt;text-align:center;letter-spacing:.08em;margin-bottom:4px}h2{font-size:11pt;text-align:center;color:#555;font-weight:normal;margin-bottom:24px}hr{border:none;border-top:2px solid #8b7355;margin:16px 0}.section{margin-bottom:18px}.section h3{font-size:11pt;text-transform:uppercase;letter-spacing:.06em;color:#333;border-bottom:1px solid #ccc;padding-bottom:4px;margin-bottom:10px}.row{display:flex;justify-content:space-between;margin-bottom:6px;font-size:11pt}.label{color:#555;min-width:180px}.val{font-weight:bold}.total-box{background:#f5f5f5;border:2px solid #8b7355;border-radius:4px;padding:16px;text-align:center;margin:20px 0}.total-box .amount{font-size:22pt;font-weight:bold;color:#8b7355}.sig{display:flex;justify-content:space-between;margin-top:40px}.sig-box{text-align:center;width:45%}.sig-line{border-top:1px solid #333;margin-top:60px;padding-top:6px;font-size:9pt;color:#555}.footer{margin-top:30px;font-size:8pt;color:#999;text-align:center;border-top:1px solid #eee;padding-top:10px}@page{size:A4;margin:15mm 12mm}</style></head><body>');
-  w.document.write('<h1>CABINET ALAMI &amp; ASSOCIÉS</h1><h2>CONVENTION D&apos;HONORAIRES</h2><hr>');
+  w.document.write('<h1 id="topbar-cabnom">MON CABINET</h1><h2>CONVENTION D&apos;HONORAIRES</h2><hr>');
   w.document.write('<div class="section"><h3>Parties</h3><div class="row"><span class="label">Client</span><span class="val">'+cv.client+'</span></div><div class="row"><span class="label">Professionnel</span><span class="val">'+cv.avocat+'</span></div><div class="row"><span class="label">Date</span><span class="val">'+cv.date+'</span></div><div class="row"><span class="label">Référence</span><span class="val">'+cv.ref+'</span></div></div>');
   w.document.write('<div class="section"><h3>Objet de la mission</h3><div class="row"><span class="label">Type de mission</span><span class="val">'+cv.mission+'</span></div><div class="row"><span class="label">Matière juridique</span><span class="val">'+( cv.matiere||"—")+'</span></div></div>');
   w.document.write('<div class="section"><h3>Honoraires</h3>'+( cv.forfait?'<div class="row"><span class="label">Honoraires forfaitaires</span><span class="val">'+cv.forfait.toLocaleString("fr-FR")+' MAD HT</span></div>':"")+( cv.taux?'<div class="row"><span class="label">Taux horaire</span><span class="val">'+cv.taux.toLocaleString("fr-FR")+' MAD/h HT</span></div>':"")+'<div class="row"><span class="label">Provision initiale</span><span class="val">'+cv.provision.toLocaleString("fr-FR")+' MAD</span></div></div>');
@@ -2213,10 +2214,10 @@ function generateModele(idx){
     vals[f.id]=el?(el.value||"["+f.label+"]"):"["+f.label+"]";
   });
 
-  var cabNom=window.CABINET&&window.CABINET.nom?window.CABINET.nom:(isAr?"مكتب علمي وشركاؤه":"Cabinet Alami & Associés");
-  var cabVille=window.CABINET&&window.CABINET.ville?window.CABINET.ville:(isAr?"الدار البيضاء":"Casablanca");
+  var cabNom=window.CABINET&&window.CABINET.nom?window.CABINET.nom:(isAr?"المكتب":"Mon Cabinet");
+  var cabVille=window.CABINET&&window.CABINET.ville?window.CABINET.ville:"";
   var cabTel=window.CABINET&&window.CABINET.telephone?window.CABINET.telephone:"";
-  var cabBar=window.CABINET&&window.CABINET.barreau?(isAr?"هيئة المحامين بـ"+window.CABINET.barreau:"Barreau de "+window.CABINET.barreau):(isAr?"هيئة المحامين بالدار البيضاء":"Barreau de Casablanca");
+  var cabBar=window.CABINET&&window.CABINET.barreau?(isAr?"هيئة المحامين بـ"+window.CABINET.barreau:"Barreau de "+window.CABINET.barreau):"";
   var docFont=isAr?"'Tajawal','Arial',sans-serif":"Georgia,serif";
   var docDir=isAr?"rtl":"ltr";
   var docAlign=isAr?"right":"left";
@@ -2226,7 +2227,7 @@ function generateModele(idx){
     if(isAr){
       corps="الدار البيضاء، بتاريخ "+today+"\n\nإلى: "+vals.md_dest+"\n\nالسيدة، السيد،\n\nيشرفني، باسم موكلي، أن أوجه إليكم هذا الإنذار الرسمي لأطلب منكم القيام بـ:\n\n"+vals.md_objet+"\n\nوذلك في أجل "+vals.md_delai+" يوماً من تاريخ تسلم هذا الإنذار.\n\nفي حالة عدم الاستجابة خلال الأجل المحدد، يحتفظ موكلي بحقه في اتخاذ كافة الإجراءات القانونية الكفيلة بصون حقوقه، دون أي إنذار آخر.\n\nنأمل أن تتداركوا الأمر قبل اللجوء إلى القضاء.\n\nتفضلوا بقبول فائق الاحترام والتقدير.\n\n"+vals.md_avocat+"\n"+cabBar;
     } else {
-      corps="Casablanca, le "+today+"\n\nÀ l attention de : "+vals.md_dest+"\n\nMadame, Monsieur,\n\nPar la présente, nous vous mettons formellement en demeure de procéder à :\n\n"+vals.md_objet+"\n\ndans un délai de "+vals.md_delai+" jours à compter de la réception de ce courrier.\n\nÀ défaut de réponse favorable dans ce délai, notre client se réservera le droit d engager toutes poursuites judiciaires utiles à la défense de ses intérêts, sans autre avertissement.\n\nNous vous invitons à prendre contact avec notre cabinet dans les meilleurs délais.\n\nVeuillez agréer, Madame, Monsieur, l expression de nos salutations distinguées.\n\n"+vals.md_avocat+"\n"+cabBar;
+      corps="Fait à "+(cabVille||"")+(cabVille?", le ":" le ")+today+"\n\nÀ l attention de : "+vals.md_dest+"\n\nMadame, Monsieur,\n\nPar la présente, nous vous mettons formellement en demeure de procéder à :\n\n"+vals.md_objet+"\n\ndans un délai de "+vals.md_delai+" jours à compter de la réception de ce courrier.\n\nÀ défaut de réponse favorable dans ce délai, notre client se réservera le droit d engager toutes poursuites judiciaires utiles à la défense de ses intérêts, sans autre avertissement.\n\nNous vous invitons à prendre contact avec notre cabinet dans les meilleurs délais.\n\nVeuillez agréer, Madame, Monsieur, l expression de nos salutations distinguées.\n\n"+vals.md_avocat+"\n"+cabBar;
     }
   } else if(idx===1){// Conclusions
     if(isAr){
@@ -2245,7 +2246,7 @@ function generateModele(idx){
     if(isAr){
       corps="الدار البيضاء، بتاريخ "+today+"\n\nإلى: "+vals.lr_dest+"\n\nالموضوع: فسخ "+vals.lr_contrat+"\n\nالسيدة، السيد،\n\nيشرفني إعلامكم، باسم موكلي "+vals.lr_client+"، بفسخ "+vals.lr_contrat+" للسبب التالي:\n\n"+vals.lr_motif+"\n\nيسري مفعول هذا الفسخ ابتداءً من "+vals.lr_date_effet+".\n\nنرجو اتخاذ ما يلزم من إجراءات.\n\nتفضلوا بقبول فائق الاحترام والتقدير.\n\n"+vals.lr_avocat+"\n"+cabBar;
     } else {
-      corps="Casablanca, le "+today+"\n\nÀ l attention de : "+vals.lr_dest+"\n\nObjet : Résiliation de "+vals.lr_contrat+"\n\nMadame, Monsieur,\n\nNous avons l honneur de vous informer, au nom et pour le compte de "+vals.lr_client+", de la résiliation du "+vals.lr_contrat+" pour le motif suivant :\n\n"+vals.lr_motif+"\n\nCette résiliation prendra effet le "+vals.lr_date_effet+".\n\nNous vous invitons à prendre toutes dispositions utiles.\n\nVeuillez agréer, Madame, Monsieur, l expression de nos salutations distinguées.\n\n"+vals.lr_avocat+"\n"+cabBar;
+      corps="Fait à "+(cabVille||"")+(cabVille?", le ":" le ")+today+"\n\nÀ l attention de : "+vals.lr_dest+"\n\nObjet : Résiliation de "+vals.lr_contrat+"\n\nMadame, Monsieur,\n\nNous avons l honneur de vous informer, au nom et pour le compte de "+vals.lr_client+", de la résiliation du "+vals.lr_contrat+" pour le motif suivant :\n\n"+vals.lr_motif+"\n\nCette résiliation prendra effet le "+vals.lr_date_effet+".\n\nNous vous invitons à prendre toutes dispositions utiles.\n\nVeuillez agréer, Madame, Monsieur, l expression de nos salutations distinguées.\n\n"+vals.lr_avocat+"\n"+cabBar;
     }
   } else if(idx===4){// Procuration
     if(isAr){
@@ -2272,7 +2273,7 @@ function generateModele(idx){
     if(isAr){
       corps="الدار البيضاء، بتاريخ "+today+"\n\nإلى: "+vals.rl_client+"\n\nالموضوع: تذكير — فاتورة رقم "+vals.rl_num_facture+"\n\nالسيدة، السيد،\n\nإلا في حالة خطأ أو سهو من جانبنا، فإن الفاتورة رقم "+vals.rl_num_facture+" البالغ مبلغها "+montant+" الصادرة بتاريخ "+vals.rl_date_fact+" لا تزال غير مسددة إلى اليوم.\n\nنرجو منكم التكرم بتسوية هذا المبلغ في أقرب وقت ممكن.\n\nفي حالة عدم الاستجابة، سنضطر إلى اتخاذ الإجراءات القانونية اللازمة لاسترداد حقوقنا.\n\nمع فائق الاحترام،\n"+vals.rl_cabinet;
     } else {
-      corps="Casablanca, le "+today+"\n\nÀ l attention de : "+vals.rl_client+"\n\nObjet : Relance — Facture N° "+vals.rl_num_facture+"\n\nMadame, Monsieur,\n\nSauf erreur ou omission de notre part, nous constatons que la facture N° "+vals.rl_num_facture+" d un montant de "+montant+", émise le "+vals.rl_date_fact+", demeure impayée à ce jour.\n\nNous vous serions reconnaissants de bien vouloir procéder au règlement de cette somme dans les meilleurs délais.\n\nPassé ce délai, nous nous verrons dans l obligation d engager les poursuites nécessaires au recouvrement de notre créance.\n\nCordialement,\n"+vals.rl_cabinet;
+      corps="Fait à "+(cabVille||"")+(cabVille?", le ":" le ")+today+"\n\nÀ l attention de : "+vals.rl_client+"\n\nObjet : Relance — Facture N° "+vals.rl_num_facture+"\n\nMadame, Monsieur,\n\nSauf erreur ou omission de notre part, nous constatons que la facture N° "+vals.rl_num_facture+" d un montant de "+montant+", émise le "+vals.rl_date_fact+", demeure impayée à ce jour.\n\nNous vous serions reconnaissants de bien vouloir procéder au règlement de cette somme dans les meilleurs délais.\n\nPassé ce délai, nous nous verrons dans l obligation d engager les poursuites nécessaires au recouvrement de notre créance.\n\nCordialement,\n"+vals.rl_cabinet;
     }
   } else if(idx===8){// Convention règlement
     var total=vals.cr_montant_total?parseInt(vals.cr_montant_total).toLocaleString("fr-FR")+" MAD":(isAr?"[المبلغ]":"[Montant]");
@@ -2297,13 +2298,13 @@ function generateModele(idx){
       corps += "\n\nحرر بـ" + cabVille + " بتاريخ " + today;
     } else {
       corps = m.titre.toUpperCase() + "\n\n";
-      corps += "Casablanca, le " + today + "\n\n";
+      corps += (cabVille?"Fait à "+cabVille+", le ":"Fait le ") + today + "\n\n";
       m.fields.forEach(function(f){
         if(vals[f.id] && vals[f.id] !== "["+f.label+"]") {
           corps += f.label.toUpperCase() + " : " + vals[f.id] + "\n";
         }
       });
-      corps += "\n\nFait à " + (window.CABINET&&window.CABINET.ville?window.CABINET.ville:"Casablanca") + ", le " + today;
+      corps += "\n\nFait à " + (window.CABINET&&window.CABINET.ville?window.CABINET.ville:"") + ", le " + today;
     }
     if(vals[Object.keys(vals).find(function(k){return k.endsWith("_avocat")||k.endsWith("_notaire");})||""]) {
       var signataire = vals[Object.keys(vals).find(function(k){return k.endsWith("_avocat")||k.endsWith("_notaire");})||""];
@@ -2643,8 +2644,36 @@ function loadUserData() {
       .catch(function(){});
   });
   Promise.all(promises).then(function(){
+    applyCabinet();
     buildNav();goTo("dashboard");
   });
+}
+
+// ── Applique les données CABINET à tous les éléments de l'UI ──
+function applyCabinet() {
+  var nom    = CABINET.nom    || "";
+  var ville  = CABINET.ville  || "";
+  var barreau= CABINET.barreau|| "";
+  var tel    = CABINET.telephone || "";
+  var email  = CABINET.email  || "";
+
+  // Sidebar footer
+  var sfNom  = document.getElementById("sf-nom");
+  var sfVille= document.getElementById("sf-ville");
+  if (sfNom)   sfNom.textContent  = nom || "Mon Cabinet";
+  if (sfVille) sfVille.textContent= ville + (barreau ? " · Barreau de "+barreau : "");
+
+  // Sidebar logo title
+  var sbTitle = document.getElementById("sb-logo-title");
+  if (sbTitle && nom) sbTitle.textContent = nom.split(" ")[0].toUpperCase();
+
+  // Topbar h1
+  var topNom = document.getElementById("topbar-cabnom");
+  if (topNom && nom) topNom.textContent = nom.toUpperCase();
+
+  // Login tagline
+  var loginTag = document.querySelector(".login-tagline");
+  if (loginTag && nom) loginTag.textContent = nom;
 }
 
 function saveUserKey(key) {
@@ -3552,10 +3581,10 @@ function doSearch(q){
 // ── PRINT RECU ──
 function printRecu(idx){
   var r=RECUS[idx];if(!r)return;
-  var cabNom=window.CABINET&&window.CABINET.nom?window.CABINET.nom:"Cabinet Alami & Associés";
-  var cabVille=window.CABINET&&window.CABINET.ville?window.CABINET.ville:"Casablanca";
+  var cabNom=window.CABINET&&window.CABINET.nom?window.CABINET.nom:"";
+  var cabVille=window.CABINET&&window.CABINET.ville?window.CABINET.ville:"";
   var cabTel=window.CABINET&&window.CABINET.telephone?window.CABINET.telephone:"";
-  var cabBar=window.CABINET&&window.CABINET.barreau?"Barreau de "+window.CABINET.barreau:"Barreau de Casablanca";
+  var cabBar=window.CABINET&&window.CABINET.barreau?"Barreau de "+window.CABINET.barreau:"";
   var isAr=LANG==="ar";
   var w=window.open("","_blank","width=720,height=600");
   var arFont=isAr?"<link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap'>":"";
