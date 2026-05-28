@@ -1501,7 +1501,7 @@ function printItem(type, idx){
   var cabFooter = (window.CABINET&&window.CABINET.nom?window.CABINET.nom:'');
   if(window.CABINET&&window.CABINET.ville) cabFooter += (cabFooter?' · ':'')+window.CABINET.ville;
   if(window.CABINET&&window.CABINET.barreau) cabFooter += ' · Barreau de '+window.CABINET.barreau;
-  w.document.write('<div class="footer"><span>'+cabFooter+'</span><span>Imprimé le '+new Date().toLocaleDateString("fr-FR")+'</span></div></body></html>');
+  w.document.write('<div class="footer"><span>'+cabFooter+'</span><span>Imprimer le '+new Date().toLocaleDateString("fr-FR")+'</span></div></body></html>');
   w.document.close();
   w.focus();
   setTimeout(function(){w.print();},500);
@@ -1574,54 +1574,6 @@ function printConvention(idx){
   w.document.write('<div class="total-box"><div style="font-size:10pt;color:#555;margin-bottom:4px">PROVISION À VERSER À LA SIGNATURE</div><div class="amount">'+cv.provision.toLocaleString("fr-FR")+' MAD</div></div>');
   w.document.write('<div class="sig"><div class="sig-box"><div class="sig-line">Le Client<br>'+cv.client+'</div></div><div class="sig-box"><div class="sig-line">L&apos;Avocat<br>'+cv.avocat+'</div></div></div>');
   w.document.write('<div class="footer">Cabinet Alami &amp; Associés · Casablanca · Barreau de Casablanca · Imprimé le '+new Date().toLocaleDateString("fr-FR")+'</div>
-<!-- SUPER ADMIN MODALS (fixes dans le DOM) -->
-<div id="sa-modal-create" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center">
-  <div style="background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:440px">
-    <div style="font-family:Cinzel,serif;font-size:14px;color:#d4b896;margin-bottom:4px">➕ Nouveau Client</div>
-    <div id="sa-create-err" style="color:#f87171;font-size:12px;margin:8px 0;display:none"></div>
-    <div style="margin-bottom:10px"><label style="font-size:10px;color:#5a5248;display:block;margin-bottom:4px;letter-spacing:.08em">NOM / CABINET</label><input id="sa-nom" placeholder="Cabinet Maître Alami" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none"/></div>
-    <div style="margin-bottom:10px"><label style="font-size:10px;color:#5a5248;display:block;margin-bottom:4px;letter-spacing:.08em">EMAIL</label><input id="sa-email" type="email" placeholder="admin@cabinet.ma" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none"/></div>
-    <div style="margin-bottom:16px"><label style="font-size:10px;color:#5a5248;display:block;margin-bottom:4px;letter-spacing:.08em">MOT DE PASSE</label><input id="sa-pass" type="password" placeholder="Minimum 6 caractères" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none"/></div>
-    <div style="font-size:10px;color:#5a5248;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">DURÉE D'ACCÈS</div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px">
-      <div id="sa-p30" onclick="saSelPlan('30')" style="border:2px solid rgba(251,146,60,.25);color:#fb923c;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">🗓️</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">30 Jours</div></div>
-      <div id="sa-p1an" onclick="saSelPlan('1an')" style="border:2px solid rgba(96,165,250,.25);color:#60a5fa;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">📅</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">1 An</div></div>
-      <div id="sa-pvie" onclick="saSelPlan('vie')" style="border:2px solid rgba(74,222,128,.25);color:#4ade80;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">♾️</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">À Vie</div></div>
-    </div>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button onclick="closeSaModal('sa-modal-create')" style="background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:9px 16px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Annuler</button>
-      <button onclick="saCreateAccount()" style="background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">✅ Créer</button>
-    </div>
-  </div>
-</div>
-
-<div id="sa-modal-mdp" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center">
-  <div style="background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:380px">
-    <div style="font-family:Cinzel,serif;font-size:14px;color:#d4b896;margin-bottom:4px">🔑 Réinitialiser MDP</div>
-    <div id="sa-mdp-sub" style="font-size:12px;color:#5a5248;margin-bottom:14px"></div>
-    <input id="sa-mdp-input" type="password" placeholder="Nouveau mot de passe" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none;margin-bottom:14px"/>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button onclick="closeSaModal('sa-modal-mdp')" style="background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:9px 16px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Annuler</button>
-      <button onclick="saDoMdp()" style="background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Confirmer</button>
-    </div>
-  </div>
-</div>
-
-<div id="sa-modal-dur" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center">
-  <div style="background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:380px">
-    <div style="font-family:Cinzel,serif;font-size:14px;color:#d4b896;margin-bottom:4px">⏱️ Modifier la durée</div>
-    <div id="sa-dur-sub" style="font-size:12px;color:#5a5248;margin-bottom:16px"></div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px">
-      <div id="sa-d30" onclick="saSelDur('30')" style="border:2px solid rgba(251,146,60,.25);color:#fb923c;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">🗓️</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">30 Jours</div></div>
-      <div id="sa-d1an" onclick="saSelDur('1an')" style="border:2px solid rgba(96,165,250,.25);color:#60a5fa;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">📅</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">1 An</div></div>
-      <div id="sa-dvie" onclick="saSelDur('vie')" style="border:2px solid rgba(74,222,128,.25);color:#4ade80;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">♾️</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">À Vie</div></div>
-    </div>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button onclick="closeSaModal('sa-modal-dur')" style="background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:9px 16px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Annuler</button>
-      <button onclick="saDoChangeDur()" style="background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Appliquer</button>
-    </div>
-  </div>
-</div>
 
 </body></html>");
   w.document.close();
@@ -2423,54 +2375,6 @@ function printAI(){
 
   html += "<div class='footer'>Document généré par GESTION JURIDIQUE · Assistant IA Groq Llama 3.1 · "+date+"</div>"
     +"
-<!-- SUPER ADMIN MODALS (fixes dans le DOM) -->
-<div id="sa-modal-create" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center">
-  <div style="background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:440px">
-    <div style="font-family:Cinzel,serif;font-size:14px;color:#d4b896;margin-bottom:4px">➕ Nouveau Client</div>
-    <div id="sa-create-err" style="color:#f87171;font-size:12px;margin:8px 0;display:none"></div>
-    <div style="margin-bottom:10px"><label style="font-size:10px;color:#5a5248;display:block;margin-bottom:4px;letter-spacing:.08em">NOM / CABINET</label><input id="sa-nom" placeholder="Cabinet Maître Alami" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none"/></div>
-    <div style="margin-bottom:10px"><label style="font-size:10px;color:#5a5248;display:block;margin-bottom:4px;letter-spacing:.08em">EMAIL</label><input id="sa-email" type="email" placeholder="admin@cabinet.ma" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none"/></div>
-    <div style="margin-bottom:16px"><label style="font-size:10px;color:#5a5248;display:block;margin-bottom:4px;letter-spacing:.08em">MOT DE PASSE</label><input id="sa-pass" type="password" placeholder="Minimum 6 caractères" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none"/></div>
-    <div style="font-size:10px;color:#5a5248;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">DURÉE D'ACCÈS</div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px">
-      <div id="sa-p30" onclick="saSelPlan('30')" style="border:2px solid rgba(251,146,60,.25);color:#fb923c;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">🗓️</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">30 Jours</div></div>
-      <div id="sa-p1an" onclick="saSelPlan('1an')" style="border:2px solid rgba(96,165,250,.25);color:#60a5fa;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">📅</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">1 An</div></div>
-      <div id="sa-pvie" onclick="saSelPlan('vie')" style="border:2px solid rgba(74,222,128,.25);color:#4ade80;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">♾️</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">À Vie</div></div>
-    </div>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button onclick="closeSaModal('sa-modal-create')" style="background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:9px 16px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Annuler</button>
-      <button onclick="saCreateAccount()" style="background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">✅ Créer</button>
-    </div>
-  </div>
-</div>
-
-<div id="sa-modal-mdp" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center">
-  <div style="background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:380px">
-    <div style="font-family:Cinzel,serif;font-size:14px;color:#d4b896;margin-bottom:4px">🔑 Réinitialiser MDP</div>
-    <div id="sa-mdp-sub" style="font-size:12px;color:#5a5248;margin-bottom:14px"></div>
-    <input id="sa-mdp-input" type="password" placeholder="Nouveau mot de passe" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none;margin-bottom:14px"/>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button onclick="closeSaModal('sa-modal-mdp')" style="background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:9px 16px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Annuler</button>
-      <button onclick="saDoMdp()" style="background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Confirmer</button>
-    </div>
-  </div>
-</div>
-
-<div id="sa-modal-dur" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center">
-  <div style="background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:380px">
-    <div style="font-family:Cinzel,serif;font-size:14px;color:#d4b896;margin-bottom:4px">⏱️ Modifier la durée</div>
-    <div id="sa-dur-sub" style="font-size:12px;color:#5a5248;margin-bottom:16px"></div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px">
-      <div id="sa-d30" onclick="saSelDur('30')" style="border:2px solid rgba(251,146,60,.25);color:#fb923c;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">🗓️</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">30 Jours</div></div>
-      <div id="sa-d1an" onclick="saSelDur('1an')" style="border:2px solid rgba(96,165,250,.25);color:#60a5fa;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">📅</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">1 An</div></div>
-      <div id="sa-dvie" onclick="saSelDur('vie')" style="border:2px solid rgba(74,222,128,.25);color:#4ade80;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">♾️</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">À Vie</div></div>
-    </div>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button onclick="closeSaModal('sa-modal-dur')" style="background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:9px 16px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Annuler</button>
-      <button onclick="saDoChangeDur()" style="background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Appliquer</button>
-    </div>
-  </div>
-</div>
 
 </body></html>";
 
@@ -2867,54 +2771,6 @@ function printRecu(idx){
   w.document.write("<div class='signatures'><div class='sig-box'><div class='stamp'><div>"+(isAr?"ختم":"CACHET")+"</div></div></div><div class='sig-box'><div class='sig-line'>"+(isAr?"توقيع المحامي":"Signature de l Avocat")+"<br>"+r.par+"</div></div></div>");
   w.document.write("<div class='footer'>"+cabNom+" · "+cabVille+" · "+(isAr?"طبع بتاريخ":"Imprimé le ")+" "+new Date().toLocaleDateString("fr-FR")+"</div>");
   w.document.write("
-<!-- SUPER ADMIN MODALS (fixes dans le DOM) -->
-<div id="sa-modal-create" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center">
-  <div style="background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:440px">
-    <div style="font-family:Cinzel,serif;font-size:14px;color:#d4b896;margin-bottom:4px">➕ Nouveau Client</div>
-    <div id="sa-create-err" style="color:#f87171;font-size:12px;margin:8px 0;display:none"></div>
-    <div style="margin-bottom:10px"><label style="font-size:10px;color:#5a5248;display:block;margin-bottom:4px;letter-spacing:.08em">NOM / CABINET</label><input id="sa-nom" placeholder="Cabinet Maître Alami" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none"/></div>
-    <div style="margin-bottom:10px"><label style="font-size:10px;color:#5a5248;display:block;margin-bottom:4px;letter-spacing:.08em">EMAIL</label><input id="sa-email" type="email" placeholder="admin@cabinet.ma" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none"/></div>
-    <div style="margin-bottom:16px"><label style="font-size:10px;color:#5a5248;display:block;margin-bottom:4px;letter-spacing:.08em">MOT DE PASSE</label><input id="sa-pass" type="password" placeholder="Minimum 6 caractères" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none"/></div>
-    <div style="font-size:10px;color:#5a5248;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">DURÉE D'ACCÈS</div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px">
-      <div id="sa-p30" onclick="saSelPlan('30')" style="border:2px solid rgba(251,146,60,.25);color:#fb923c;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">🗓️</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">30 Jours</div></div>
-      <div id="sa-p1an" onclick="saSelPlan('1an')" style="border:2px solid rgba(96,165,250,.25);color:#60a5fa;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">📅</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">1 An</div></div>
-      <div id="sa-pvie" onclick="saSelPlan('vie')" style="border:2px solid rgba(74,222,128,.25);color:#4ade80;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">♾️</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">À Vie</div></div>
-    </div>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button onclick="closeSaModal('sa-modal-create')" style="background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:9px 16px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Annuler</button>
-      <button onclick="saCreateAccount()" style="background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">✅ Créer</button>
-    </div>
-  </div>
-</div>
-
-<div id="sa-modal-mdp" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center">
-  <div style="background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:380px">
-    <div style="font-family:Cinzel,serif;font-size:14px;color:#d4b896;margin-bottom:4px">🔑 Réinitialiser MDP</div>
-    <div id="sa-mdp-sub" style="font-size:12px;color:#5a5248;margin-bottom:14px"></div>
-    <input id="sa-mdp-input" type="password" placeholder="Nouveau mot de passe" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none;margin-bottom:14px"/>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button onclick="closeSaModal('sa-modal-mdp')" style="background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:9px 16px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Annuler</button>
-      <button onclick="saDoMdp()" style="background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Confirmer</button>
-    </div>
-  </div>
-</div>
-
-<div id="sa-modal-dur" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center">
-  <div style="background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:380px">
-    <div style="font-family:Cinzel,serif;font-size:14px;color:#d4b896;margin-bottom:4px">⏱️ Modifier la durée</div>
-    <div id="sa-dur-sub" style="font-size:12px;color:#5a5248;margin-bottom:16px"></div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px">
-      <div id="sa-d30" onclick="saSelDur('30')" style="border:2px solid rgba(251,146,60,.25);color:#fb923c;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">🗓️</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">30 Jours</div></div>
-      <div id="sa-d1an" onclick="saSelDur('1an')" style="border:2px solid rgba(96,165,250,.25);color:#60a5fa;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">📅</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">1 An</div></div>
-      <div id="sa-dvie" onclick="saSelDur('vie')" style="border:2px solid rgba(74,222,128,.25);color:#4ade80;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">♾️</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">À Vie</div></div>
-    </div>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button onclick="closeSaModal('sa-modal-dur')" style="background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:9px 16px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Annuler</button>
-      <button onclick="saDoChangeDur()" style="background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Appliquer</button>
-    </div>
-  </div>
-</div>
 
 </body></html>");
   w.document.close();setTimeout(function(){w.print();},600);
@@ -3081,54 +2937,10 @@ window.addEventListener("load", async function(){
 
 </script>
 
-<!-- SUPER ADMIN MODALS (fixes dans le DOM) -->
-<div id="sa-modal-create" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center">
-  <div style="background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:440px">
-    <div style="font-family:Cinzel,serif;font-size:14px;color:#d4b896;margin-bottom:4px">➕ Nouveau Client</div>
-    <div id="sa-create-err" style="color:#f87171;font-size:12px;margin:8px 0;display:none"></div>
-    <div style="margin-bottom:10px"><label style="font-size:10px;color:#5a5248;display:block;margin-bottom:4px;letter-spacing:.08em">NOM / CABINET</label><input id="sa-nom" placeholder="Cabinet Maître Alami" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none"/></div>
-    <div style="margin-bottom:10px"><label style="font-size:10px;color:#5a5248;display:block;margin-bottom:4px;letter-spacing:.08em">EMAIL</label><input id="sa-email" type="email" placeholder="admin@cabinet.ma" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none"/></div>
-    <div style="margin-bottom:16px"><label style="font-size:10px;color:#5a5248;display:block;margin-bottom:4px;letter-spacing:.08em">MOT DE PASSE</label><input id="sa-pass" type="password" placeholder="Minimum 6 caractères" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none"/></div>
-    <div style="font-size:10px;color:#5a5248;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">DURÉE D'ACCÈS</div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px">
-      <div id="sa-p30" onclick="saSelPlan('30')" style="border:2px solid rgba(251,146,60,.25);color:#fb923c;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">🗓️</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">30 Jours</div></div>
-      <div id="sa-p1an" onclick="saSelPlan('1an')" style="border:2px solid rgba(96,165,250,.25);color:#60a5fa;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">📅</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">1 An</div></div>
-      <div id="sa-pvie" onclick="saSelPlan('vie')" style="border:2px solid rgba(74,222,128,.25);color:#4ade80;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">♾️</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">À Vie</div></div>
-    </div>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button onclick="closeSaModal('sa-modal-create')" style="background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:9px 16px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Annuler</button>
-      <button onclick="saCreateAccount()" style="background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">✅ Créer</button>
-    </div>
-  </div>
-</div>
 
-<div id="sa-modal-mdp" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center">
-  <div style="background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:380px">
-    <div style="font-family:Cinzel,serif;font-size:14px;color:#d4b896;margin-bottom:4px">🔑 Réinitialiser MDP</div>
-    <div id="sa-mdp-sub" style="font-size:12px;color:#5a5248;margin-bottom:14px"></div>
-    <input id="sa-mdp-input" type="password" placeholder="Nouveau mot de passe" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none;margin-bottom:14px"/>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button onclick="closeSaModal('sa-modal-mdp')" style="background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:9px 16px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Annuler</button>
-      <button onclick="saDoMdp()" style="background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Confirmer</button>
-    </div>
-  </div>
-</div>
 
-<div id="sa-modal-dur" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center">
-  <div style="background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:380px">
-    <div style="font-family:Cinzel,serif;font-size:14px;color:#d4b896;margin-bottom:4px">⏱️ Modifier la durée</div>
-    <div id="sa-dur-sub" style="font-size:12px;color:#5a5248;margin-bottom:16px"></div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px">
-      <div id="sa-d30" onclick="saSelDur('30')" style="border:2px solid rgba(251,146,60,.25);color:#fb923c;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">🗓️</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">30 Jours</div></div>
-      <div id="sa-d1an" onclick="saSelDur('1an')" style="border:2px solid rgba(96,165,250,.25);color:#60a5fa;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">📅</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">1 An</div></div>
-      <div id="sa-dvie" onclick="saSelDur('vie')" style="border:2px solid rgba(74,222,128,.25);color:#4ade80;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s"><div style="font-size:20px">♾️</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">À Vie</div></div>
-    </div>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button onclick="closeSaModal('sa-modal-dur')" style="background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:9px 16px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Annuler</button>
-      <button onclick="saDoChangeDur()" style="background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Appliquer</button>
-    </div>
-  </div>
-</div>
-
+<div id="sa-modal-create" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center"><div style="background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:440px"><div style="font-family:Cinzel,serif;font-size:14px;color:#d4b896;margin-bottom:4px">+ Nouveau Client</div><div id="sa-create-err" style="color:#f87171;font-size:12px;margin:8px 0;display:none"></div><div style="margin-bottom:10px"><label style="font-size:10px;color:#5a5248;display:block;margin-bottom:4px">NOM</label><input id="sa-nom" placeholder="Cabinet..." style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none"/></div><div style="margin-bottom:10px"><label style="font-size:10px;color:#5a5248;display:block;margin-bottom:4px">EMAIL</label><input id="sa-email" type="email" placeholder="admin@cabinet.ma" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none"/></div><div style="margin-bottom:16px"><label style="font-size:10px;color:#5a5248;display:block;margin-bottom:4px">MOT DE PASSE</label><input id="sa-pass" type="password" placeholder="Min 6 caracteres" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none"/></div><div style="font-size:10px;color:#5a5248;text-transform:uppercase;margin-bottom:10px">DUREE</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px"><div id="sa-p30" onclick="saSelPlan('30')" style="border:2px solid rgba(251,146,60,.25);color:#fb923c;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer"><div style="font-size:20px">&#128197;</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">30 Jours</div></div><div id="sa-p1an" onclick="saSelPlan('1an')" style="border:2px solid rgba(96,165,250,.25);color:#60a5fa;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer"><div style="font-size:20px">&#128197;</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">1 An</div></div><div id="sa-pvie" onclick="saSelPlan('vie')" style="border:2px solid rgba(74,222,128,.25);color:#4ade80;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer"><div style="font-size:20px">&#8734;</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">A Vie</div></div></div><div style="display:flex;gap:8px;justify-content:flex-end"><button onclick="closeSaModal('sa-modal-create')" style="background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:9px 16px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Annuler</button><button onclick="saCreateAccount()" style="background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Creer</button></div></div></div>
+<div id="sa-modal-mdp" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center"><div style="background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:380px"><div style="font-family:Cinzel,serif;font-size:14px;color:#d4b896;margin-bottom:4px">Reinitialiser MDP</div><div id="sa-mdp-sub" style="font-size:12px;color:#5a5248;margin-bottom:14px"></div><input id="sa-mdp-input" type="password" placeholder="Nouveau mot de passe" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none;margin-bottom:14px"/><div style="display:flex;gap:8px;justify-content:flex-end"><button onclick="closeSaModal('sa-modal-mdp')" style="background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:9px 16px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Annuler</button><button onclick="saDoMdp()" style="background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Confirmer</button></div></div></div>
+<div id="sa-modal-dur" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;align-items:center;justify-content:center"><div style="background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:380px"><div style="font-family:Cinzel,serif;font-size:14px;color:#d4b896;margin-bottom:4px">Modifier la duree</div><div id="sa-dur-sub" style="font-size:12px;color:#5a5248;margin-bottom:16px"></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px"><div id="sa-d30" onclick="saSelDur('30')" style="border:2px solid rgba(251,146,60,.25);color:#fb923c;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer"><div style="font-size:20px">&#128197;</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">30 Jours</div></div><div id="sa-d1an" onclick="saSelDur('1an')" style="border:2px solid rgba(96,165,250,.25);color:#60a5fa;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer"><div style="font-size:20px">&#128197;</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">1 An</div></div><div id="sa-dvie" onclick="saSelDur('vie')" style="border:2px solid rgba(74,222,128,.25);color:#4ade80;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer"><div style="font-size:20px">&#8734;</div><div style="font-family:Cinzel,serif;font-size:11px;font-weight:700">A Vie</div></div></div><div style="display:flex;gap:8px;justify-content:flex-end"><button onclick="closeSaModal('sa-modal-dur')" style="background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:9px 16px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Annuler</button><button onclick="saDoChangeDur()" style="background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">Appliquer</button></div></div></div>
 </body>
 </html>
