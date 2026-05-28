@@ -6,648 +6,482 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="theme-color" content="#0a0a0c"/>
 <title>GESTION JURIDIQUE — Super Admin</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Cormorant Garamond',Georgia,serif;background:#0a0a0c;color:#e8e0d0;min-height:100vh}
-.topbar{background:linear-gradient(135deg,#0d0d0f,#141416);border-bottom:1px solid rgba(251,191,36,.2);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
-.logo{font-family:'Cinzel',serif;font-size:18px;color:#fbbf24;letter-spacing:.15em;display:flex;align-items:center;gap:10px}
-.logo span{font-size:11px;color:#8b7355;letter-spacing:.08em;font-family:'Cormorant Garamond',serif}
-.topbar-right{display:flex;align-items:center;gap:12px}
-.btn{padding:9px 18px;border-radius:7px;cursor:pointer;font-family:'Cinzel',serif;font-size:11px;border:none;letter-spacing:.06em;transition:all .2s}
+body{background:#0a0a0c;color:#e8e0d0;font-family:'Cormorant Garamond',serif;min-height:100vh;-webkit-tap-highlight-color:transparent}
+input,button{font-family:inherit;font-size:16px !important;-webkit-appearance:none}
+button{cursor:pointer;transition:all .2s}
+
+/* TOPBAR */
+.topbar{background:linear-gradient(135deg,#0f0e0b,#1a1812);border-bottom:1px solid rgba(212,184,130,.15);padding:14px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+.topbar .logo{display:flex;align-items:center;gap:10px;flex:1}
+.topbar .logo svg{width:40px;height:40px;flex-shrink:0}
+.topbar .logo-text div:first-child{font-family:'Cinzel',serif;font-size:16px;color:#d4b896;letter-spacing:.1em}
+.topbar .logo-text span{font-size:10px;color:#5a5248;letter-spacing:.05em}
+.topbar-right{display:flex;gap:8px;align-items:center}
+.btn{border:none;border-radius:8px;padding:9px 16px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.05em;transition:all .2s;cursor:pointer}
+.btn-outline{background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355}
+.btn-outline:hover{border-color:#8b7355;color:#d4b896}
 .btn-gold{background:linear-gradient(135deg,#8b7355,#a08060);color:#fff}
 .btn-gold:hover{background:linear-gradient(135deg,#9a8060,#b09070)}
-.btn-red{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.25)}
-.btn-red:hover{background:rgba(239,68,68,.25)}
-.btn-green{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.2)}
-.btn-green:hover{background:rgba(34,197,94,.2)}
-.btn-blue{background:rgba(96,165,250,.1);color:#60a5fa;border:1px solid rgba(96,165,250,.2)}
-.btn-blue:hover{background:rgba(96,165,250,.2)}
-.btn-purple{background:rgba(167,139,250,.1);color:#a78bfa;border:1px solid rgba(167,139,250,.2)}
-.btn-purple:hover{background:rgba(167,139,250,.2)}
-.btn-outline{background:transparent;color:#8b7355;border:1px solid rgba(139,115,85,.3)}
-.main{max-width:1200px;margin:0 auto;padding:28px 24px}
-.page-title{font-family:'Cinzel',serif;font-size:22px;color:#fbbf24;letter-spacing:.1em;margin-bottom:6px}
-.page-sub{font-size:13px;color:#5a5248;margin-bottom:28px}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
-.stat-card{background:linear-gradient(135deg,#141416,#0f0f12);border:1px solid rgba(139,115,85,.2);border-radius:12px;padding:20px}
-.stat-card::before{content:'';display:block;width:32px;height:3px;border-radius:2px;margin-bottom:12px}
-.stat-card.gold::before{background:linear-gradient(90deg,#fbbf24,#d4b896)}
-.stat-card.green::before{background:linear-gradient(90deg,#4ade80,#22c55e)}
-.stat-card.red::before{background:linear-gradient(90deg,#f87171,#dc2626)}
-.stat-card.blue::before{background:linear-gradient(90deg,#60a5fa,#3b82f6)}
-.stat-val{font-family:'Cinzel',serif;font-size:28px;margin-bottom:4px}
-.stat-card.gold .stat-val{color:#fbbf24}
-.stat-card.green .stat-val{color:#4ade80}
-.stat-card.red .stat-val{color:#f87171}
-.stat-card.blue .stat-val{color:#60a5fa}
-.stat-lbl{font-size:11px;color:#6a6058;text-transform:uppercase;letter-spacing:.08em;font-family:'Cinzel',serif}
-.stat-sub{font-size:11px;color:#4a4238;margin-top:4px}
-.card{background:linear-gradient(135deg,#141416,#0f0f12);border:1px solid rgba(139,115,85,.18);border-radius:12px;padding:22px;margin-bottom:18px}
-.card h3{font-family:'Cinzel',serif;font-size:13px;color:#d4b896;letter-spacing:.1em;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(139,115,85,.15)}
-.tabs{display:flex;gap:4px;margin-bottom:22px;border-bottom:1px solid rgba(139,115,85,.15);padding-bottom:0}
-.tab{padding:10px 18px;border-radius:8px 8px 0 0;cursor:pointer;font-family:'Cinzel',serif;font-size:11px;color:#6a6058;border:1px solid transparent;border-bottom:none;transition:all .2s;margin-bottom:-1px;background:transparent}
-.tab.active{background:#141416;color:#fbbf24;border-color:rgba(139,115,85,.2);border-bottom-color:#141416}
-.tab-panel{display:none}
-.tab-panel.active{display:block}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;padding:10px 14px;color:#8b7355;font-size:10px;font-family:'Cinzel',serif;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid rgba(139,115,85,.2)}
-td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle}
-tr:hover td{background:rgba(139,115,85,.04)}
-.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-family:'Cinzel',serif}
-.badge-super{background:rgba(251,191,36,.12);color:#fbbf24;border:1px solid rgba(251,191,36,.25)}
-.badge-client{background:rgba(96,165,250,.1);color:#60a5fa;border:1px solid rgba(96,165,250,.2)}
-.badge-monthly{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.2)}
-.badge-yearly{background:rgba(139,115,85,.15);color:#d4b896;border:1px solid rgba(139,115,85,.3)}
-.badge-lifetime{background:rgba(167,139,250,.1);color:#a78bfa;border:1px solid rgba(167,139,250,.2)}
-.badge-expired{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.2)}
-.badge-none{background:rgba(255,255,255,.05);color:#6a6058;border:1px solid rgba(255,255,255,.08)}
-.actions-cell{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
-.key-box{background:rgba(0,0,0,.4);border:1px solid rgba(139,115,85,.2);border-radius:6px;padding:8px 12px;font-family:'Courier New';font-size:11px;color:#d4b896;word-break:break-all;margin-top:6px;cursor:pointer;transition:background .2s}
-.key-box:hover{background:rgba(139,115,85,.1)}
-.plan-selector{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
-.plan-card{border:2px solid rgba(139,115,85,.2);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;background:linear-gradient(135deg,#141416,#0f0f12)}
-.plan-card:hover,.plan-card.sel{border-color:#8b7355;background:rgba(139,115,85,.08)}
-.plan-card .price{font-family:'Cinzel',serif;font-size:20px;color:#d4b896;margin:8px 0 4px}
-.plan-card .plan-lbl{font-size:11px;color:#8b7355;font-family:'Cinzel',serif;text-transform:uppercase}
-.plan-card.sel-new{border-color:#a08060 !important;background:rgba(160,128,96,.12) !important;}
-.plan-card .plan-desc{font-size:11px;color:#4a4238;margin-top:3px}
-input,select{background:rgba(255,255,255,.04);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:7px;padding:9px 12px;font-family:'Cormorant Garamond',serif;font-size:14px;outline:none;width:100%;margin-bottom:10px}
-input:focus,select:focus{border-color:rgba(139,115,85,.5)}
-select option{background:#1a1a1e}
-.alert{padding:12px 16px;border-radius:8px;margin-bottom:16px;font-size:13px;display:none}
-.alert-ok{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.2)}
-.alert-err{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.2)}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.section-label{font-family:'Cinzel',serif;font-size:10px;color:#8b7355;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;margin-top:6px}
-.empty{text-align:center;padding:40px;color:#4a4238;font-family:'Cinzel',serif;font-size:12px;letter-spacing:.08em}
-.loader{text-align:center;padding:30px;color:#8b7355;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.1em}
-.days-badge{font-size:10px;font-family:'Cinzel',serif;padding:3px 8px;border-radius:4px}
-.days-ok{color:#4ade80;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2)}
-.days-warn{color:#fbbf24;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.2)}
-.days-exp{color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2)}
-/* ── iOS/Android fixes ── */
-*{-webkit-tap-highlight-color:transparent}
-input,select,textarea{-webkit-appearance:none;font-size:16px !important;border-radius:7px}
-button{-webkit-appearance:none;touch-action:manipulation}
-body{overscroll-behavior-y:none;-webkit-overflow-scrolling:touch}
+.btn-danger{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#f87171}
+.btn-danger:hover{background:rgba(239,68,68,.25)}
 
-@media(max-width:900px){
-  .stats-grid{grid-template-columns:1fr 1fr}
-  .form-row{grid-template-columns:1fr}
-  .plan-selector{grid-template-columns:1fr 1fr}
-  .topbar{padding:12px 16px}
-  .main{padding:20px 16px}
-  .card{padding:18px}
-  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap}
-}
+/* MAIN */
+.main{max-width:900px;margin:0 auto;padding:24px 16px}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
+.stat{background:linear-gradient(135deg,#111,#0f0e0b);border:1px solid rgba(139,115,85,.15);border-radius:12px;padding:16px;text-align:center}
+.stat-val{font-family:'Cinzel',serif;font-size:26px;color:#d4b896;margin-bottom:4px}
+.stat-lbl{font-size:11px;color:#5a5248;letter-spacing:.05em;text-transform:uppercase}
+
+/* CARD */
+.card{background:linear-gradient(135deg,#111,#0f0e0b);border:1px solid rgba(139,115,85,.15);border-radius:14px;padding:22px;margin-bottom:20px}
+.card h3{font-family:'Cinzel',serif;font-size:13px;color:#8b7355;letter-spacing:.12em;margin-bottom:20px;text-transform:uppercase}
+
+/* CRÉER COMPTE */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.field label{display:block;font-size:10px;color:#5a5248;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.field input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 14px;font-family:'Cormorant Garamond',serif;font-size:15px;outline:none;transition:border .2s}
+.field input:focus{border-color:rgba(139,115,85,.5)}
+
+/* PLAN BUTTONS */
+.plan-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.plan-btn{border-radius:12px;padding:16px 10px;text-align:center;border:2px solid;cursor:pointer;transition:all .2s;background:rgba(0,0,0,.3)}
+.plan-btn .pb-icon{font-size:22px;margin-bottom:6px}
+.plan-btn .pb-label{font-family:'Cinzel',serif;font-size:12px;font-weight:700;letter-spacing:.05em}
+.plan-btn .pb-sub{font-size:10px;margin-top:3px;opacity:.7}
+.plan-btn-30{border-color:rgba(251,146,60,.25);color:#fb923c}
+.plan-btn-30:hover,.plan-btn-30.active{border-color:#fb923c;background:rgba(251,146,60,.12)}
+.plan-btn-1an{border-color:rgba(96,165,250,.25);color:#60a5fa}
+.plan-btn-1an:hover,.plan-btn-1an.active{border-color:#60a5fa;background:rgba(96,165,250,.12)}
+.plan-btn-vie{border-color:rgba(74,222,128,.25);color:#4ade80}
+.plan-btn-vie:hover,.plan-btn-vie.active{border-color:#4ade80;background:rgba(74,222,128,.12)}
+
+/* ALERT */
+.alert{border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:14px;display:none}
+.alert.ok{display:block;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);color:#4ade80}
+.alert.err{display:block;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{font-family:'Cinzel',serif;font-size:9px;color:#5a5248;letter-spacing:.12em;text-transform:uppercase;padding:10px 12px;border-bottom:1px solid rgba(139,115,85,.15);text-align:left;white-space:nowrap}
+td{padding:12px;border-bottom:1px solid rgba(139,115,85,.08);vertical-align:middle}
+tr:hover td{background:rgba(139,115,85,.04)}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-family:'Cinzel',serif;white-space:nowrap}
+.badge-ok{background:rgba(74,222,128,.1);color:#4ade80;border:1px solid rgba(74,222,128,.2)}
+.badge-warn{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.2)}
+.badge-exp{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.2)}
+.badge-life{background:rgba(167,139,250,.1);color:#a78bfa;border:1px solid rgba(167,139,250,.2)}
+.badge-super{background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
+
+/* ACTION BUTTONS */
+.act-btns{display:flex;gap:5px;flex-wrap:wrap}
+.act-btn{border:none;border-radius:6px;padding:5px 10px;font-size:10px;font-family:'Cinzel',serif;cursor:pointer;white-space:nowrap;transition:all .2s}
+.act-mdp{background:rgba(139,115,85,.15);border:1px solid rgba(139,115,85,.25);color:#d4b896}
+.act-mdp:hover{background:rgba(139,115,85,.3)}
+.act-dur{background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.25);color:#60a5fa}
+.act-dur:hover{background:rgba(96,165,250,.25)}
+.act-del{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;font-size:13px;padding:4px 8px}
+.act-del:hover{background:rgba(239,68,68,.25)}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;align-items:center;justify-content:center}
+.modal-bg.show{display:flex}
+.modal{background:linear-gradient(135deg,#141410,#0f0e0b);border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:420px}
+.modal h4{font-family:'Cinzel',serif;font-size:13px;color:#d4b896;letter-spacing:.1em;margin-bottom:6px}
+.modal-sub{font-size:12px;color:#5a5248;margin-bottom:18px}
+.modal input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 14px;font-size:15px;outline:none;margin-bottom:14px}
+.modal input:focus{border-color:rgba(139,115,85,.5)}
+.modal-btns{display:flex;gap:8px;justify-content:flex-end}
+.dur-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.dur-btn{border-radius:10px;padding:14px 8px;text-align:center;border:2px solid;cursor:pointer;transition:all .2s;background:rgba(0,0,0,.3)}
+.dur-btn .di{font-size:20px;margin-bottom:4px}
+.dur-btn .dl{font-family:'Cinzel',serif;font-size:11px;font-weight:700}
+.dur-btn-30{border-color:rgba(251,146,60,.25);color:#fb923c}
+.dur-btn-30:hover,.dur-btn-30.sel{border-color:#fb923c;background:rgba(251,146,60,.15)}
+.dur-btn-1an{border-color:rgba(96,165,250,.25);color:#60a5fa}
+.dur-btn-1an:hover,.dur-btn-1an.sel{border-color:#60a5fa;background:rgba(96,165,250,.15)}
+.dur-btn-vie{border-color:rgba(74,222,128,.25);color:#4ade80}
+.dur-btn-vie:hover,.dur-btn-vie.sel{border-color:#4ade80;background:rgba(74,222,128,.15)}
+
+/* RESPONSIVE */
 @media(max-width:600px){
-  .stats-grid{grid-template-columns:1fr 1fr}
-  .tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap}
-  .tab{white-space:nowrap;font-size:10px;padding:8px 12px}
-  .topbar{padding:10px 12px;gap:8px}
-  .topbar .logo div:first-child{font-size:15px}
-  .topbar .logo span{display:none}
-  .topbar-right .btn-outline{display:none}
-  .main{padding:14px 12px}
-  .card{padding:14px}
-  .card h3{font-size:11px}
-  .stat-val{font-size:22px}
-  .btn{padding:8px 12px;font-size:10px}
-  /* Actions sur chaque user : wrap en 2 lignes */
-  td:last-child div{display:flex;flex-wrap:wrap;gap:3px}
-  .plan-selector{grid-template-columns:1fr 1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .form-row{grid-template-columns:1fr}
+  .plan-btns{grid-template-columns:1fr 1fr 1fr}
+  .topbar .logo-text span{display:none}
+  .main{padding:14px 10px}
 }
-@media(max-width:380px){
-  .stats-grid{grid-template-columns:1fr}
-  .plan-selector{grid-template-columns:1fr}
-  .stat-val{font-size:20px}
+@media(max-width:400px){
+  .plan-btns{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
+<!-- TOPBAR -->
 <div class="topbar">
   <div class="logo">
-    <div style="width:44px;height:44px;flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500"> <defs> <linearGradient id="bgCircle" x1="0%" y1="0%" x2="100%" y2="100%"> <stop offset="0%" style="stop-color:#1a1612"/> <stop offset="100%" style="stop-color:#0a0906"/> </linearGradient> <linearGradient id="goldBar" x1="0%" y1="0%" x2="0%" y2="100%"> <stop offset="0%" style="stop-color:#f0d080"/> <stop offset="30%" style="stop-color:#c8a040"/> <stop offset="60%" style="stop-color:#e8c060"/> <stop offset="100%" style="stop-color:#a07820"/> </linearGradient> <linearGradient id="goldText" x1="0%" y1="0%" x2="0%" y2="100%"> <stop offset="0%" style="stop-color:#e8c860"/> <stop offset="50%" style="stop-color:#c09030"/> <stop offset="100%" style="stop-color:#d4a840"/> </linearGradient> <linearGradient id="platLeft" x1="0%" y1="0%" x2="100%" y2="100%"> <stop offset="0%" style="stop-color:#e0c060"/> <stop offset="50%" style="stop-color:#a07820"/> <stop offset="100%" style="stop-color:#c8a030"/> </linearGradient> <linearGradient id="platRight" x1="100%" y1="0%" x2="0%" y2="100%"> <stop offset="0%" style="stop-color:#e0c060"/> <stop offset="50%" style="stop-color:#a07820"/> <stop offset="100%" style="stop-color:#c8a030"/> </linearGradient> <radialGradient id="knobGrad" cx="40%" cy="30%"> <stop offset="0%" style="stop-color:#f0d880"/> <stop offset="60%" style="stop-color:#b08828"/> <stop offset="100%" style="stop-color:#806010"/> </radialGradient> <filter id="glow"> <feGaussianBlur stdDeviation="2.5" result="blur"/> <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge> </filter> <filter id="softglow"> <feGaussianBlur stdDeviation="1.5" result="blur"/> <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge> </filter> </defs> <!-- Fond blanc extérieur --> <rect width="500" height="500" fill="#f8f6f0"/> <!-- Coins décoratifs (comme sur l'image) --> <line x1="15" y1="60" x2="60" y2="15" stroke="rgba(180,150,60,0.5)" stroke-width="1"/> <line x1="15" y1="15" x2="60" y2="15" stroke="rgba(180,150,60,0.5)" stroke-width="1"/> <line x1="15" y1="15" x2="15" y2="60" stroke="rgba(180,150,60,0.5)" stroke-width="1"/> <line x1="485" y1="60" x2="440" y2="15" stroke="rgba(180,150,60,0.5)" stroke-width="1"/> <line x1="485" y1="15" x2="440" y2="15" stroke="rgba(180,150,60,0.5)" stroke-width="1"/> <line x1="485" y1="15" x2="485" y2="60" stroke="rgba(180,150,60,0.5)" stroke-width="1"/> <line x1="15" y1="440" x2="60" y2="485" stroke="rgba(180,150,60,0.5)" stroke-width="1"/> <line x1="15" y1="485" x2="60" y2="485" stroke="rgba(180,150,60,0.5)" stroke-width="1"/> <line x1="15" y1="485" x2="15" y2="440" stroke="rgba(180,150,60,0.5)" stroke-width="1"/> <line x1="485" y1="440" x2="440" y2="485" stroke="rgba(180,150,60,0.5)" stroke-width="1"/> <line x1="485" y1="485" x2="440" y2="485" stroke="rgba(180,150,60,0.5)" stroke-width="1"/> <line x1="485" y1="485" x2="485" y2="440" stroke="rgba(180,150,60,0.5)" stroke-width="1"/> <!-- Cercle principal noir --> <circle cx="250" cy="250" r="222" fill="url(#bgCircle)"/> <!-- Bordure dorée extérieure --> <circle cx="250" cy="250" r="222" fill="none" stroke="#c8a030" stroke-width="2.5"/> <!-- Bordure dorée intérieure fine --> <circle cx="250" cy="250" r="214" fill="none" stroke="rgba(200,160,48,0.3)" stroke-width="1"/> <!-- ═══ BALANCE DE JUSTICE ═══ --> <!-- Tige verticale --> <rect x="247" y="158" width="6" height="130" rx="3" fill="url(#goldBar)" filter="url(#softglow)"/> <!-- Barre horizontale principale --> <rect x="128" y="170" width="244" height="7" rx="3.5" fill="url(#goldBar)" filter="url(#softglow)"/> <!-- Boule sommet --> <circle cx="250" cy="160" r="11" fill="url(#knobGrad)" filter="url(#glow)"/> <circle cx="246" cy="156" r="3.5" fill="rgba(255,240,180,0.5)"/> <!-- Base / pied --> <rect x="195" y="284" width="110" height="8" rx="4" fill="url(#goldBar)"/> <rect x="215" y="292" width="70" height="5" rx="2.5" fill="url(#goldBar)" opacity="0.6"/> <!-- Chaînes plateau gauche --> <line x1="148" y1="177" x2="118" y2="230" stroke="url(#goldBar)" stroke-width="2.5" stroke-linecap="round"/> <line x1="148" y1="177" x2="178" y2="230" stroke="url(#goldBar)" stroke-width="2.5" stroke-linecap="round"/> <!-- Plateau gauche (trapèze/coupe) --> <path d="M108,230 Q148,224 188,230 L182,252 Q148,260 114,252 Z" fill="url(#platLeft)" filter="url(#softglow)"/> <!-- Reflet plateau gauche --> <ellipse cx="148" cy="230" rx="38" ry="5" fill="rgba(240,220,120,0.25)"/> <!-- Chaînes plateau droit --> <line x1="352" y1="177" x2="322" y2="230" stroke="url(#goldBar)" stroke-width="2.5" stroke-linecap="round"/> <line x1="352" y1="177" x2="382" y2="230" stroke="url(#goldBar)" stroke-width="2.5" stroke-linecap="round"/> <!-- Plateau droit (trapèze/coupe) --> <path d="M312,230 Q352,224 392,230 L386,252 Q352,260 318,252 Z" fill="url(#platRight)" filter="url(#softglow)"/> <!-- Reflet plateau droit --> <ellipse cx="352" cy="230" rx="38" ry="5" fill="rgba(240,220,120,0.25)"/> <!-- ═══ TEXTE ═══ --> <!-- GESTION --> <text x="250" y="338" text-anchor="middle" font-family="'Palatino Linotype', Palatino, Georgia, serif" font-size="34" font-weight="700" letter-spacing="10" fill="url(#goldText)" filter="url(#softglow)">GESTION</text> <!-- Petit point décoratif sous GESTION --> <circle cx="250" cy="348" r="2.5" fill="#c8a030"/> <!-- Séparateurs et JURIDIQUE --> <line x1="148" y1="364" x2="218" y2="364" stroke="rgba(200,160,48,0.5)" stroke-width="1"/> <line x1="282" y1="364" x2="352" y2="364" stroke="rgba(200,160,48,0.5)" stroke-width="1"/> <text x="250" y="382" text-anchor="middle" font-family="'Palatino Linotype', Palatino, Georgia, serif" font-size="18" font-weight="300" letter-spacing="12" fill="rgba(210,180,100,0.85)">JURIDIQUE</text> </svg></div>
-    <div>
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#1a1612"/><stop offset="100%" style="stop-color:#0a0906"/></linearGradient>
+        <linearGradient id="gd" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#f0d080"/><stop offset="50%" style="stop-color:#c8a040"/><stop offset="100%" style="stop-color:#a07820"/></linearGradient>
+      </defs>
+      <circle cx="250" cy="250" r="222" fill="url(#bg)" stroke="#c8a030" stroke-width="2.5"/>
+      <rect x="247" y="158" width="6" height="130" rx="3" fill="url(#gd)"/>
+      <rect x="128" y="170" width="244" height="7" rx="3.5" fill="url(#gd)"/>
+      <circle cx="250" cy="160" r="11" fill="#c8a030"/>
+      <rect x="195" y="284" width="110" height="8" rx="4" fill="url(#gd)"/>
+      <line x1="148" y1="177" x2="118" y2="230" stroke="url(#gd)" stroke-width="2.5"/>
+      <line x1="148" y1="177" x2="178" y2="230" stroke="url(#gd)" stroke-width="2.5"/>
+      <path d="M108,230 Q148,224 188,230 L182,252 Q148,260 114,252 Z" fill="#c8a030" opacity=".8"/>
+      <line x1="352" y1="177" x2="322" y2="230" stroke="url(#gd)" stroke-width="2.5"/>
+      <line x1="352" y1="177" x2="382" y2="230" stroke="url(#gd)" stroke-width="2.5"/>
+      <path d="M312,230 Q352,224 392,230 L386,252 Q352,260 318,252 Z" fill="#c8a030" opacity=".8"/>
+      <text x="250" y="338" text-anchor="middle" font-family="Georgia,serif" font-size="30" font-weight="700" letter-spacing="8" fill="#c8a030">GESTION</text>
+      <text x="250" y="365" text-anchor="middle" font-family="Georgia,serif" font-size="16" letter-spacing="10" fill="rgba(212,180,100,.7)">JURIDIQUE</text>
+    </svg>
+    <div class="logo-text">
       <div>GESTION JURIDIQUE</div>
       <span>SUPER ADMIN — CABINET JURIDIQUE MAROC</span>
     </div>
   </div>
   <div class="topbar-right">
-    <span id="admin-name" style="font-size:12px;color:#8b7355;font-family:'Cinzel',serif"></span>
-    <a href="/" class="btn btn-outline">← Application</a>
-    <button onclick="doLogout()" class="btn btn-red">Déconnexion</button>
+    <button class="btn btn-outline" onclick="logout()">Déconnexion</button>
   </div>
 </div>
 
 <div class="main">
-  <div class="page-title">👑 Panneau Super Admin</div>
-  <div class="page-sub" id="admin-date">Chargement...</div>
 
   <!-- STATS -->
-  <div class="stats-grid">
-    <div class="stat-card gold">
-      <div class="stat-val" id="s-total">—</div>
-      <div class="stat-lbl">Utilisateurs total</div>
-      <div class="stat-sub" id="s-actifs">—</div>
+  <div class="stats">
+    <div class="stat"><div class="stat-val" id="st-total">—</div><div class="stat-lbl">Clients</div></div>
+    <div class="stat"><div class="stat-val" id="st-actifs" style="color:#4ade80">—</div><div class="stat-lbl">Actifs</div></div>
+    <div class="stat"><div class="stat-val" id="st-expires" style="color:#f87171">—</div><div class="stat-lbl">Expirés</div></div>
+  </div>
+
+  <!-- CRÉER COMPTE -->
+  <div class="card">
+    <h3>➕ Nouveau Client</h3>
+    <div id="create-alert" class="alert"></div>
+    <div class="form-row">
+      <div class="field"><label>Nom du cabinet / client</label><input id="new-nom" placeholder="Cabinet Maître Alami"/></div>
+      <div class="field"><label>Email administrateur</label><input id="new-email" type="email" placeholder="admin@cabinet.ma"/></div>
     </div>
-    <div class="stat-card green">
-      <div class="stat-val" id="s-actives">—</div>
-      <div class="stat-lbl">Licences actives</div>
-      <div class="stat-sub" id="s-lic-detail">—</div>
+    <div class="field" style="margin-bottom:18px"><label>Mot de passe</label><input id="new-pass" type="password" placeholder="Minimum 6 caractères"/></div>
+
+    <div style="font-size:10px;color:#5a5248;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">Durée d'accès</div>
+    <div class="plan-btns">
+      <div class="plan-btn plan-btn-30" id="np-30" onclick="selPlan('30')">
+        <div class="pb-icon">🗓️</div>
+        <div class="pb-label">30 Jours</div>
+        <div class="pb-sub">Mensuel</div>
+      </div>
+      <div class="plan-btn plan-btn-1an" id="np-1an" onclick="selPlan('1an')">
+        <div class="pb-icon">📅</div>
+        <div class="pb-label">1 An</div>
+        <div class="pb-sub">Annuel</div>
+      </div>
+      <div class="plan-btn plan-btn-vie" id="np-vie" onclick="selPlan('vie')">
+        <div class="pb-icon">♾️</div>
+        <div class="pb-label">À Vie</div>
+        <div class="pb-sub">Permanent</div>
+      </div>
     </div>
-    <div class="stat-card red">
-      <div class="stat-val" id="s-expired">—</div>
-      <div class="stat-lbl">Licences expirées</div>
-      <div class="stat-sub">À renouveler</div>
-    </div>
-    <div class="stat-card blue">
-      <div class="stat-val" id="s-keys">—</div>
-      <div class="stat-lbl">Clés disponibles</div>
-      <div class="stat-sub">Non utilisées</div>
+
+    <div style="display:flex;justify-content:flex-end">
+      <button class="btn btn-gold" onclick="createAccount()">✅ Créer le client</button>
     </div>
   </div>
 
-  <!-- TABS -->
-  <div class="tabs">
-    <div class="tab active" onclick="switchTab('users')">👥 Utilisateurs</div>
-    <div class="tab" onclick="switchTab('licences')">🔑 Générer licences</div>
-    <div class="tab" onclick="switchTab('keys')">📋 Clés générées</div>
-    <div class="tab" onclick="switchTab('create')">➕ Créer compte</div>
-  </div>
-
-  <!-- TAB: USERS -->
-  <div id="tab-users" class="tab-panel active">
-    <div class="card">
-      <h3>GESTION DES UTILISATEURS</h3>
-      <div id="users-alert" class="alert"></div>
-      <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
-        <input id="search-users" placeholder="Rechercher par nom ou email..." style="max-width:300px;margin:0" oninput="filterUsers()"/>
-        <button onclick="loadUsers()" class="btn btn-outline" style="white-space:nowrap">↺ Actualiser</button>
-      </div>
-      <div id="users-table"><div class="loader">Chargement des utilisateurs...</div></div>
+  <!-- TABLEAU CLIENTS -->
+  <div class="card">
+    <h3>👥 Clients</h3>
+    <div id="users-alert" class="alert"></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Statut</th>
+            <th>Jours restants</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="users-tbody">
+          <tr><td colspan="5" style="text-align:center;color:#4a4238;padding:30px">Chargement...</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <!-- TAB: LICENCES -->
-  <div id="tab-licences" class="tab-panel">
-    <div class="card">
-      <h3>GÉNÉRER DES CLÉS DE LICENCE</h3>
-      <div class="plan-selector">
-        <div class="plan-card sel" id="plan-monthly" onclick="selPlan('monthly')">
-          <div style="font-size:24px">📅</div>
-          <div class="price">249 MAD</div>
-          <div class="plan-lbl">30 jours</div>
-          <div class="plan-desc">Suffixe -30J</div>
-        </div>
-        <div class="plan-card" id="plan-yearly" onclick="selPlan('yearly')">
-          <div style="font-size:24px">📆</div>
-          <div class="price">2 490 MAD</div>
-          <div class="plan-lbl">1 an</div>
-          <div class="plan-desc">Suffixe -1AN</div>
-        </div>
-        <div class="plan-card" id="plan-lifetime" onclick="selPlan('lifetime')">
-          <div style="font-size:24px">♾</div>
-          <div class="price">8 490 MAD</div>
-          <div class="plan-lbl">À vie</div>
-          <div class="plan-desc">Suffixe -VIE</div>
-        </div>
-      </div>
-      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-        <div>
-          <div class="section-label">Quantité à générer</div>
-          <input id="gen-count" type="number" value="1" min="1" max="20" style="width:100px;margin:0"/>
-        </div>
-        <button onclick="genLicences()" class="btn btn-gold" style="margin-top:22px">⚡ Générer</button>
-      </div>
-      <div id="gen-result" style="margin-top:16px"></div>
-    </div>
-  </div>
+</div><!-- /main -->
 
-  <!-- TAB: KEYS -->
-  <div id="tab-keys" class="tab-panel">
-    <div class="card">
-      <h3>TOUTES LES CLÉS GÉNÉRÉES</h3>
-      <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
-        <select id="filter-keys" style="width:180px;margin:0" onchange="loadKeys()">
-          <option value="">Tous les plans</option>
-          <option value="monthly">30 jours</option>
-          <option value="yearly">1 an</option>
-          <option value="lifetime">À vie</option>
-        </select>
-        <select id="filter-used" style="width:180px;margin:0" onchange="loadKeys()">
-          <option value="">Toutes les clés</option>
-          <option value="available">Disponibles</option>
-          <option value="used">Utilisées</option>
-        </select>
-        <button onclick="loadKeys()" class="btn btn-outline">↺ Actualiser</button>
-      </div>
-      <div id="keys-table"><div class="loader">Chargement des clés...</div></div>
-    </div>
-  </div>
-
-  <!-- TAB: CREATE -->
-  <div id="tab-create" class="tab-panel">
-    <div class="card" style="max-width:520px;margin:0 auto">
-      <h3>➕ NOUVEAU CLIENT</h3>
-      <div id="create-alert" class="alert"></div>
-
-      <div style="margin-bottom:14px">
-        <div class="section-label">🏛️ Nom du cabinet / client *</div>
-        <input id="new-nom" placeholder="Ex: Cabinet Maître Benali" style="width:100%"/>
-      </div>
-
-      <div style="margin-bottom:14px">
-        <div class="section-label">📧 Email administrateur *</div>
-        <input id="new-email" type="email" placeholder="admin@cabinet.ma" style="width:100%"/>
-      </div>
-
-      <div style="margin-bottom:20px">
-        <div class="section-label">🔒 Mot de passe *</div>
-        <input id="new-pass" type="password" placeholder="Minimum 6 caractères" style="width:100%"/>
-      </div>
-
-      <div style="margin-bottom:20px">
-        <div class="section-label" style="margin-bottom:12px">📋 Plan initial</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-          <div class="plan-card" id="np-none" onclick="selNewPlan('')" style="padding:14px;text-align:center;cursor:pointer;border-radius:10px;border:2px solid rgba(139,115,85,.2);transition:all .2s">
-            <div style="font-size:20px;margin-bottom:4px">—</div>
-            <div style="font-family:'Cinzel',serif;font-size:12px;color:#d4b896;font-weight:600">Aucun</div>
-            <div style="font-size:11px;color:#6a6058;margin-top:2px">Manuel</div>
-          </div>
-          <div class="plan-card" id="np-trial" onclick="selNewPlan('trial')" style="padding:14px;text-align:center;cursor:pointer;border-radius:10px;border:2px solid rgba(139,115,85,.2);transition:all .2s">
-            <div style="font-size:20px;margin-bottom:4px">⏱️</div>
-            <div style="font-family:'Cinzel',serif;font-size:12px;color:#d4b896;font-weight:600">24h</div>
-            <div style="font-size:11px;color:#6a6058;margin-top:2px">Test</div>
-          </div>
-          <div class="plan-card" id="np-monthly" onclick="selNewPlan('monthly')" style="padding:14px;text-align:center;cursor:pointer;border-radius:10px;border:2px solid rgba(139,115,85,.2);transition:all .2s">
-            <div style="font-size:20px;margin-bottom:4px">📅</div>
-            <div style="font-family:'Cinzel',serif;font-size:12px;color:#d4b896;font-weight:600">30j</div>
-            <div style="font-size:11px;color:#6a6058;margin-top:2px">Mensuel</div>
-          </div>
-          <div class="plan-card" id="np-yearly" onclick="selNewPlan('yearly')" style="padding:14px;text-align:center;cursor:pointer;border-radius:10px;border:2px solid rgba(139,115,85,.2);transition:all .2s">
-            <div style="font-size:20px;margin-bottom:4px">📆</div>
-            <div style="font-family:'Cinzel',serif;font-size:12px;color:#d4b896;font-weight:600">1 an</div>
-            <div style="font-size:11px;color:#6a6058;margin-top:2px">Annuel</div>
-          </div>
-          <div class="plan-card" id="np-lifetime" onclick="selNewPlan('lifetime')" style="padding:14px;text-align:center;cursor:pointer;border-radius:10px;border:2px solid rgba(139,115,85,.2);transition:all .2s;grid-column:1/-1">
-            <div style="font-size:20px;margin-bottom:4px">∞</div>
-            <div style="font-family:'Cinzel',serif;font-size:12px;color:#d4b896;font-weight:600">Vie</div>
-            <div style="font-size:11px;color:#6a6058;margin-top:2px">Permanent</div>
-          </div>
-        </div>
-      </div>
-
-      <div style="display:flex;gap:10px;justify-content:flex-end">
-        <button onclick="document.getElementById('new-nom').value='';document.getElementById('new-email').value='';document.getElementById('new-pass').value='';selNewPlan('');" class="btn btn-outline">Annuler</button>
-        <button onclick="createAccount()" class="btn btn-gold" style="padding:11px 28px;font-size:12px">✅ Créer le client</button>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<!-- MODAL RESET MDP -->
-<div id="modal-reset" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999;display:none;align-items:center;justify-content:center">
-  <div style="background:#0f0f12;border:1px solid rgba(139,115,85,.3);border-radius:12px;padding:28px;width:420px;max-width:95vw">
-    <h3 style="font-family:'Cinzel',serif;color:#d4b896;font-size:13px;letter-spacing:.1em;margin-bottom:16px">RÉINITIALISER MOT DE PASSE</h3>
-    <div id="modal-reset-name" style="font-size:13px;color:#8b7355;margin-bottom:16px;font-family:'Cinzel',serif"></div>
-    <div class="section-label">Nouveau mot de passe</div>
-    <input id="reset-pass" type="password" placeholder="Minimum 6 caractères"/>
-    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
-      <button onclick="closeModal('modal-reset')" class="btn btn-outline">Annuler</button>
-      <button onclick="doResetPass()" class="btn btn-gold">Confirmer</button>
+<!-- MODAL MDP -->
+<div class="modal-bg" id="modal-mdp">
+  <div class="modal">
+    <h4>🔑 Réinitialiser le mot de passe</h4>
+    <div class="modal-sub" id="mdp-sub">Nouveau mot de passe pour ce compte</div>
+    <input type="password" id="mdp-input" placeholder="Nouveau mot de passe"/>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal('modal-mdp')">Annuler</button>
+      <button class="btn btn-gold" onclick="doResetMdp()">Confirmer</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL EXTEND -->
-<div id="modal-extend" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999;align-items:center;justify-content:center">
-  <div style="background:#0f0f12;border:1px solid rgba(139,115,85,.3);border-radius:12px;padding:28px;width:420px;max-width:95vw">
-    <h3 style="font-family:'Cinzel',serif;color:#d4b896;font-size:13px;letter-spacing:.1em;margin-bottom:16px">MODIFIER LA LICENCE</h3>
-    <div id="modal-extend-name" style="font-size:13px;color:#8b7355;margin-bottom:16px;font-family:'Cinzel',serif"></div>
-    <div class="section-label">Nouvelle licence</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
-      <div class="plan-card sel" id="ep-monthly" onclick="selExtPlan('monthly')" style="padding:10px">
-        <div class="plan-lbl">+30 jours</div><div class="price" style="font-size:14px">249 MAD</div>
+<!-- MODAL DURÉE -->
+<div class="modal-bg" id="modal-dur">
+  <div class="modal">
+    <h4>⏱️ Modifier la durée</h4>
+    <div class="modal-sub" id="dur-sub">Choisissez la nouvelle durée d'accès</div>
+    <div class="dur-btns">
+      <div class="dur-btn dur-btn-30" id="dur-30" onclick="selDur('30')">
+        <div class="di">🗓️</div><div class="dl">30 Jours</div>
       </div>
-      <div class="plan-card" id="ep-yearly" onclick="selExtPlan('yearly')" style="padding:10px">
-        <div class="plan-lbl">+1 an</div><div class="price" style="font-size:14px">2 490 MAD</div>
+      <div class="dur-btn dur-btn-1an" id="dur-1an" onclick="selDur('1an')">
+        <div class="di">📅</div><div class="dl">1 An</div>
       </div>
-      <div class="plan-card" id="ep-lifetime" onclick="selExtPlan('lifetime')" style="padding:10px">
-        <div class="plan-lbl">À vie</div><div class="price" style="font-size:14px">8 490 MAD</div>
+      <div class="dur-btn dur-btn-vie" id="dur-vie" onclick="selDur('vie')">
+        <div class="di">♾️</div><div class="dl">À Vie</div>
       </div>
     </div>
-    <div style="display:flex;gap:10px;justify-content:flex-end">
-      <button onclick="closeModal('modal-extend')" class="btn btn-outline">Annuler</button>
-      <button onclick="doExtend()" class="btn btn-gold">Appliquer</button>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal('modal-dur')">Annuler</button>
+      <button class="btn btn-gold" onclick="doChangeDur()">Appliquer</button>
     </div>
   </div>
 </div>
 
 <script>
-const API = '';
-let TOKEN = localStorage.getItem('lexia_token') || '';
-let currentResetId = null;
-let currentExtendId = null;
-let extPlan = 'monthly';
-let selectedPlan = 'monthly';
-let allUsers = [];
+var TOKEN = localStorage.getItem("gj_admin_token") || "";
+var SEL_PLAN = "";
+var SEL_DUR = "";
+var EDIT_USER_ID = null;
 
-function authH(){ return {'Content-Type':'application/json','Authorization':'Bearer '+TOKEN}; }
+// ── AUTH ──
+window.onload = function() {
+  if (!TOKEN) { showLogin(); return; }
+  loadAll();
+};
 
-async function api(method, url, body){
-  const opts={method,headers:authH()};
-  if(body) opts.body=JSON.stringify(body);
-  const r=await fetch(API+url,opts);
-  const d=await r.json();
-  if(!r.ok) throw new Error(d.error||'Erreur');
+function showLogin() {
+  document.body.innerHTML = '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0a0a0c"><div style="background:#111;border:1px solid rgba(139,115,85,.2);border-radius:14px;padding:32px;width:90vw;max-width:360px"><div style="font-family:Cinzel,serif;font-size:18px;color:#d4b896;text-align:center;margin-bottom:20px;letter-spacing:.1em">SUPER ADMIN</div><input id="li-email" type="email" placeholder="Email" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:11px 14px;font-size:15px;outline:none;margin-bottom:10px"/><input id="li-pass" type="password" placeholder="Mot de passe" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:11px 14px;font-size:15px;outline:none;margin-bottom:16px"/><div id="li-err" style="color:#f87171;font-size:12px;margin-bottom:10px;display:none"></div><button onclick="doAdminLogin()" style="width:100%;background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:12px;font-family:Cinzel,serif;font-size:12px;letter-spacing:.08em;cursor:pointer">SE CONNECTER</button></div></div>';
+}
+
+async function doAdminLogin() {
+  var email = document.getElementById("li-email").value.trim();
+  var pass  = document.getElementById("li-pass").value;
+  var err   = document.getElementById("li-err");
+  err.style.display = "none";
+  try {
+    var r = await fetch("/api/login", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({email,password:pass}) });
+    var d = await r.json();
+    if (!r.ok || d.user.role !== "super") { err.textContent = d.error || "Accès refusé"; err.style.display="block"; return; }
+    TOKEN = d.token;
+    localStorage.setItem("gj_admin_token", TOKEN);
+    location.reload();
+  } catch(e) { err.textContent = "Erreur réseau"; err.style.display="block"; }
+}
+
+function logout() {
+  localStorage.removeItem("gj_admin_token");
+  TOKEN = "";
+  showLogin();
+}
+
+// ── API ──
+async function api(method, url, body) {
+  var opts = { method, headers: { "Authorization":"Bearer "+TOKEN } };
+  if (body) { opts.headers["Content-Type"]="application/json"; opts.body=JSON.stringify(body); }
+  var r = await fetch(url, opts);
+  var d = await r.json();
+  if (!r.ok) throw new Error(d.error || "Erreur");
   return d;
 }
 
-async function init(){
-  if(!TOKEN){ window.location.href='/'; return; }
+function showAlert(id, msg, type) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  el.className = "alert " + (type==="ok"?"ok":"err");
+  setTimeout(function(){ el.className="alert"; }, 4000);
+}
+
+// ── LOAD ──
+async function loadAll() {
   try {
-    const d=await api('GET','/api/me');
-    if(d.user.role!=='super'){ window.location.href='/'; return; }
-    document.getElementById('admin-name').textContent='👑 '+d.user.nom;
-    document.getElementById('admin-date').textContent='Super Admin · '+new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-    loadStats();
-    loadUsers();
-    loadKeys();
-  } catch(e){ window.location.href='/'; }
-}
-
-async function loadStats(){
-  try {
-    const [users,keys]=await Promise.all([api('GET','/api/admin/users'),api('GET','/api/admin/licences')]);
-    const nonSuper=users.filter(u=>u.role!=='super');
-    const active=nonSuper.filter(u=>u.licence&&u.licence.valid);
-    const expired=nonSuper.filter(u=>!u.licence||!u.licence.valid);
-    const avail=keys.filter(k=>!k.usedBy);
-    const monthly=active.filter(u=>u.licence&&u.licence.plan==='monthly').length;
-    const yearly=active.filter(u=>u.licence&&u.licence.plan==='yearly').length;
-    const life=active.filter(u=>u.licence&&u.licence.plan==='lifetime').length;
-    document.getElementById('s-total').textContent=nonSuper.length;
-    document.getElementById('s-actifs').textContent=active.length+' actifs';
-    document.getElementById('s-actives').textContent=active.length;
-    document.getElementById('s-lic-detail').textContent=monthly+'×30j · '+yearly+'×1an · '+life+'×∞';
-    document.getElementById('s-expired').textContent=expired.length;
-    document.getElementById('s-keys').textContent=avail.length;
-  } catch(e){}
-}
-
-async function loadUsers(){
-  try {
-    allUsers=await api('GET','/api/admin/users');
-    renderUsers(allUsers);
-  } catch(e){ document.getElementById('users-table').innerHTML='<div class="empty">Erreur de chargement</div>'; }
-}
-
-function filterUsers(){
-  const q=document.getElementById('search-users').value.toLowerCase();
-  const filtered=allUsers.filter(u=>(u.nom||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q));
-  renderUsers(filtered);
-}
-
-function renderUsers(users){
-  const planLabel={monthly:'30 jours',yearly:'1 an',lifetime:'À vie',super:'Super Admin'};
-  const rows=users.map(u=>{
-    const lic=u.licence||{};
-    let licBadge='<span class="badge badge-none">Aucune</span>';
-    if(u.role==='super') licBadge='<span class="badge badge-super">👑 Super Admin</span>';
-    else if(lic.valid){
-      const cls=lic.plan==='lifetime'?'badge-lifetime':lic.plan==='yearly'?'badge-yearly':'badge-monthly';
-      licBadge='<span class="badge '+cls+'">'+planLabel[lic.plan]+'</span>';
-      if(lic.daysLeft)licBadge+=' <span class="days-badge '+(lic.daysLeft<=7?'days-exp':lic.daysLeft<=30?'days-warn':'days-ok')+'">'+lic.daysLeft+'j</span>';
-    } else if(u.role!=='super') licBadge='<span class="badge badge-expired">Expirée</span>';
-    
-    const actions=u.role==='super'?'<span style="color:#4a4238;font-size:11px;font-family:Cinzel,serif">Super Admin</span>':
-      '<div class="actions-cell">'+
-      '<button onclick="openResetModal('+u.id+',\''+u.nom+'\')" class="btn btn-outline" style="padding:5px 10px;font-size:10px">🔑 MDP</button>'+
-      '<button onclick="extend('+u.id+',30)" class="btn btn-green" style="padding:5px 10px;font-size:10px">🔄 +30j</button>'+
-      '<button onclick="extend('+u.id+',365)" class="btn btn-blue" style="padding:5px 10px;font-size:10px">📅 +1an</button>'+
-      '<button onclick="setLifetime('+u.id+')" class="btn btn-purple" style="padding:5px 10px;font-size:10px">♾️ À vie</button>'+
-      '<button onclick="delUser('+u.id+',\''+u.nom+'\')" class="btn btn-red" style="padding:5px 10px;font-size:10px">🗑</button>'+
-      '</div>';
-    
-    return '<tr>'+
-      '<td><div style="font-size:13px;color:#e8e0d0;font-weight:600">'+u.nom+'</div><div style="font-size:11px;color:#5a5248;margin-top:2px">'+u.email+'</div></td>'+
-      '<td><span class="badge '+(u.role==='super'?'badge-super':'badge-client')+'">'+u.role+'</span></td>'+
-      '<td>'+licBadge+'</td>'+
-      '<td style="font-size:11px;color:#5a5248">'+(u.createdAt?new Date(u.createdAt).toLocaleDateString('fr-FR'):'—')+'</td>'+
-      '<td>'+actions+'</td>'+
-    '</tr>';
-  }).join('');
-  
-  document.getElementById('users-table').innerHTML=users.length
-    ?'<table><thead><tr><th>Utilisateur</th><th>Rôle</th><th>Licence</th><th>Créé le</th><th>Actions</th></tr></thead><tbody>'+rows+'</tbody></table>'
-    :'<div class="empty">Aucun utilisateur trouvé</div>';
-}
-
-async function loadKeys(){
-  try {
-    let keys=await api('GET','/api/admin/licences');
-    const planF=document.getElementById('filter-keys').value;
-    const usedF=document.getElementById('filter-used').value;
-    if(planF) keys=keys.filter(k=>k.plan===planF);
-    if(usedF==='available') keys=keys.filter(k=>!k.usedBy);
-    if(usedF==='used') keys=keys.filter(k=>!!k.usedBy);
-    const planLabel={monthly:'30 jours',yearly:'1 an',lifetime:'À vie'};
-    const rows=keys.map(k=>{
-      const exp=k.expiresAt?new Date(k.expiresAt).toLocaleDateString('fr-FR'):'∞';
-      const cls=k.plan==='lifetime'?'badge-lifetime':k.plan==='yearly'?'badge-yearly':'badge-monthly';
-      return '<tr>'+
-        '<td style="font-family:Courier New;font-size:12px;color:#d4b896">'+k.key+'</td>'+
-        '<td><span class="badge '+cls+'">'+planLabel[k.plan]+'</span></td>'+
-        '<td style="font-size:11px;color:#5a5248">'+exp+'</td>'+
-        '<td style="font-size:11px;color:'+(k.usedBy?'#4ade80':'#5a5248')+'">'+( k.usedBy||'Disponible')+'</td>'+
-        '<td><button onclick="navigator.clipboard.writeText(\''+k.key+'\').then(function(){showAlert(\'users-alert\',\'Clé copiée : '+k.key+'\',\'ok\')})" class="btn btn-outline" style="padding:4px 8px;font-size:10px">📋 Copier</button></td>'+
-      '</tr>';
-    }).join('');
-    document.getElementById('keys-table').innerHTML=keys.length
-      ?'<table><thead><tr><th>Clé</th><th>Plan</th><th>Expiration</th><th>Utilisée par</th><th></th></tr></thead><tbody>'+rows+'</tbody></table>'
-      :'<div class="empty">Aucune clé — Générez-en depuis l\'onglet "Générer licences"</div>';
-  } catch(e){ document.getElementById('keys-table').innerHTML='<div class="empty">Erreur de chargement</div>'; }
-}
-
-var selectedPlan='monthly';
-function selPlan(p){
-  selectedPlan=p;
-  ['monthly','yearly','lifetime'].forEach(x=>{
-    document.getElementById('plan-'+x).classList.toggle('sel',x===p);
-  });
-}
-
-async function genLicences(){
-  const count=parseInt(document.getElementById('gen-count').value)||1;
-  try {
-    const d=await api('POST','/api/admin/generate-licence',{plan:selectedPlan,count});
-    const planLabel={monthly:'30 jours — 249 MAD',yearly:'1 an — 2 490 MAD',lifetime:'À vie — 8 490 MAD'};
-    let html='<div style="font-family:Cinzel,serif;font-size:11px;color:#4ade80;margin-bottom:10px">✅ '+d.generated.length+' clé(s) générée(s) — '+planLabel[selectedPlan]+'</div>';
-    html+='<div style="font-size:11px;color:#5a5248;margin-bottom:8px;font-family:Cinzel,serif">Cliquez sur une clé pour la copier</div>';
-    d.generated.forEach(l=>{
-      const kb=document.createElement('div');
-      kb.className='key-box';kb.textContent=l.key;
-      kb.onclick=()=>navigator.clipboard.writeText(l.key).then(()=>{ kb.style.background='rgba(34,197,94,.15)'; setTimeout(()=>kb.style.background='',1500); });
-      document.getElementById('gen-result').innerHTML=html;
-      document.getElementById('gen-result').appendChild(kb);
-      html='';
-    });
-    if(html) document.getElementById('gen-result').innerHTML=html;
-    loadStats();loadKeys();
-  } catch(e){ showAlert('users-alert',e.message,'err'); }
-}
-
-let newPlan = '';
-function selNewPlan(p) {
-  newPlan = p;
-  ['','trial','monthly','yearly','lifetime'].forEach(x => {
-    const el = document.getElementById('np-' + (x||'none'));
-    if(el) el.classList.toggle('sel-new', x === p);
-  });
-}
-
-async function createAccount(){
-  const nom=document.getElementById('new-nom').value.trim();
-  const email=document.getElementById('new-email').value.trim();
-  const pass=document.getElementById('new-pass').value;
-  if(!nom||!email||!pass){ showAlert('create-alert','Remplir tous les champs obligatoires','err'); return; }
-  try {
-    await api('POST','/api/register',{nom,email,password:pass});
-    if(newPlan === 'trial') {
-      await api('POST','/api/admin/extend',{userId: await getUserId(email), days: 1});
-    } else if(newPlan === 'monthly') {
-      const users2 = await api('GET','/api/admin/users');
-      const u = users2.find(x=>x.email===email);
-      if(u) await api('POST','/api/admin/extend',{userId:u.id,days:30});
-    } else if(newPlan === 'yearly') {
-      const users2 = await api('GET','/api/admin/users');
-      const u = users2.find(x=>x.email===email);
-      if(u) await api('POST','/api/admin/extend',{userId:u.id,days:365});
-    } else if(newPlan === 'lifetime') {
-      const users2 = await api('GET','/api/admin/users');
-      const u = users2.find(x=>x.email===email);
-      if(u) await api('POST','/api/admin/lifetime',{userId:u.id});
+    var users = await api("GET", "/api/admin/users");
+    renderStats(users);
+    renderUsers(users);
+  } catch(e) {
+    if (e.message.includes("401") || e.message.includes("403") || e.message.toLowerCase().includes("token")) {
+      logout();
     }
-    showAlert('create-alert','✅ Client créé avec succès' + (newPlan ? ' — Plan : '+newPlan : ''),'ok');
-    document.getElementById('new-nom').value='';
-    document.getElementById('new-email').value='';
-    document.getElementById('new-pass').value='';
-    selNewPlan('');
-    loadUsers();loadStats();
-  } catch(e){ showAlert('create-alert',e.message,'err'); }
+  }
 }
 
-async function getUserId(email) {
-  const users = await api('GET','/api/admin/users');
-  const u = users.find(x=>x.email===email);
-  return u ? u.id : null;
+function renderStats(users) {
+  var clients = users.filter(function(u){ return u.role !== "super"; });
+  var now = new Date();
+  var actifs = clients.filter(function(u){ return getLicenceInfo(u).valid; }).length;
+  var expires = clients.filter(function(u){ return !getLicenceInfo(u).valid; }).length;
+  document.getElementById("st-total").textContent  = clients.length;
+  document.getElementById("st-actifs").textContent = actifs;
+  document.getElementById("st-expires").textContent = expires;
 }
 
-function openResetModal(id,nom){
-  currentResetId=id;
-  document.getElementById('modal-reset-name').textContent='Utilisateur : '+nom;
-  document.getElementById('reset-pass').value='';
-  document.getElementById('modal-reset').style.display='flex';
+function getLicenceInfo(u) {
+  if (u.role === "super") return { valid:true, plan:"super", label:"Super Admin", days:null };
+  if (!u.licenceKey) return { valid:false, plan:"none", label:"Aucune licence", days:null };
+  // Chercher dans les infos directes de l'utilisateur
+  if (u.licencePlan === "lifetime") return { valid:true, plan:"lifetime", label:"À Vie", days:null };
+  if (u.licenceExpiry) {
+    var exp = new Date(u.licenceExpiry);
+    var days = Math.ceil((exp - new Date()) / 86400000);
+    if (days <= 0) return { valid:false, plan:"expired", label:"Expiré", days:0 };
+    return { valid:true, plan:"active", label: days + "j restants", days };
+  }
+  return { valid:false, plan:"none", label:"Inactive", days:null };
 }
 
-async function doResetPass(){
-  const pass=document.getElementById('reset-pass').value;
-  if(!pass||pass.length<6){ showAlert('users-alert','Mot de passe trop court','err'); return; }
-  try {
-    await api('POST','/api/admin/reset-password',{userId:currentResetId,newPassword:pass});
-    closeModal('modal-reset');
-    showAlert('users-alert','✅ Mot de passe réinitialisé avec succès','ok');
-  } catch(e){ showAlert('users-alert',e.message,'err'); }
+function renderUsers(users) {
+  var tbody = document.getElementById("users-tbody");
+  var html = "";
+  users.forEach(function(u) {
+    if (u.role === "super") {
+      html += "<tr><td><b style='color:#d4b896'>" + esc(u.nom) + "</b></td><td style='color:#5a5248'>" + esc(u.email) + "</td><td><span class='badge badge-super'>👑 Super Admin</span></td><td style='color:#5a5248'>—</td><td style='color:#5a5248'>—</td></tr>";
+      return;
+    }
+    var lic = getLicenceInfo(u);
+    // Badge statut
+    var badge = "";
+    if (lic.plan === "lifetime") badge = "<span class='badge badge-life'>♾️ À Vie</span>";
+    else if (lic.valid && lic.days !== null && lic.days <= 7) badge = "<span class='badge badge-warn'>⚠️ Actif</span>";
+    else if (lic.valid) badge = "<span class='badge badge-ok'>✅ Actif</span>";
+    else badge = "<span class='badge badge-exp'>❌ Expiré</span>";
+    // Jours restants
+    var joursCell = "";
+    if (lic.plan === "lifetime") joursCell = "<span style='color:#a78bfa'>♾️ Permanent</span>";
+    else if (lic.days === null) joursCell = "<span style='color:#5a5248'>—</span>";
+    else if (lic.days <= 0) joursCell = "<span style='color:#f87171;font-weight:bold'>EXPIRÉ</span>";
+    else if (lic.days <= 7) joursCell = "<span style='color:#fbbf24;font-weight:bold'>" + lic.days + " jours</span>";
+    else joursCell = "<span style='color:#4ade80'>" + lic.days + " jours</span>";
+
+    html += "<tr>" +
+      "<td style='font-weight:500'>" + esc(u.nom) + "</td>" +
+      "<td style='color:#8b7355;font-size:12px'>" + esc(u.email) + "</td>" +
+      "<td>" + badge + "</td>" +
+      "<td>" + joursCell + "</td>" +
+      "<td><div class='act-btns'>" +
+        "<button class='act-btn act-mdp' onclick='openMdp(" + u.id + ",\"" + esc(u.nom) + "\")'>🔑 MDP</button>" +
+        "<button class='act-btn act-dur' onclick='openDur(" + u.id + ",\"" + esc(u.nom) + "\")'>⏱️ Durée</button>" +
+        "<button class='act-btn act-del' onclick='delUser(" + u.id + ",\"" + esc(u.nom) + "\")'>✕</button>" +
+      "</div></td>" +
+    "</tr>";
+  });
+  tbody.innerHTML = html || "<tr><td colspan='5' style='text-align:center;color:#4a4238;padding:30px'>Aucun client</td></tr>";
 }
 
-function openExtend(id,nom){
-  currentExtendId=id;
-  extPlan='monthly';
-  document.getElementById('modal-extend-name').textContent='Utilisateur : '+nom;
-  selExtPlan('monthly');
-  document.getElementById('modal-extend').style.display='flex';
-}
+function esc(s) { return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 
-function selExtPlan(p){
-  extPlan=p;
-  ['monthly','yearly','lifetime'].forEach(x=>{
-    document.getElementById('ep-'+x).classList.toggle('sel',x===p);
+// ── CRÉER COMPTE ──
+function selPlan(p) {
+  SEL_PLAN = (SEL_PLAN === p) ? "" : p;
+  ["30","1an","vie"].forEach(function(x) {
+    var el = document.getElementById("np-"+x);
+    if (el) el.classList.toggle("active", x === SEL_PLAN);
   });
 }
 
-async function doExtend(){
+async function createAccount() {
+  var nom   = document.getElementById("new-nom").value.trim();
+  var email = document.getElementById("new-email").value.trim();
+  var pass  = document.getElementById("new-pass").value;
+  if (!nom || !email || !pass) { showAlert("create-alert","Tous les champs sont obligatoires","err"); return; }
+  if (!SEL_PLAN) { showAlert("create-alert","Choisissez une durée d'accès","err"); return; }
   try {
-    // Generate a key and activate it
-    const d=await api('POST','/api/admin/generate-licence',{plan:extPlan,count:1});
-    if(!d.generated||!d.generated[0]) throw new Error('Génération échouée');
-    // Find user email
-    const user=allUsers.find(u=>u.id===currentExtendId);
-    if(!user) throw new Error('Utilisateur introuvable');
-    // Assign key directly via admin endpoint
-    await api('POST','/api/admin/assign-licence',{userId:currentExtendId,licenceKey:d.generated[0].key});
-    closeModal('modal-extend');
-    const planL={monthly:'30 jours',yearly:'1 an',lifetime:'À vie'};
-    showAlert('users-alert','✅ Licence '+planL[extPlan]+' attribuée à '+user.nom,'ok');
-    loadUsers();loadStats();
-  } catch(e){ showAlert('users-alert',e.message,'err'); }
+    var d = await api("POST","/api/register",{nom,email,password:pass});
+    // Attribuer durée directement
+    var users = await api("GET","/api/admin/users");
+    var u = users.find(function(x){ return x.email===email; });
+    if (u) {
+      if (SEL_PLAN === "vie") await api("POST","/api/admin/lifetime",{userId:u.id});
+      else await api("POST","/api/admin/extend",{userId:u.id, days: SEL_PLAN==="30"?30:365});
+    }
+    showAlert("create-alert","✅ Client créé avec succès","ok");
+    document.getElementById("new-nom").value="";
+    document.getElementById("new-email").value="";
+    document.getElementById("new-pass").value="";
+    selPlan("");
+    loadAll();
+  } catch(e) { showAlert("create-alert",e.message,"err"); }
 }
 
-async function extend(userId, days){
-  const label = days===30 ? '+30 jours' : '+1 an';
-  if(!confirm('Ajouter '+label+' à cet utilisateur ?')) return;
+// ── RESET MDP ──
+function openMdp(id, nom) {
+  EDIT_USER_ID = id;
+  document.getElementById("mdp-sub").textContent = "Nouveau mot de passe pour : " + nom;
+  document.getElementById("mdp-input").value = "";
+  document.getElementById("modal-mdp").classList.add("show");
+}
+
+async function doResetMdp() {
+  var pass = document.getElementById("mdp-input").value;
+  if (!pass || pass.length < 6) { showAlert("users-alert","Mot de passe trop court (min 6 caractères)","err"); closeModal("modal-mdp"); return; }
   try {
-    await api('POST','/api/admin/extend',{userId, days});
-    showAlert('users-alert','✅ '+label+' ajouté avec succès','ok');
-    loadUsers();
-  } catch(e){ showAlert('users-alert','Erreur : '+e.message,'err'); }
+    await api("POST","/api/admin/reset-password",{userId:EDIT_USER_ID, newPassword:pass});
+    closeModal("modal-mdp");
+    showAlert("users-alert","✅ Mot de passe réinitialisé","ok");
+  } catch(e) { showAlert("users-alert",e.message,"err"); closeModal("modal-mdp"); }
 }
 
-async function setLifetime(userId){
-  if(!confirm('Attribuer un abonnement À VIE à cet utilisateur ?')) return;
+// ── DURÉE ──
+function openDur(id, nom) {
+  EDIT_USER_ID = id;
+  SEL_DUR = "";
+  ["30","1an","vie"].forEach(function(x){ var el=document.getElementById("dur-"+x); if(el) el.classList.remove("sel"); });
+  document.getElementById("dur-sub").textContent = "Nouvelle durée pour : " + nom;
+  document.getElementById("modal-dur").classList.add("show");
+}
+
+function selDur(d) {
+  SEL_DUR = d;
+  ["30","1an","vie"].forEach(function(x){ var el=document.getElementById("dur-"+x); if(el) el.classList.toggle("sel", x===d); });
+}
+
+async function doChangeDur() {
+  if (!SEL_DUR) { showAlert("users-alert","Choisissez une durée","err"); closeModal("modal-dur"); return; }
   try {
-    await api('POST','/api/admin/lifetime',{userId});
-    showAlert('users-alert','✅ Abonnement à vie attribué','ok');
-    loadUsers();
-  } catch(e){ showAlert('users-alert','Erreur : '+e.message,'err'); }
+    if (SEL_DUR === "vie") await api("POST","/api/admin/lifetime",{userId:EDIT_USER_ID});
+    else await api("POST","/api/admin/extend",{userId:EDIT_USER_ID, days: SEL_DUR==="30"?30:365});
+    closeModal("modal-dur");
+    showAlert("users-alert","✅ Durée mise à jour","ok");
+    loadAll();
+  } catch(e) { showAlert("users-alert",e.message,"err"); closeModal("modal-dur"); }
 }
 
-async function delUser(id,nom){
-  if(!confirm('Supprimer définitivement le compte de '+nom+' ?')) return;
+// ── SUPPRIMER ──
+async function delUser(id, nom) {
+  if (!confirm("Supprimer le compte de " + nom + " ?")) return;
   try {
-    await api('DELETE','/api/admin/user/'+id);
-    showAlert('users-alert','✅ Compte de '+nom+' supprimé','ok');
-    loadUsers();loadStats();
-  } catch(e){ showAlert('users-alert',e.message,'err'); }
+    await api("DELETE","/api/admin/users/"+id);
+    showAlert("users-alert","✅ Compte supprimé","ok");
+    loadAll();
+  } catch(e) { showAlert("users-alert",e.message,"err"); }
 }
 
-function closeModal(id){ document.getElementById(id).style.display='none'; }
-
-function showAlert(id,msg,type){
-  const el=document.getElementById(id);
-  el.className='alert alert-'+(type==='ok'?'ok':'err');
-  el.textContent=msg;
-  el.style.display='block';
-  if(type==='ok') setTimeout(()=>el.style.display='none',5000);
-}
-
-function switchTab(tab){
-  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['users','licences','keys','create'][i]===tab));
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.getElementById('tab-'+tab).classList.add('active');
-  if(tab==='keys') loadKeys();
-}
-
-function doLogout(){
-  localStorage.removeItem('lexia_token');
-  window.location.href='/';
-}
-
-init();
+// ── MODAL ──
+function closeModal(id) { document.getElementById(id).classList.remove("show"); }
+document.addEventListener("click", function(e){ if(e.target.classList.contains("modal-bg")) e.target.classList.remove("show"); });
 </script>
 </body>
 </html>

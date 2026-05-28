@@ -214,11 +214,31 @@ app.post("/api/data/:key", auth, (req, res) => {
 app.get("/api/admin/users", auth, superOnly, (req, res) => {
   const users = loadJSON(USERS_FILE, []);
   const licences = loadJSON(LICENCES_FILE, []);
-  res.json(users.map(u => ({
-    id: u.id, email: u.email, nom: u.nom, role: u.role,
-    createdAt: u.createdAt, licenceKey: u.licenceKey,
-    licence: u.role === "super" ? { valid: true, plan: "super" } : checkLicence(u)
-  })));
+  res.json(users.map(u => {
+    const lic = u.role === "super" ? { valid: true, plan: "super" } : checkLicence(u);
+    // Extraire expiry pour le frontend
+    let licenceExpiry = null;
+    let licencePlan = null;
+    if (u.licenceKey) {
+      const l = licences.find(x => x.key === u.licenceKey);
+      if (l) { licenceExpiry = l.expiresAt || null; licencePlan = l.plan || null; }
+    }
+    return { id: u.id, email: u.email, nom: u.nom, role: u.role,
+      createdAt: u.createdAt, licenceKey: u.licenceKey,
+      licenceExpiry, licencePlan,
+      licence: lic };
+  }));
+});
+
+// ── DELETE user ──
+app.delete("/api/admin/users/:id", auth, superOnly, (req, res) => {
+  const users = loadJSON(USERS_FILE, []);
+  const id = parseInt(req.params.id);
+  const user = users.find(u => u.id === id);
+  if (!user) return res.status(404).json({ error: "Utilisateur introuvable" });
+  if (user.role === "super") return res.status(403).json({ error: "Impossible de supprimer le Super Admin" });
+  saveJSON(USERS_FILE, users.filter(u => u.id !== id));
+  res.json({ ok: true });
 });
 
 app.get("/api/admin/licences", auth, superOnly, (req, res) => {
