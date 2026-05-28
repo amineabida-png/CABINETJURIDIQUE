@@ -239,7 +239,7 @@ Cite les articles de loi marocains pertinents quand c est possible.`
         "Authorization": "Bearer " + apiKey
       },
       body: JSON.stringify({
-        model: "llama-3.1-70b-versatile",
+        model: "llama-3.1-8b-instant",
         messages: [system, ...messages],
         max_tokens: 2000,
         temperature: 0.3
