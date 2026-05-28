@@ -2805,81 +2805,68 @@ function setVoiceLang(lang) {
 
 function toggleVoice() {
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    alert("Votre navigateur ne supporte pas l'enregistrement audio. Mettez à jour votre navigateur."); return;
-  }
-  if (AI_VOICE_ACTIVE) {
-    if (AI_MEDIA_RECORDER && AI_MEDIA_RECORDER.state !== 'inactive') AI_MEDIA_RECORDER.stop();
+    alert("Microphone non supporte. Mettez a jour votre navigateur.");
     return;
   }
-
+  if (AI_VOICE_ACTIVE) {
+    if (AI_MEDIA_RECORDER && AI_MEDIA_RECORDER.state !== "inactive") AI_MEDIA_RECORDER.stop();
+    return;
+  }
   navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
     AI_AUDIO_CHUNKS = [];
     AI_VOICE_ACTIVE = true;
-
-    // Choisir le meilleur format supporté
-    var mimeType = 'audio/webm';
-    if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) mimeType = 'audio/webm;codecs=opus';
-    else if (MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) mimeType = 'audio/ogg;codecs=opus';
-    else if (MediaRecorder.isTypeSupported('audio/mp4')) mimeType = 'audio/mp4';
-
+    var mimeType = "audio/webm";
+    if (typeof MediaRecorder !== "undefined") {
+      if (MediaRecorder.isTypeSupported("audio/webm;codecs=opus")) mimeType = "audio/webm;codecs=opus";
+      else if (MediaRecorder.isTypeSupported("audio/ogg;codecs=opus")) mimeType = "audio/ogg;codecs=opus";
+      else if (MediaRecorder.isTypeSupported("audio/mp4")) mimeType = "audio/mp4";
+    }
     AI_MEDIA_RECORDER = new MediaRecorder(stream, { mimeType: mimeType });
-
-    var btn = document.getElementById('ai-mic-btn');
-    var ta  = document.getElementById('ai-input');
-    var isAr = AI_VOICE_LANG === 'ar';
-
-    if (btn) { btn.classList.add('recording'); btn.textContent = '⏹'; btn.title = 'Cliquer pour arrêter'; }
-    if (ta)  { ta.placeholder = isAr ? '🎤 تحدث الآن...' : '🎤 Parlez maintenant...'; ta.style.direction = isAr ? 'rtl' : 'ltr'; }
-
+    var btn = document.getElementById("ai-mic-btn");
+    var ta  = document.getElementById("ai-input");
+    var isAr = AI_VOICE_LANG === "ar";
+    if (btn) { btn.classList.add("recording"); btn.textContent = "\u23f9"; btn.title = "Cliquer pour arreter"; }
+    if (ta)  { ta.placeholder = isAr ? "\uD83C\uDF99 \u062A\u062D\u062F\u062B \u0627\u0644\u0622\u0646..." : "\uD83C\uDF99 Parlez maintenant..."; ta.style.direction = isAr ? "rtl" : "ltr"; }
     AI_MEDIA_RECORDER.ondataavailable = function(e) {
       if (e.data.size > 0) AI_AUDIO_CHUNKS.push(e.data);
     };
-
     AI_MEDIA_RECORDER.onstop = function() {
       AI_VOICE_ACTIVE = false;
       stream.getTracks().forEach(function(t){ t.stop(); });
-      if (btn) { btn.classList.remove('recording'); btn.textContent = '🎤'; btn.title = 'Message vocal'; }
-      if (ta)  { ta.placeholder = 'Posez votre question juridique...'; }
-
+      if (btn) { btn.classList.remove("recording"); btn.textContent = "\uD83C\uDF99"; btn.title = "Message vocal"; }
+      if (ta)  { ta.placeholder = "Posez votre question juridique..."; }
       if (AI_AUDIO_CHUNKS.length === 0) return;
       var blob = new Blob(AI_AUDIO_CHUNKS, { type: mimeType });
-      if (blob.size < 1000) return; // trop court
-
-      // Envoyer à Whisper via serveur
-      if (btn) { btn.textContent = '⏳'; btn.disabled = true; }
+      if (blob.size < 1000) return;
+      if (btn) { btn.textContent = "\u23f3"; btn.disabled = true; }
       var fd = new FormData();
-      fd.append('audio', blob, 'audio.webm');
-      fd.append('lang', AI_VOICE_LANG);
-
-      fetch('/api/ai/transcribe', {
-        method: 'POST',
-        headers: { 'Authorization': 'Bearer ' + TOKEN },
+      fd.append("audio", blob, "audio.webm");
+      fd.append("lang", AI_VOICE_LANG);
+      fetch("/api/ai/transcribe", {
+        method: "POST",
+        headers: { "Authorization": "Bearer " + TOKEN },
         body: fd
       }).then(function(r){ return r.json(); }).then(function(data) {
-        if (btn) { btn.textContent = '🎤'; btn.disabled = false; }
+        if (btn) { btn.textContent = "\uD83C\uDF99"; btn.disabled = false; }
         if (data.text && data.text.trim()) {
-          if (ta) { ta.value = data.text.trim(); ta.style.direction = isAr ? 'rtl' : 'ltr'; }
+          if (ta) { ta.value = data.text.trim(); ta.style.direction = isAr ? "rtl" : "ltr"; }
           setTimeout(sendAI, 300);
         } else if (data.error) {
-          alert('Erreur transcription : ' + data.error);
+          alert("Erreur transcription: " + data.error);
         }
       }).catch(function(e) {
-        if (btn) { btn.textContent = '🎤'; btn.disabled = false; }
-        alert('Erreur réseau : ' + e.message);
+        if (btn) { btn.textContent = "\uD83C\uDF99"; btn.disabled = false; }
+        alert("Erreur reseau: " + e.message);
       });
     };
-
     AI_MEDIA_RECORDER.start();
-
-    // Arrêt automatique après 60 secondes
     setTimeout(function(){
-      if (AI_MEDIA_RECORDER && AI_MEDIA_RECORDER.state === 'recording') AI_MEDIA_RECORDER.stop();
+      if (AI_MEDIA_RECORDER && AI_MEDIA_RECORDER.state === "recording") AI_MEDIA_RECORDER.stop();
     }, 60000);
-
   }).catch(function(e) {
     AI_VOICE_ACTIVE = false;
-    if (e.name === 'NotAllowedError') alert("Accès au microphone refusé. Autorisez le microphone dans les paramètres du navigateur.");
-    else alert("Impossible d'accéder au microphone : " + e.message);
+    if (e.name === "NotAllowedError") alert("Acces au microphone refuse. Autorisez le microphone dans les parametres.");
+    else alert("Impossible d acceder au microphone: " + e.message);
   });
 }
 
