@@ -2765,9 +2765,7 @@ function printRecu(idx){
   w.document.write("</div>");
   w.document.write("<div class='signatures'><div class='sig-box'><div class='stamp'><div>"+(isAr?"ختم":"CACHET")+"</div></div></div><div class='sig-box'><div class='sig-line'>"+(isAr?"توقيع المحامي":"Signature de l Avocat")+"<br>"+r.par+"</div></div></div>");
   w.document.write("<div class='footer'>"+cabNom+" · "+cabVille+" · "+(isAr?"طبع بتاريخ":"Imprimé le ")+" "+new Date().toLocaleDateString("fr-FR")+"</div>");
-  w.document.write("
-
-</body></html>");
+  
   w.document.close();setTimeout(function(){w.print();},600);
 }
 
