@@ -430,6 +430,10 @@ select option{background:#1a1a1e}
 .ai-send-btn{background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;font-family:'Cinzel',serif;font-size:12px;align-self:flex-end;transition:all .2s;white-space:nowrap}
 .ai-send-btn:hover{background:linear-gradient(135deg,#9a8060,#b09070)}
 .ai-send-btn:disabled{opacity:.4;cursor:not-allowed}
+.ai-mic-btn{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#f87171;padding:10px 14px;border-radius:8px;cursor:pointer;font-size:18px;align-self:flex-end;transition:all .3s;line-height:1}
+.ai-mic-btn:hover{background:rgba(239,68,68,.2)}
+.ai-mic-btn.recording{background:rgba(239,68,68,.3);border-color:rgba(239,68,68,.6);color:#ff4444;animation:pulse-mic 1s infinite}
+@keyframes pulse-mic{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0)}}
 .ai-typing{display:inline-flex;gap:4px;align-items:center;padding:14px 18px}
 .ai-typing span{width:7px;height:7px;background:#8b7355;border-radius:50%;animation:aiDot 1.2s infinite}
 .ai-typing span:nth-child(2){animation-delay:.2s}
@@ -2713,6 +2717,7 @@ function pAI(){
     +"</div>"
     +"<div style='display:flex;flex-direction:column;gap:6px;align-self:flex-end'>"
     +"<button class='ai-send-btn' id='ai-send-btn' onclick='sendAI()'>Envoyer ▶</button>"
+    +"<button class='ai-mic-btn' id='ai-mic-btn' onclick='toggleVoice()' title='Message vocal'>🎤</button>"
     +"<button class='ai-send-btn' onclick='document.getElementById(\"ai-pdf-input\").click()' style='background:rgba(96,165,250,.15);border:1px solid rgba(96,165,250,.25);color:#60a5fa;font-size:11px;padding:7px 14px' title='Joindre un PDF'>📎 PDF</button>"
     +"<button class='ai-send-btn' onclick='printAI()' style='background:rgba(139,115,85,.25);border:1px solid rgba(139,115,85,.3);font-size:11px;padding:7px 14px'>🖨 Imprimer</button>"
     +"</div>"
@@ -2776,6 +2781,70 @@ function clearPDF() {
   if (badge) badge.style.display = "none";
   var input = document.getElementById("ai-pdf-input");
   if (input) input.value = "";
+}
+
+// ── RECONNAISSANCE VOCALE ──
+var AI_RECOGNITION = null;
+var AI_VOICE_ACTIVE = false;
+
+function toggleVoice() {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    alert("La reconnaissance vocale n'est pas supportée par ce navigateur.\nUtilisez Chrome ou Safari.");
+    return;
+  }
+
+  if (AI_VOICE_ACTIVE) {
+    // Arrêter l'enregistrement
+    if (AI_RECOGNITION) AI_RECOGNITION.stop();
+    return;
+  }
+
+  var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  AI_RECOGNITION = new SpeechRecognition();
+  AI_RECOGNITION.lang = 'fr-MA'; // Français Maroc, fallback fr-FR
+  AI_RECOGNITION.continuous = false;
+  AI_RECOGNITION.interimResults = true;
+  AI_RECOGNITION.maxAlternatives = 1;
+
+  var btn = document.getElementById('ai-mic-btn');
+  var ta  = document.getElementById('ai-input');
+
+  AI_RECOGNITION.onstart = function() {
+    AI_VOICE_ACTIVE = true;
+    if (btn) { btn.classList.add('recording'); btn.title = 'Cliquer pour arrêter'; btn.textContent = '⏹'; }
+    if (ta)  { ta.placeholder = '🎤 Parlez maintenant...'; }
+  };
+
+  AI_RECOGNITION.onresult = function(e) {
+    var transcript = '';
+    for (var i = e.resultIndex; i < e.results.length; i++) {
+      transcript += e.results[i][0].transcript;
+    }
+    if (ta) ta.value = transcript;
+  };
+
+  AI_RECOGNITION.onend = function() {
+    AI_VOICE_ACTIVE = false;
+    if (btn) { btn.classList.remove('recording'); btn.title = 'Message vocal'; btn.textContent = '🎤'; }
+    if (ta)  { ta.placeholder = 'Posez votre question juridique...'; }
+    // Envoyer automatiquement si du texte a été capté
+    if (ta && ta.value.trim().length > 2) {
+      setTimeout(sendAI, 300);
+    }
+  };
+
+  AI_RECOGNITION.onerror = function(e) {
+    AI_VOICE_ACTIVE = false;
+    if (btn) { btn.classList.remove('recording'); btn.textContent = '🎤'; }
+    if (ta)  { ta.placeholder = 'Posez votre question juridique...'; }
+    if (e.error === 'not-allowed') {
+      alert("Accès au microphone refusé.\nAutorisez le microphone dans les paramètres du navigateur.");
+    } else if (e.error !== 'no-speech') {
+      alert("Erreur microphone : " + e.error);
+    }
+  };
+
+  AI_RECOGNITION.start();
 }
 
 function printAI(){
