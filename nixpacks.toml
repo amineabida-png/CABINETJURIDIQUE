@@ -1,6 +1,3 @@
-[phases.setup]
-nixPkgs = ["ghostscript", "tesseract"]
-
 [phases.install]
 cmds = ["npm install"]
 
