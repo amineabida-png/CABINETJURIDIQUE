@@ -7,6 +7,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const pdfParse = require("pdf-parse");
+const { createWorker } = require("tesseract.js");
+const { execFile, exec } = require("child_process");
+const os = require("os");
 
 // Multer : stockage en mémoire (pas de fichier sur disque)
 const upload = multer({
@@ -268,6 +271,127 @@ app.post("/api/ai/pdf", auth, upload.single("pdf"), async (req, res) => {
     });
   } catch (e) {
     res.status(500).json({ error: "Erreur traitement PDF : " + e.message });
+  }
+});
+
+      tronque
+    });
+  } catch (e) {
+    res.status(500).json({ error: "Erreur traitement PDF : " + e.message });
+  }
+});
+
+// ── AI PDF SCANNÉ — OCR via Tesseract.js + analyse Groq ──
+app.post("/api/ai/pdf-scan", auth, upload.single("pdf"), async (req, res) => {
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) return res.status(500).json({ error: "Clé API Groq non configurée" });
+  if (!req.file) return res.status(400).json({ error: "Aucun fichier PDF reçu" });
+
+  const tmpDir = os.tmpdir();
+  const tmpPDF = path.join(tmpDir, "scan_" + Date.now() + ".pdf");
+  const tmpBase = path.join(tmpDir, "scan_" + Date.now());
+
+  try {
+    // Sauvegarder le PDF temporairement
+    fs.writeFileSync(tmpPDF, req.file.buffer);
+
+    // Convertir PDF en images via ghostscript (si dispo) ou pdftoppm
+    let texteOCR = "";
+    let method = "";
+
+    // Méthode 1 : Ghostscript (meilleure qualité)
+    const gsAvailable = await new Promise(r => exec("which gs", (e) => r(!e)));
+
+    if (gsAvailable) {
+      method = "ghostscript";
+      await new Promise((resolve, reject) => {
+        exec(`gs -dBATCH -dNOPAUSE -sDEVICE=png16m -r200 -sOutputFile="${tmpBase}_%03d.png" "${tmpPDF}"`,
+          (err) => err ? reject(err) : resolve());
+      });
+    } else {
+      // Méthode 2 : pdftoppm
+      const pdftoppmAvail = await new Promise(r => exec("which pdftoppm", (e) => r(!e)));
+      if (pdftoppmAvail) {
+        method = "pdftoppm";
+        await new Promise((resolve, reject) => {
+          exec(`pdftoppm -r 200 -png "${tmpPDF}" "${tmpBase}"`,
+            (err) => err ? reject(err) : resolve());
+        });
+      }
+    }
+
+    if (method) {
+      // OCR sur chaque image générée (max 5 pages)
+      const imgFiles = fs.readdirSync(tmpDir)
+        .filter(f => f.startsWith(path.basename(tmpBase)) && f.endsWith(".png"))
+        .sort()
+        .slice(0, 5);
+
+      if (imgFiles.length > 0) {
+        const worker = await createWorker("fra+ara+eng");
+        for (const imgFile of imgFiles) {
+          const imgPath = path.join(tmpDir, imgFile);
+          const { data } = await worker.recognize(imgPath);
+          texteOCR += data.text + "\n\n";
+          fs.unlinkSync(imgPath); // nettoyer
+        }
+        await worker.terminate();
+      }
+    }
+
+    // Si pas de méthode système, utiliser tesseract.js directement sur le buffer
+    // (moins précis mais 100% Node.js)
+    if (!texteOCR.trim()) {
+      method = "tesseract.js-direct";
+      // Tesseract.js peut traiter des images mais pas directement les PDF
+      // On informe l'utilisateur
+      fs.unlinkSync(tmpPDF);
+      return res.status(422).json({
+        error: "PDF scanné détecté mais conversion impossible sur ce serveur. Essayez de convertir votre PDF en images JPG/PNG d'abord, ou utilisez un PDF avec texte sélectionnable.",
+        tip: "Sur mobile : prenez une photo du document et utilisez le bouton 🖼 Image (à venir)"
+      });
+    }
+
+    fs.unlinkSync(tmpPDF);
+
+    if (!texteOCR.trim() || texteOCR.trim().length < 30) {
+      return res.status(400).json({ error: "OCR n'a pas pu extraire de texte lisible. Vérifiez la qualité du scan." });
+    }
+
+    // Limiter et analyser avec Groq
+    const MAX_CHARS = 12000;
+    const tronque = texteOCR.length > MAX_CHARS;
+    let texte = tronque ? texteOCR.substring(0, MAX_CHARS) + "\n\n[... tronqué]" : texteOCR;
+    const prompt = req.body.prompt || "Ce texte provient d'un document scanné par OCR. Résume ce document juridique, identifie les parties, l'objet, les faits, la décision et les points importants. Ignore les erreurs OCR mineures.";
+
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + apiKey },
+      body: JSON.stringify({
+        model: "llama-3.1-8b-instant",
+        messages: [
+          { role: "system", content: "Tu es un assistant juridique expert. Le texte fourni provient d'un OCR et peut contenir des imperfections. Analyse-le intelligemment en ignorant les artefacts OCR." },
+          { role: "user", content: prompt + "\n\n---\nTEXTE OCR :\n" + texte }
+        ],
+        max_tokens: 2000,
+        temperature: 0.2
+      })
+    });
+
+    const data = await response.json();
+    if (!response.ok) return res.status(response.status).json({ error: data.error?.message || "Erreur Groq" });
+
+    res.json({
+      reply: data.choices[0].message.content,
+      filename: req.file.originalname,
+      method: "OCR (" + method + ")",
+      chars: texteOCR.length,
+      tronque
+    });
+
+  } catch (e) {
+    try { fs.unlinkSync(tmpPDF); } catch(_) {}
+    res.status(500).json({ error: "Erreur OCR : " + e.message });
   }
 });
 

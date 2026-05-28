@@ -2738,19 +2738,36 @@ function aiKeyDown(e){
 // ── PDF ATTACHMENT ──
 var AI_PDF_FILE = null;
 
+var AI_PDF_SCANNED = false;
+
 function onPDFSelected(input) {
   var file = input.files[0];
   if (!file) return;
   AI_PDF_FILE = file;
+  AI_PDF_SCANNED = false;
   var badge = document.getElementById("ai-pdf-badge");
   var name  = document.getElementById("ai-pdf-name");
+
+  // Détecter si PDF probablement scanné (heuristique : taille / page faible)
+  // On laisse le serveur décider — on propose les 2 options à l'utilisateur
   if (badge && name) {
-    name.textContent = "📄 " + file.name + " (" + (file.size/1024).toFixed(0) + " Ko)";
+    name.innerHTML = "📄 " + file.name + " (" + (file.size/1024).toFixed(0) + " Ko)"
+      + " <button onclick='toggleScanMode()' id='scan-toggle' style='background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);color:#fbbf24;border-radius:4px;padding:2px 7px;font-size:10px;cursor:pointer;margin-left:6px'>📷 Mode scanné : NON</button>";
     badge.style.display = "flex";
   }
-  // Pré-remplir le textarea avec une suggestion
   var ta = document.getElementById("ai-input");
   if (ta && !ta.value) ta.value = "Résume ce document et identifie les points juridiques importants.";
+}
+
+function toggleScanMode() {
+  AI_PDF_SCANNED = !AI_PDF_SCANNED;
+  var btn = document.getElementById("scan-toggle");
+  if (btn) {
+    btn.textContent = "📷 Mode scanné : " + (AI_PDF_SCANNED ? "OUI ✅" : "NON");
+    btn.style.background = AI_PDF_SCANNED ? "rgba(34,197,94,.15)" : "rgba(251,191,36,.15)";
+    btn.style.borderColor = AI_PDF_SCANNED ? "rgba(34,197,94,.3)" : "rgba(251,191,36,.3)";
+    btn.style.color = AI_PDF_SCANNED ? "#4ade80" : "#fbbf24";
+  }
 }
 
 function clearPDF() {
@@ -2846,7 +2863,8 @@ async function sendAI(){
       var formData = new FormData();
       formData.append("pdf", AI_PDF_FILE);
       formData.append("prompt", text);
-      var r = await fetch("/api/ai/pdf", {
+      var pdfRoute = AI_PDF_SCANNED ? "/api/ai/pdf-scan" : "/api/ai/pdf";
+      var r = await fetch(pdfRoute, {
         method: "POST",
         headers: { "Authorization": "Bearer " + TOKEN },
         body: formData
