@@ -1849,7 +1849,7 @@ async function doActivate() {
 
 function enterApp(user, licence) {
   window.currentUser = user;
-  // Cacher login
+  // Cacher login immédiatement
   var ls = document.getElementById("login-screen");
   if (ls) { ls.style.display = "none"; ls.classList.add("hidden"); }
   // Forcer visibilité app
@@ -1863,6 +1863,9 @@ function enterApp(user, licence) {
     document.getElementById("topbar-ulicence").textContent = user.role==="super"?"👑 Super Admin":("Licence " + (licPlan[licence.plan]||"") + (licence.daysLeft?" · "+licence.daysLeft+"j":""));
     if(user.role==="super") document.getElementById("topbar-crown").style.display="block";
   } catch(e) { console.warn("enterApp UI:", e); }
+  // Afficher le dashboard IMMÉDIATEMENT sans attendre les données
+  try { buildNav(); goTo("dashboard"); } catch(e) { console.warn("goTo error:", e); }
+  // Puis charger les données en arrière-plan et rafraîchir
   loadUserData();
 }
 
