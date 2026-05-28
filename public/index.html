@@ -661,74 +661,7 @@ body.rtl .action-btns { flex-direction: row-reverse; }
   </div>
 </div>
 
-<!-- SUPER ADMIN PANEL -->
-<div id="admin-panel">
-  <div class="admin-box">
-    <div class="admin-header">
-      <h2>👑 SUPER ADMIN — GESTION JURIDIQUE</h2>
-      <button onclick="document.getElementById('admin-panel').classList.remove('show')" style="background:transparent;border:none;color:#fbbf24;cursor:pointer;font-size:18px">✕</button>
-    </div>
-    <div class="admin-tabs">
-      <button class="admin-tab active" onclick="adminTab('licences')">Générer licences</button>
-      <button class="admin-tab" onclick="adminTab('users')">Utilisateurs</button>
-      <button class="admin-tab" onclick="adminTab('keys')">Clés générées</button>
-    </div>
-    <div class="admin-content">
 
-      <!-- LICENCES -->
-      <div id="atab-licences">
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
-          <div class="plan-card sel" id="plan-monthly" onclick="selPlan('monthly')">
-            <div style="font-size:20px">📅</div>
-            <div class="price">249 MAD</div>
-            <div class="label">30 jours</div>
-            <div class="desc">Mensuel</div>
-          </div>
-          <div class="plan-card" id="plan-yearly" onclick="selPlan('yearly')">
-            <div style="font-size:20px">📆</div>
-            <div class="price">2 490 MAD</div>
-            <div class="label">1 an</div>
-            <div class="desc">Annuel</div>
-          </div>
-          <div class="plan-card" id="plan-lifetime" onclick="selPlan('lifetime')">
-            <div style="font-size:20px">♾</div>
-            <div class="price">8 490 MAD</div>
-            <div class="label">À vie</div>
-            <div class="desc">Illimité</div>
-          </div>
-        </div>
-        <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px">
-          <label style="font-size:11px;color:#8b7355;font-family:'Cinzel',serif">Quantité :</label>
-          <input id="gen-count" type="number" value="1" min="1" max="20" style="width:70px"/>
-          <button class="btn bg" onclick="genLicences()" style="padding:9px 18px;font-size:11px">Générer</button>
-        </div>
-        <div id="gen-result"></div>
-      </div>
-
-      <!-- USERS -->
-      <div id="atab-users" style="display:none">
-        <div style="margin-bottom:12px;display:flex;gap:10px">
-          <button class="btn bg" onclick="loadAdminUsers()" style="font-size:11px;padding:8px 14px">↺ Actualiser</button>
-        </div>
-        <table class="admin-table">
-          <thead><tr><th>Nom</th><th>Email</th><th>Rôle</th><th>Licence</th><th>Créé le</th><th></th></tr></thead>
-          <tbody id="admin-users-tbody"><tr><td colspan="6" style="text-align:center;padding:20px;color:#4a4238">Cliquez sur Actualiser</td></tr></tbody>
-        </table>
-      </div>
-
-      <!-- KEYS -->
-      <div id="atab-keys" style="display:none">
-        <div style="margin-bottom:12px">
-          <button class="btn bg" onclick="loadAdminKeys()" style="font-size:11px;padding:8px 14px">↺ Actualiser</button>
-        </div>
-        <table class="admin-table">
-          <thead><tr><th>Clé</th><th>Plan</th><th>Expiration</th><th>Utilisée par</th></tr></thead>
-          <tbody id="admin-keys-tbody"><tr><td colspan="4" style="text-align:center;padding:20px;color:#4a4238">Cliquez sur Actualiser</td></tr></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 <button id="lang-btn" onclick="toggleLang()">العربية 🌐</button>
@@ -748,7 +681,7 @@ body.rtl .action-btns { flex-direction: row-reverse; }
   <div id="topbar">
     <div><div id="ptitle">Tableau de bord</div><div id="pdate">Lundi 25 mai 2026</div></div>
     <div style="display:flex;gap:10px;align-items:center">
-      <div id="user-badge" onclick="if(window.currentUser&&window.currentUser.role==='super')document.getElementById('admin-panel').classList.add('show')">
+      <div id="user-badge" onclick="if(window.currentUser&&window.currentUser.role==='super')goTo('superadmin')">
         <div>
           <div class="uname" id="topbar-uname">—</div>
           <div class="urole" id="topbar-ulicence">—</div>
@@ -963,6 +896,7 @@ var MODS=[
   {id:"emoluments",label:"Émoluments notariaux",icon:"⚖",grp:"Documents"},
   {id:"parametres",label:"Paramètres du cabinet",icon:"⚙",grp:"Paramètres"},
   {id:"ai",label:"Assistant IA",icon:"🤖",grp:"Intelligence Artificielle"},
+  {id:"superadmin",label:"Super Admin",icon:"👑",grp:"Administration",superOnly:true},
   {id:"alertes",label:"Alertes et Rappels",icon:"🔔",grp:"Gestion"},
   {id:"ficheclient",label:"Fiche client complète",icon:"👤",grp:"Gestion"},
   {id:"recherche",label:"Recherche globale",icon:"🔍",grp:"Gestion"},
@@ -1038,12 +972,16 @@ function openM(id){document.getElementById(id).classList.add("show");}
 function closeM(){document.querySelectorAll(".modal-bg").forEach(function(m){m.classList.remove("show");});}
 
 function buildNav(){
+  var isSuper = window.currentUser && window.currentUser.role === "super";
   var grps=[];
-  MODS.forEach(function(m){if(grps.indexOf(m.grp)<0)grps.push(m.grp);});
+  MODS.forEach(function(m){
+    if (m.superOnly && !isSuper) return;
+    if(grps.indexOf(m.grp)<0)grps.push(m.grp);
+  });
   var h="";
   grps.forEach(function(g){
     h+='<div class="grp">'+t(g)+'</div>';
-    MODS.filter(function(m){return m.grp===g;}).forEach(function(m){
+    MODS.filter(function(m){return m.grp===g && (!m.superOnly || isSuper);}).forEach(function(m){
       h+='<button class="nb" data-id="'+m.id+'">'+m.icon+" "+t(m.label)+'</button>';
     });
   });
@@ -1064,7 +1002,7 @@ function goTo(id){
     dashboard:pDash,clients:pClients,agenda:pAgenda,actes:pActes,
     honoraires:pHon,procedures:pProc,bibliotheque:pBib,
     collaborateurs:pCollab,comptabilite:pCompta,conformite:pConf,portail:pPortail,
-    analytique:pAnalytique,temps:pTemps,notes:pNotes,pieces:pPieces,modeles:pModeles,conventions:pConventions,delais:pDelais,tresorerie:pTresorerie,emoluments:pEmoluments,parametres:pParametres,ai:pAI,alertes:pAlertes,ficheclient:pFicheClient,recherche:pRecherche,recus:pRecus
+    analytique:pAnalytique,temps:pTemps,notes:pNotes,pieces:pPieces,modeles:pModeles,conventions:pConventions,delais:pDelais,tresorerie:pTresorerie,emoluments:pEmoluments,parametres:pParametres,ai:pAI,alertes:pAlertes,ficheclient:pFicheClient,recherche:pRecherche,recus:pRecus,superadmin:pSuperAdmin
   };
   if(pages[id])c.innerHTML=pages[id]();
   // Masquer le bouton imprimer sur le module IA (il cache le bouton Envoyer)
@@ -2572,73 +2510,252 @@ function autoSave(key) {
 // Patch all data mutations to auto-save
 var _origNotif = null;
 
-// ── SUPER ADMIN ──
-var selectedPlan = "monthly";
+// ── SUPER ADMIN PAGE ──
 
-function selPlan(p) {
-  selectedPlan = p;
-  ["monthly","yearly","lifetime"].forEach(function(x){
-    var el=document.getElementById("plan-"+x);
-    if(el) el.classList.toggle("sel",x===p);
+function pSuperAdmin() {
+  if (!window.currentUser || window.currentUser.role !== "super") return "<div class='card'>Accès refusé</div>";
+  setTimeout(loadSuperAdminData, 50);
+  return "<div class='card' style='margin-bottom:16px'>" +
+    "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:20px'>" +
+      "<div><div style='font-family:Cinzel,serif;font-size:16px;color:#d4b896'>👑 Super Admin</div>" +
+      "<div id='sa-stats' style='font-size:12px;color:#5a5248;margin-top:4px'>Chargement...</div></div>" +
+      "<button class='btn bg' onclick='openCreateModal()' style='background:linear-gradient(135deg,#6366f1,#818cf8);border:none;padding:10px 18px;font-size:11px'>+ Créer compte</button>" +
+    "</div>" +
+    "<div style='overflow-x:auto;-webkit-overflow-scrolling:touch'>" +
+    "<table style='width:100%;border-collapse:collapse;font-size:13px'>" +
+      "<thead><tr>" +
+        "<th style='font-family:Cinzel,serif;font-size:9px;color:#5a5248;letter-spacing:.12em;padding:10px 12px;border-bottom:1px solid rgba(139,115,85,.15);text-align:left;white-space:nowrap'>NOM / SOCIÉTÉ</th>" +
+        "<th style='font-family:Cinzel,serif;font-size:9px;color:#5a5248;letter-spacing:.12em;padding:10px 12px;border-bottom:1px solid rgba(139,115,85,.15);text-align:left;white-space:nowrap'>EMAIL</th>" +
+        "<th style='font-family:Cinzel,serif;font-size:9px;color:#5a5248;letter-spacing:.12em;padding:10px 12px;border-bottom:1px solid rgba(139,115,85,.15);text-align:left;white-space:nowrap'>DURÉE</th>" +
+        "<th style='font-family:Cinzel,serif;font-size:9px;color:#5a5248;letter-spacing:.12em;padding:10px 12px;border-bottom:1px solid rgba(139,115,85,.15);text-align:left;white-space:nowrap'>EXPIRATION</th>" +
+        "<th style='font-family:Cinzel,serif;font-size:9px;color:#5a5248;letter-spacing:.12em;padding:10px 12px;border-bottom:1px solid rgba(139,115,85,.15);text-align:left;white-space:nowrap'>STATUT</th>" +
+        "<th style='font-family:Cinzel,serif;font-size:9px;color:#5a5248;letter-spacing:.12em;padding:10px 12px;border-bottom:1px solid rgba(139,115,85,.15);text-align:left;white-space:nowrap'>ACTIONS</th>" +
+      "</tr></thead>" +
+      "<tbody id='sa-tbody'><tr><td colspan='6' style='text-align:center;padding:30px;color:#4a4238'>Chargement...</td></tr></tbody>" +
+    "</table></div>" +
+  "</div>" +
+  // Modal créer compte
+  "<div id='sa-modal-create' style='display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;align-items:center;justify-content:center'>" +
+    "<div style='background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:440px'>" +
+      "<div style='font-family:Cinzel,serif;font-size:14px;color:#d4b896;margin-bottom:4px'>➕ Nouveau Client</div>" +
+      "<div id='sa-create-err' style='color:#f87171;font-size:12px;margin:8px 0;display:none'></div>" +
+      "<div style='margin-bottom:10px'><label style='font-size:10px;color:#5a5248;display:block;margin-bottom:4px'>NOM</label><input id='sa-nom' placeholder='Cabinet Maître Alami' style='width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none'/></div>" +
+      "<div style='margin-bottom:10px'><label style='font-size:10px;color:#5a5248;display:block;margin-bottom:4px'>EMAIL</label><input id='sa-email' type='email' placeholder='admin@cabinet.ma' style='width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none'/></div>" +
+      "<div style='margin-bottom:16px'><label style='font-size:10px;color:#5a5248;display:block;margin-bottom:4px'>MOT DE PASSE</label><input id='sa-pass' type='password' placeholder='Minimum 6 caractères' style='width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none'/></div>" +
+      "<div style='font-size:10px;color:#5a5248;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px'>DURÉE D'ACCÈS</div>" +
+      "<div style='display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px'>" +
+        "<div id='sa-p30' onclick='saSelPlan(\"30\")' style='border:2px solid rgba(251,146,60,.25);color:#fb923c;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s'><div style='font-size:20px'>🗓️</div><div style='font-family:Cinzel,serif;font-size:11px;font-weight:700'>30 Jours</div></div>" +
+        "<div id='sa-p1an' onclick='saSelPlan(\"1an\")' style='border:2px solid rgba(96,165,250,.25);color:#60a5fa;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s'><div style='font-size:20px'>📅</div><div style='font-family:Cinzel,serif;font-size:11px;font-weight:700'>1 An</div></div>" +
+        "<div id='sa-pvie' onclick='saSelPlan(\"vie\")' style='border:2px solid rgba(74,222,128,.25);color:#4ade80;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s'><div style='font-size:20px'>♾️</div><div style='font-family:Cinzel,serif;font-size:11px;font-weight:700'>À Vie</div></div>" +
+      "</div>" +
+      "<div style='display:flex;gap:8px;justify-content:flex-end'>" +
+        "<button onclick='closeSaModal(\"sa-modal-create\")' style='background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:9px 16px;font-family:Cinzel,serif;font-size:11px;cursor:pointer'>Annuler</button>" +
+        "<button onclick='saCreateAccount()' style='background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer'>✅ Créer</button>" +
+      "</div>" +
+    "</div>" +
+  "</div>" +
+  // Modal MDP
+  "<div id='sa-modal-mdp' style='display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;align-items:center;justify-content:center'>" +
+    "<div style='background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:380px'>" +
+      "<div style='font-family:Cinzel,serif;font-size:14px;color:#d4b896;margin-bottom:4px'>🔑 Réinitialiser MDP</div>" +
+      "<div id='sa-mdp-sub' style='font-size:12px;color:#5a5248;margin-bottom:14px'></div>" +
+      "<input id='sa-mdp-input' type='password' placeholder='Nouveau mot de passe' style='width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:8px;padding:10px 12px;font-size:15px;outline:none;margin-bottom:14px'/>" +
+      "<div style='display:flex;gap:8px;justify-content:flex-end'>" +
+        "<button onclick='closeSaModal(\"sa-modal-mdp\")' style='background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:9px 16px;font-family:Cinzel,serif;font-size:11px;cursor:pointer'>Annuler</button>" +
+        "<button onclick='saDoMdp()' style='background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer'>Confirmer</button>" +
+      "</div>" +
+    "</div>" +
+  "</div>" +
+  // Modal Durée
+  "<div id='sa-modal-dur' style='display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;align-items:center;justify-content:center'>" +
+    "<div style='background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;padding:24px;width:94vw;max-width:380px'>" +
+      "<div style='font-family:Cinzel,serif;font-size:14px;color:#d4b896;margin-bottom:4px'>⏱️ Modifier la durée</div>" +
+      "<div id='sa-dur-sub' style='font-size:12px;color:#5a5248;margin-bottom:16px'></div>" +
+      "<div style='display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px'>" +
+        "<div id='sa-d30' onclick='saSelDur(\"30\")' style='border:2px solid rgba(251,146,60,.25);color:#fb923c;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s'><div style='font-size:20px'>🗓️</div><div style='font-family:Cinzel,serif;font-size:11px;font-weight:700'>30 Jours</div></div>" +
+        "<div id='sa-d1an' onclick='saSelDur(\"1an\")' style='border:2px solid rgba(96,165,250,.25);color:#60a5fa;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s'><div style='font-size:20px'>📅</div><div style='font-family:Cinzel,serif;font-size:11px;font-weight:700'>1 An</div></div>" +
+        "<div id='sa-dvie' onclick='saSelDur(\"vie\")' style='border:2px solid rgba(74,222,128,.25);color:#4ade80;border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s'><div style='font-size:20px'>♾️</div><div style='font-family:Cinzel,serif;font-size:11px;font-weight:700'>À Vie</div></div>" +
+      "</div>" +
+      "<div style='display:flex;gap:8px;justify-content:flex-end'>" +
+        "<button onclick='closeSaModal(\"sa-modal-dur\")' style='background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:9px 16px;font-family:Cinzel,serif;font-size:11px;cursor:pointer'>Annuler</button>" +
+        "<button onclick='saDoChangeDur()' style='background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer'>Appliquer</button>" +
+      "</div>" +
+    "</div>" +
+  "</div>";
+}
+
+var SA_SEL_PLAN = "", SA_SEL_DUR = "", SA_EDIT_ID = null;
+
+function saSelPlan(p) {
+  SA_SEL_PLAN = p;
+  var cfg = {"30":["rgba(251,146,60,.25)","#fb923c","rgba(251,146,60,.15)"],
+             "1an":["rgba(96,165,250,.25)","#60a5fa","rgba(96,165,250,.15)"],
+             "vie":["rgba(74,222,128,.25)","#4ade80","rgba(74,222,128,.15)"]};
+  ["30","1an","vie"].forEach(function(x) {
+    var el = document.getElementById("sa-p"+x);
+    if (!el) return;
+    var c = cfg[x];
+    el.style.borderColor = x===p ? c[1] : c[0];
+    el.style.background  = x===p ? c[2] : "transparent";
   });
 }
 
-function adminTab(tab) {
-  ["licences","users","keys"].forEach(function(t){
-    var el=document.getElementById("atab-"+t);if(el)el.style.display=t===tab?"block":"none";
-    document.querySelectorAll(".admin-tab").forEach(function(b,i){
-      b.classList.toggle("active",["licences","users","keys"][i]===tab);
-    });
+function saSelDur(d) {
+  SA_SEL_DUR = d;
+  var cfg = {"30":["rgba(251,146,60,.25)","#fb923c","rgba(251,146,60,.15)"],
+             "1an":["rgba(96,165,250,.25)","#60a5fa","rgba(96,165,250,.15)"],
+             "vie":["rgba(74,222,128,.25)","#4ade80","rgba(74,222,128,.15)"]};
+  ["30","1an","vie"].forEach(function(x) {
+    var el = document.getElementById("sa-d"+x);
+    if (!el) return;
+    var c = cfg[x];
+    el.style.borderColor = x===d ? c[1] : c[0];
+    el.style.background  = x===d ? c[2] : "transparent";
   });
-  if(tab==="users")loadAdminUsers();
-  if(tab==="keys")loadAdminKeys();
 }
 
-async function genLicences() {
-  var count = parseInt(document.getElementById("gen-count").value)||1;
-  try {
-    var data = await apiCall("POST","/api/admin/generate-licence",{plan:selectedPlan,count});
-    var res=document.getElementById("gen-result");
-    var planLabel={"monthly":"30 jours — 249 MAD","yearly":"1 an — 2 490 MAD","lifetime":"À vie — 8 490 MAD"};
-    res.innerHTML="<div style='font-family:Cinzel,serif;font-size:11px;color:#4ade80;margin-bottom:8px'>✅ "+data.generated.length+" clé(s) générée(s) — "+planLabel[selectedPlan]+"</div>";
-    data.generated.forEach(function(l){
-      var kd=document.createElement('div');kd.className='key-box';kd.title='Cliquer pour copier';kd.textContent=l.key;kd.onclick=(function(k){return function(){navigator.clipboard.writeText(k).then(function(){notif('Clé copiée');});}})(l.key);res.appendChild(kd);
-    });
-  } catch(e){notif("Erreur: "+e.message);}
+function openCreateModal() {
+  SA_SEL_PLAN = "";
+  ["sa-nom","sa-email","sa-pass"].forEach(function(id){ var e=document.getElementById(id); if(e) e.value=""; });
+  var err = document.getElementById("sa-create-err"); if(err) err.style.display="none";
+  document.getElementById("sa-modal-create").style.display = "flex";
 }
 
-async function loadAdminUsers() {
+function openMdpModal(id, nom) {
+  SA_EDIT_ID = id;
+  var sub = document.getElementById("sa-mdp-sub"); if(sub) sub.textContent = "Compte : "+nom;
+  var inp = document.getElementById("sa-mdp-input"); if(inp) inp.value="";
+  document.getElementById("sa-modal-mdp").style.display = "flex";
+}
+
+function openDurModal(id, nom) {
+  SA_EDIT_ID = id;
+  SA_SEL_DUR = "";
+  var sub = document.getElementById("sa-dur-sub"); if(sub) sub.textContent = "Compte : "+nom;
+  ["30","1an","vie"].forEach(function(x){ var e=document.getElementById("sa-d"+x); if(e){e.style.borderColor="";e.style.background="transparent";} });
+  document.getElementById("sa-modal-dur").style.display = "flex";
+}
+
+function closeSaModal(id) { var e=document.getElementById(id); if(e) e.style.display="none"; }
+
+async function loadSuperAdminData() {
   try {
     var users = await apiCall("GET","/api/admin/users");
-    var planLabel={"monthly":"30j","yearly":"1an","lifetime":"À vie","super":"Super Admin"};
-    var licCls={"monthly":"lic-monthly","yearly":"lic-yearly","lifetime":"lic-lifetime","super":"lic-super"};
-    document.getElementById("admin-users-tbody").innerHTML = users.map(function(u){
-      var lic=u.licence;
-      var licBadge=lic&&lic.valid?"<span class='licence-badge "+(licCls[lic.plan]||"")+"'>"+(planLabel[lic.plan]||lic.plan)+(lic.daysLeft?" · "+lic.daysLeft+"j":"")+"</span>":"<span style='color:#f87171;font-size:11px'>Aucune</span>";
-      var del=u.role!=="super"?"<button onclick='delUser("+u.id+")' style='background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.2);padding:3px 8px;border-radius:4px;cursor:pointer;font-size:10px'>🗑</button>":"";
-      return "<tr><td>"+u.nom+"</td><td style='color:#8b7355'>"+u.email+"</td><td><span class='badge "+(u.role==="super"?"bat":"bec")+"'>"+u.role+"</span></td><td>"+licBadge+"</td><td style='font-size:11px;color:#5a5248'>"+(u.createdAt?new Date(u.createdAt).toLocaleDateString("fr-FR"):"—")+"</td><td>"+del+"</td></tr>";
-    }).join("") || "<tr><td colspan='6' style='text-align:center;color:#4a4238'>Aucun utilisateur</td></tr>";
-  } catch(e){notif("Erreur: "+e.message);}
+    var clients = users.filter(function(u){ return u.role!=="super"; });
+    var actifs = clients.filter(function(u){ return u.licencePlan==="lifetime"||(u.licenceExpiry&&new Date(u.licenceExpiry)>new Date()); }).length;
+    var el = document.getElementById("sa-stats");
+    if (el) el.textContent = clients.length + " compte(s) · " + actifs + " actif(s) · " + (clients.length-actifs) + " expiré(s)";
+    renderSaTable(users);
+  } catch(e) { notif("Erreur admin: "+e.message); }
 }
 
-async function loadAdminKeys() {
-  try {
-    var keys = await apiCall("GET","/api/admin/licences");
-    var planLabel={"monthly":"30 jours","yearly":"1 an","lifetime":"À vie"};
-    document.getElementById("admin-keys-tbody").innerHTML = keys.map(function(k){
-      var exp=k.expiresAt?new Date(k.expiresAt).toLocaleDateString("fr-FR"):"∞";
-      return "<tr><td style='font-family:Courier New;color:#d4b896;font-size:11px'>"+k.key+"</td><td>"+planLabel[k.plan]+"</td><td style='font-size:11px'>"+exp+"</td><td style='font-size:11px;color:"+(k.usedBy?"#4ade80":"#5a5248")+"'>"+( k.usedBy||"Disponible")+"</td></tr>";
-    }).join("") || "<tr><td colspan='4' style='text-align:center;color:#4a4238'>Aucune clé</td></tr>";
-  } catch(e){notif("Erreur: "+e.message);}
+function renderSaTable(users) {
+  var tbody = document.getElementById("sa-tbody");
+  if (!tbody) return;
+  var now = new Date();
+  var rows = users.map(function(u) {
+    if (u.role === "super") {
+      return "<tr><td style='font-weight:600;color:#d4b896'>"+escH(u.nom)+"</td><td style='color:#5a5248;font-size:12px'>"+escH(u.email)+"</td><td colspan='2' style='color:#5a5248'>—</td><td><span style='background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.3);padding:3px 10px;border-radius:20px;font-size:10px;font-family:Cinzel,serif'>👑 Super Admin</span></td><td style='color:#5a5248'>—</td></tr>";
+    }
+    // Durée badge
+    var planLabel = u.licencePlan==="lifetime" ? "♾️ À Vie" : (u.licencePlan==="yearly"?"📅 1 An":(u.licencePlan==="monthly"?"🗓️ 30 Jours":"—"));
+    var planColor = u.licencePlan==="lifetime" ? "#a78bfa" : (u.licencePlan==="yearly"?"#60a5fa":"#fb923c");
+    var planBg    = u.licencePlan==="lifetime" ? "rgba(167,139,250,.12)" : (u.licencePlan==="yearly"?"rgba(96,165,250,.12)":"rgba(251,146,60,.12)");
+    var planBorder= u.licencePlan==="lifetime" ? "rgba(167,139,250,.3)" : (u.licencePlan==="yearly"?"rgba(96,165,250,.3)":"rgba(251,146,60,.3)");
+    var durationBadge = u.licenceKey ? "<span style='background:"+planBg+";color:"+planColor+";border:1px solid "+planBorder+";padding:3px 10px;border-radius:20px;font-size:11px;font-family:Cinzel,serif'>"+planLabel+"</span>" : "<span style='color:#5a5248'>—</span>";
+    // Expiration + jours restants
+    var expCell = "—", statutBadge = "", joursRestants = null;
+    if (u.licencePlan === "lifetime") {
+      expCell = "<span style='color:#a78bfa'>Permanent</span>";
+      statutBadge = "<span style='background:rgba(167,139,250,.12);color:#a78bfa;border:1px solid rgba(167,139,250,.3);padding:3px 10px;border-radius:20px;font-size:10px;font-family:Cinzel,serif'>À Vie</span>";
+    } else if (u.licenceExpiry) {
+      var exp = new Date(u.licenceExpiry);
+      joursRestants = Math.ceil((exp - now) / 86400000);
+      var expStr = exp.toLocaleDateString("fr-FR");
+      if (joursRestants <= 0) {
+        expCell = "<span style='color:#f87171'>"+expStr+"</span><br><span style='color:#f87171;font-size:10px'>EXPIRÉ</span>";
+        statutBadge = "<span style='background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.3);padding:3px 10px;border-radius:20px;font-size:10px;font-family:Cinzel,serif'>❌ Expiré</span>";
+      } else if (joursRestants <= 7) {
+        expCell = "<span style='color:#fbbf24'>"+expStr+"</span><br><span style='color:#fbbf24;font-size:10px'>"+joursRestants+"j restants</span>";
+        statutBadge = "<span style='background:rgba(251,191,36,.12);color:#fbbf24;border:1px solid rgba(251,191,36,.3);padding:3px 10px;border-radius:20px;font-size:10px;font-family:Cinzel,serif'>⚠️ Actif</span>";
+      } else {
+        expCell = expStr+"<br><span style='color:#4ade80;font-size:10px'>"+joursRestants+"j restants</span>";
+        statutBadge = "<span style='background:rgba(74,222,128,.12);color:#4ade80;border:1px solid rgba(74,222,128,.3);padding:3px 10px;border-radius:20px;font-size:10px;font-family:Cinzel,serif'>✅ Actif</span>";
+      }
+    } else {
+      statutBadge = "<span style='background:rgba(239,68,68,.08);color:#f87171;border:1px solid rgba(239,68,68,.2);padding:3px 10px;border-radius:20px;font-size:10px;font-family:Cinzel,serif'>❌ Inactif</span>";
+    }
+    // Actions
+    var actions = "<div style='display:flex;gap:5px;flex-wrap:wrap'>" +
+      "<button onclick='openMdpModal("+u.id+",\""+escH(u.nom)+"\")' style='background:rgba(139,115,85,.15);border:1px solid rgba(139,115,85,.25);color:#d4b896;border-radius:6px;padding:5px 10px;font-size:10px;font-family:Cinzel,serif;cursor:pointer'>🔑 MDP</button>" +
+      "<button onclick='openDurModal("+u.id+",\""+escH(u.nom)+"\")' style='background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.25);color:#60a5fa;border-radius:6px;padding:5px 10px;font-size:10px;font-family:Cinzel,serif;cursor:pointer'>⏱️ Durée</button>" +
+      "<button onclick='saDelUser("+u.id+",\""+escH(u.nom)+"\")' style='background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;border-radius:6px;padding:5px 10px;font-size:13px;cursor:pointer'>✕</button>" +
+    "</div>";
+    return "<tr style='border-bottom:1px solid rgba(139,115,85,.08)'>" +
+      "<td style='padding:12px;font-weight:500'>"+escH(u.nom)+"</td>" +
+      "<td style='padding:12px;color:#8b7355;font-size:12px'>"+escH(u.email)+"</td>" +
+      "<td style='padding:12px'>"+durationBadge+"</td>" +
+      "<td style='padding:12px;font-size:12px'>"+expCell+"</td>" +
+      "<td style='padding:12px'>"+statutBadge+"</td>" +
+      "<td style='padding:12px'>"+actions+"</td>" +
+    "</tr>";
+  });
+  tbody.innerHTML = rows.join("") || "<tr><td colspan='6' style='text-align:center;padding:30px;color:#4a4238'>Aucun client</td></tr>";
 }
 
-async function delUser(id) {
-  if(!confirm("Supprimer cet utilisateur ?")) return;
+function escH(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+async function saCreateAccount() {
+  var nom   = (document.getElementById("sa-nom")||{}).value||"";
+  var email = (document.getElementById("sa-email")||{}).value||"";
+  var pass  = (document.getElementById("sa-pass")||{}).value||"";
+  var err   = document.getElementById("sa-create-err");
+  if (!nom.trim()||!email.trim()||!pass) { err.textContent="Tous les champs sont obligatoires"; err.style.display="block"; return; }
+  if (!SA_SEL_PLAN) { err.textContent="Choisissez une durée d'accès"; err.style.display="block"; return; }
   try {
-    await apiCall("DELETE","/api/admin/user/"+id);
-    notif("Utilisateur supprimé");
-    loadAdminUsers();
-  } catch(e){notif("Erreur: "+e.message);}
+    await apiCall("POST","/api/register",{nom:nom.trim(),email:email.trim(),password:pass});
+    var users = await apiCall("GET","/api/admin/users");
+    var u = users.find(function(x){ return x.email===email.trim(); });
+    if (u) {
+      if (SA_SEL_PLAN==="vie") await apiCall("POST","/api/admin/lifetime",{userId:u.id});
+      else await apiCall("POST","/api/admin/extend",{userId:u.id, days:SA_SEL_PLAN==="30"?30:365});
+    }
+    closeSaModal("sa-modal-create");
+    notif("✅ Client créé avec succès");
+    loadSuperAdminData();
+  } catch(e) {
+    if (err) { err.textContent=e.message; err.style.display="block"; }
+  }
+}
+
+async function saDoMdp() {
+  var pass = (document.getElementById("sa-mdp-input")||{}).value||"";
+  if (!pass||pass.length<6) { notif("Mot de passe trop court"); return; }
+  try {
+    await apiCall("POST","/api/admin/reset-password",{userId:SA_EDIT_ID,newPassword:pass});
+    closeSaModal("sa-modal-mdp");
+    notif("✅ Mot de passe réinitialisé");
+  } catch(e){ notif("Erreur: "+e.message); }
+}
+
+async function saDoChangeDur() {
+  if (!SA_SEL_DUR) { notif("Choisissez une durée"); return; }
+  try {
+    if (SA_SEL_DUR==="vie") await apiCall("POST","/api/admin/lifetime",{userId:SA_EDIT_ID});
+    else await apiCall("POST","/api/admin/extend",{userId:SA_EDIT_ID, days:SA_SEL_DUR==="30"?30:365});
+    closeSaModal("sa-modal-dur");
+    notif("✅ Durée mise à jour");
+    loadSuperAdminData();
+  } catch(e){ notif("Erreur: "+e.message); }
+}
+
+async function saDelUser(id, nom) {
+  if (!confirm("Supprimer le compte de "+nom+" ?")) return;
+  try {
+    await apiCall("DELETE","/api/admin/users/"+id);
+    notif("✅ Compte supprimé");
+    loadSuperAdminData();
+  } catch(e){ notif("Erreur: "+e.message); }
 }
 
 // ── AUTO-SAVE patches ──
