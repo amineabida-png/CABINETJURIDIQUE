@@ -211,45 +211,45 @@ app.post("/api/admin/reset-password", auth, superOnly, (req, res) => {
 });
 
 
-// ── AI Route (OpenAI GPT-4o-mini) ──
+// ── AI Route (Groq — Llama 3.1 70B — 100% Gratuit) ──
 app.post("/api/ai", auth, async (req, res) => {
   const { messages } = req.body;
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) return res.status(500).json({ error: "Clé API OpenAI non configurée" });
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) return res.status(500).json({ error: "Clé API Groq non configurée. Créez un compte gratuit sur groq.com" });
   if (!messages || !Array.isArray(messages)) return res.status(400).json({ error: "Messages invalides" });
 
   const system = {
     role: "system",
-    content: `Tu es LEXIA, un assistant juridique expert spécialisé dans le droit marocain. 
-Tu maîtrises : le DOC (Dahir des Obligations et Contrats), le Code du Travail (Loi 65-99), 
-le Code de Commerce (Loi 15-95), le Code Pénal marocain, le Code de Procédure Civile, 
-le droit de la famille marocain (Moudawwana), le droit immobilier, la fiscalité (CGI), 
+    content: `Tu es un assistant juridique expert spécialisé dans le droit marocain au service du cabinet GESTION JURIDIQUE.
+Tu maîtrises : le DOC (Dahir des Obligations et Contrats), le Code du Travail (Loi 65-99),
+le Code de Commerce (Loi 15-95), le Code Pénal marocain, le Code de Procédure Civile,
+le droit de la famille marocain (Moudawwana), le droit immobilier, la fiscalité (CGI),
 les procédures devant le TPI, la Cour d appel et la Cour Suprême.
-Tu peux rédiger des actes, analyser des contrats, citer des articles de loi, 
+Tu peux rédiger des actes, analyser des contrats, citer des articles de loi,
 calculer des délais procéduraux et préparer des consultations.
 Réponds toujours en français, de façon professionnelle et structurée.
 Cite les articles de loi marocains pertinents quand c est possible.`
   };
 
   try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer " + apiKey
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
+        model: "llama-3.1-70b-versatile",
         messages: [system, ...messages],
         max_tokens: 2000,
         temperature: 0.3
       })
     });
     const data = await response.json();
-    if (!response.ok) return res.status(response.status).json({ error: data.error?.message || "Erreur OpenAI" });
+    if (!response.ok) return res.status(response.status).json({ error: data.error?.message || "Erreur Groq" });
     res.json({ reply: data.choices[0].message.content, usage: data.usage });
   } catch (e) {
-    res.status(500).json({ error: "Erreur de connexion à OpenAI" });
+    res.status(500).json({ error: "Erreur de connexion à Groq" });
   }
 });
 
