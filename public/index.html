@@ -1573,9 +1573,7 @@ function printConvention(idx){
   w.document.write('<div class="section"><h3>Honoraires</h3>'+( cv.forfait?'<div class="row"><span class="label">Honoraires forfaitaires</span><span class="val">'+cv.forfait.toLocaleString("fr-FR")+' MAD HT</span></div>':"")+( cv.taux?'<div class="row"><span class="label">Taux horaire</span><span class="val">'+cv.taux.toLocaleString("fr-FR")+' MAD/h HT</span></div>':"")+'<div class="row"><span class="label">Provision initiale</span><span class="val">'+cv.provision.toLocaleString("fr-FR")+' MAD</span></div></div>');
   w.document.write('<div class="total-box"><div style="font-size:10pt;color:#555;margin-bottom:4px">PROVISION À VERSER À LA SIGNATURE</div><div class="amount">'+cv.provision.toLocaleString("fr-FR")+' MAD</div></div>');
   w.document.write('<div class="sig"><div class="sig-box"><div class="sig-line">Le Client<br>'+cv.client+'</div></div><div class="sig-box"><div class="sig-line">L&apos;Avocat<br>'+cv.avocat+'</div></div></div>');
-  w.document.write('<div class="footer">Cabinet Alami &amp; Associés · Casablanca · Barreau de Casablanca · Imprimé le '+new Date().toLocaleDateString("fr-FR")+'</div>
-
-</body></html>");
+  w.document.write('<div class="footer">'+(window.CABINET&&window.CABINET.nom?window.CABINET.nom:'')+'</div></body></html>');
   w.document.close();
   setTimeout(function(){w.print();},700);
 }
