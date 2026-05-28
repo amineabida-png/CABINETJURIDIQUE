@@ -1579,6 +1579,28 @@ function printConvention(idx){
 }
 
 // ── PAGE CONVENTIONS ──
+function pAnalytique(){
+  return "<div class='card'><div class='stitle'>Analytique</div><p style='color:#5a5248;font-size:13px;padding:20px 0'>Module analytique — statistiques et rapports à venir.</p></div>";
+}
+function pTemps(){
+  return "<div class='card'><div class='stitle'>Gestion du temps</div><p style='color:#5a5248;font-size:13px;padding:20px 0'>Suivi du temps par dossier — à compléter.</p></div>";
+}
+function pNotes(){
+  var html="<div class='card'><div class='stitle'>Notes et mémos</div>";
+  (NOTES||[]).forEach(function(n){
+    html+="<div style='background:rgba(139,115,85,.08);border:1px solid rgba(139,115,85,.15);border-radius:8px;padding:12px;margin-bottom:10px'>";
+    html+="<div style='font-size:12px;color:#8b7355;margin-bottom:4px'>"+esc(n.date||"")+"</div>";
+    html+="<div style='font-size:14px;color:#e8e0d0'>"+esc(n.texte||"")+"</div></div>";
+  });
+  if(!(NOTES||[]).length) html+="<p style='color:#5a5248;font-size:13px;padding:20px 0'>Aucune note.</p>";
+  html+="</div>"; return html;
+}
+function pPieces(){
+  return "<div class='card'><div class='stitle'>Pièces justificatives</div><p style='color:#5a5248;font-size:13px;padding:20px 0'>Gestion des pièces — archivage en cours.</p></div>";
+}
+function pModeles(){
+  return "<div class='card'><div class='stitle'>Modèles de documents</div><p style='color:#5a5248;font-size:13px;padding:20px 0'>Bibliothèque de modèles — à personnaliser dans Paramètres.</p></div>";
+}
 function pConventions(){
   var rows=CONVENTIONS.length?CONVENTIONS.map(function(cv,i){
     var hon=cv.forfait?cv.forfait.toLocaleString("fr-FR")+" MAD":cv.taux?cv.taux.toLocaleString("fr-FR")+" MAD/h":"—";
