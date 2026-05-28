@@ -1609,7 +1609,35 @@ function pPieces(){
   return "<div class='card'><div class='stitle'>Pièces justificatives</div><p style='color:#5a5248;font-size:13px;padding:20px 0'>Gestion des pièces — archivage en cours.</p></div>";
 }
 function pModeles(){
-  return "<div class='card'><div class='stitle'>Modèles de documents</div><p style='color:#5a5248;font-size:13px;padding:20px 0'>Bibliothèque de modèles — à personnaliser dans Paramètres.</p></div>";
+  var modeles=[
+    {icon:"📋",titre:"Mise en demeure",desc:"Lettre formelle avant action judiciaire",cat:"Contentieux",action:"md"},
+    {icon:"⚖️",titre:"Conclusions en réponse",desc:"Mémoire de défense devant le TPI",cat:"Procédure",action:"co"},
+    {icon:"🤝",titre:"Protocole transactionnel",desc:"Accord amiable entre parties",cat:"Transaction",action:"pt"},
+    {icon:"📜",titre:"Convention d'honoraires",desc:"Accord de mission et honoraires",cat:"Cabinet",action:"cv"},
+    {icon:"📄",titre:"Contrat de bail commercial",desc:"Bail à usage commercial (Loi 49-16)",cat:"Immobilier",action:"bc"},
+    {icon:"💼",titre:"Contrat de travail CDI",desc:"Contrat à durée indéterminée (Code Travail)",cat:"Droit Social",action:"cdi"},
+    {icon:"🏠",titre:"Promesse de vente immobilière",desc:"Compromis de vente avec conditions",cat:"Immobilier",action:"pv"},
+    {icon:"📑",titre:"Attestation de propriété",desc:"Attestation notariée de propriété",cat:"Notariat",action:"ap"},
+    {icon:"💰",titre:"Reconnaissance de dette",desc:"Acte de reconnaissance de créance",cat:"Obligations",action:"rd"},
+    {icon:"📮",titre:"Lettre de résiliation",desc:"Résiliation de contrat avec préavis",cat:"Contrats",action:"lr"},
+    {icon:"⚠️",titre:"Relance impayés",desc:"Lettre de relance avant mise en demeure",cat:"Recouvrement",action:"rl"},
+    {icon:"📊",titre:"Convention de règlement échelonné",desc:"Plan de remboursement amiable",cat:"Recouvrement",action:"cr"}
+  ];
+
+  var cards = modeles.map(function(m){
+    return "<div class='code-card' style='cursor:pointer' onclick='openModeleForm(\""+m.action+"\")'>" +
+      "<div style='font-size:28px;margin-bottom:10px'>"+m.icon+"</div>" +
+      "<div style='font-family:Cinzel,serif;font-size:12px;color:#d4b896;margin-bottom:4px'>"+m.titre+"</div>" +
+      "<div style='font-size:10px;color:#8b7355;margin-bottom:6px'>"+m.cat+"</div>" +
+      "<div style='font-size:11px;color:#5a5248;margin-bottom:12px'>"+m.desc+"</div>" +
+      "<button class='btn bgh' style='padding:6px 12px;font-size:10px;width:100%'>Utiliser ce modèle</button>" +
+    "</div>";
+  }).join("");
+
+  return "<div class='f jb ac' style='margin-bottom:16px'>" +
+    "<div class='stitle' style='margin:0'>Modèles de documents juridiques</div>" +
+    "</div>" +
+    "<div id='bib-codes' style='display:grid;grid-template-columns:repeat(3,1fr);gap:14px'>"+cards+"</div>";
 }
 function pConventions(){
   var rows=CONVENTIONS.length?CONVENTIONS.map(function(cv,i){
@@ -2169,6 +2197,15 @@ setInterval(function(){
   var keys=["DOS","AGD","ACT","HON","PROC","COL","CHG","LCB","PMSG","PDOC","PACCES","NOTES","TEMPS","PIECES","CONVENTIONS","TRESORERIE_ENT","TRESORERIE_SOR","CABINET","RECUS","ALERTES_CUSTOM"];
   keys.forEach(function(k){ if(window[k]!==undefined) saveUserKey(k); });
 }, 30000);
+
+function openModeleForm(action) {
+  // Ouvrir directement la page Actes avec le bon modèle pré-sélectionné
+  goTo("actes");
+  setTimeout(function(){
+    var sel = document.getElementById("modele-select");
+    if(sel) { sel.value = action; sel.dispatchEvent(new Event('change')); }
+  }, 200);
+}
 
 function toggleMenu(){
   var s=document.getElementById("sidebar");
