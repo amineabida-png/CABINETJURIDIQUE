@@ -2805,8 +2805,7 @@ function setVoiceLang(lang) {
 
 function toggleVoice() {
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    alert("Votre navigateur ne supporte pas l'enregistrement audio.
-Mettez à jour votre navigateur."); return;
+    alert("Votre navigateur ne supporte pas l'enregistrement audio. Mettez à jour votre navigateur."); return;
   }
   if (AI_VOICE_ACTIVE) {
     if (AI_MEDIA_RECORDER && AI_MEDIA_RECORDER.state !== 'inactive') AI_MEDIA_RECORDER.stop();
@@ -2879,8 +2878,7 @@ Mettez à jour votre navigateur."); return;
 
   }).catch(function(e) {
     AI_VOICE_ACTIVE = false;
-    if (e.name === 'NotAllowedError') alert("Accès au microphone refusé.
-Autorisez le microphone dans les paramètres du navigateur.");
+    if (e.name === 'NotAllowedError') alert("Accès au microphone refusé. Autorisez le microphone dans les paramètres du navigateur.");
     else alert("Impossible d'accéder au microphone : " + e.message);
   });
 }
