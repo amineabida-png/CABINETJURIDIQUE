@@ -1849,23 +1849,24 @@ async function doActivate() {
 
 function enterApp(user, licence) {
   window.currentUser = user;
-  // Cacher login immédiatement
+  // Supprimer login-screen du DOM complètement
   var ls = document.getElementById("login-screen");
-  if (ls) { ls.style.display = "none"; ls.classList.add("hidden"); }
-  // Forcer visibilité app
-  var main = document.getElementById("main");
-  var sidebar = document.getElementById("sidebar");
-  if (main) main.style.display = "flex";
-  if (sidebar) sidebar.style.display = "flex";
+  if (ls) ls.parentNode.removeChild(ls);
+  // Forcer visibilité
+  document.getElementById("main").style.cssText = "flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden";
+  document.getElementById("sidebar").style.cssText = "display:flex;flex-direction:column";
+  document.getElementById("content").style.cssText = "flex:1;overflow-y:auto;padding:20px";
   try {
     document.getElementById("topbar-uname").textContent = user.nom;
     var licPlan = {"monthly":"30 jours","yearly":"1 an","lifetime":"À vie","super":"Super Admin"};
     document.getElementById("topbar-ulicence").textContent = user.role==="super"?"👑 Super Admin":("Licence " + (licPlan[licence.plan]||"") + (licence.daysLeft?" · "+licence.daysLeft+"j":""));
     if(user.role==="super") document.getElementById("topbar-crown").style.display="block";
   } catch(e) { console.warn("enterApp UI:", e); }
-  // Afficher le dashboard IMMÉDIATEMENT sans attendre les données
-  try { buildNav(); goTo("dashboard"); } catch(e) { console.warn("goTo error:", e); }
-  // Puis charger les données en arrière-plan et rafraîchir
+  // Afficher immédiatement
+  try { buildNav(); goTo("dashboard"); } catch(e) {
+    document.getElementById("content").innerHTML = "<div style='color:#d4b896;padding:20px;font-size:16px'>✅ Connecté — chargement...</div>";
+  }
+  // Charger données en arrière-plan
   loadUserData();
 }
 
