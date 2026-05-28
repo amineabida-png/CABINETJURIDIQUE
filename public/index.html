@@ -1063,6 +1063,9 @@ function goTo(id){
     analytique:pAnalytique,temps:pTemps,notes:pNotes,pieces:pPieces,modeles:pModeles,conventions:pConventions,delais:pDelais,tresorerie:pTresorerie,emoluments:pEmoluments,parametres:pParametres,ai:pAI,alertes:pAlertes,ficheclient:pFicheClient,recherche:pRecherche,recus:pRecus
   };
   if(pages[id])c.innerHTML=pages[id]();
+  // Masquer le bouton imprimer sur le module IA (il cache le bouton Envoyer)
+  var pba=document.getElementById("print-btn-area");
+  if(pba) pba.style.display = (id==="ai") ? "none" : "";
 }
 
 // ── DELEGATION UNIVERSELLE ──
