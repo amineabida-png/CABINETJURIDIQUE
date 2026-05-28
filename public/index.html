@@ -2170,6 +2170,37 @@ setInterval(function(){
   keys.forEach(function(k){ if(window[k]!==undefined) saveUserKey(k); });
 }, 30000);
 
+function toggleMenu(){
+  var s=document.getElementById("sidebar");
+  var o=document.getElementById("overlay");
+  if(!s||!o) return;
+  var isOpen = s.classList.contains("open");
+  s.classList.toggle("open");
+  o.classList.toggle("show");
+  document.body.style.overflow = isOpen ? "" : "hidden";
+}
+function closeMenu(){
+  var s=document.getElementById("sidebar");
+  var o=document.getElementById("overlay");
+  if(s) s.classList.remove("open");
+  if(o) o.classList.remove("show");
+  document.body.style.overflow = "";
+}
+// Swipe to open sidebar
+(function(){
+  var startX=0;
+  document.addEventListener("touchstart",function(e){startX=e.touches[0].clientX;},{passive:true});
+  document.addEventListener("touchend",function(e){
+    var dx=e.changedTouches[0].clientX-startX;
+    var s=document.getElementById("sidebar");
+    if(Math.abs(dx)>50){
+      if(dx>0&&startX<40&&s&&!s.classList.contains("open")) toggleMenu();
+      else if(dx<0&&s&&s.classList.contains("open")) closeMenu();
+    }
+  },{passive:true});
+})();
+document.addEventListener("click",function(e){if(e.target.closest&&e.target.closest(".nb")) closeMenu();});
+
 // ── STARTUP ──
 
 // ── PAGE AI ──
