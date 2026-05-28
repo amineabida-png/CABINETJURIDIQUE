@@ -986,7 +986,17 @@ function goTo(id){
     collaborateurs:pCollab,comptabilite:pCompta,conformite:pConf,portail:pPortail,
     analytique:pAnalytique,temps:pTemps,notes:pNotes,pieces:pPieces,modeles:pModeles,conventions:pConventions,delais:pDelais,tresorerie:pTresorerie,emoluments:pEmoluments,parametres:pParametres,ai:pAI,alertes:pAlertes,ficheclient:pFicheClient,recherche:pRecherche,recus:pRecus,superadmin:pSuperAdmin
   };
-  if(pages[id])c.innerHTML=pages[id]();
+  if(pages[id]) {
+    try {
+      var html = pages[id]();
+      c.innerHTML = html || "<div class='card'><p style='color:#5a5248'>Chargement...</p></div>";
+    } catch(e) {
+      console.warn("Page error:", id, e);
+      c.innerHTML = "<div class='card'><p style='color:#5a5248'>Module " + id + " — " + e.message + "</p></div>";
+    }
+  } else {
+    c.innerHTML = "<div class='card'><p style='color:#5a5248'>Module en cours de chargement...</p></div>";
+  }
   // Masquer le bouton imprimer sur le module IA (il cache le bouton Envoyer)
   var pba=document.getElementById("print-btn-area");
   if(pba) pba.style.display = (id==="ai") ? "none" : "";
@@ -1840,8 +1850,14 @@ async function doActivate() {
 
 function enterApp(user, licence) {
   window.currentUser = user;
+  // Cacher login
   var ls = document.getElementById("login-screen");
   if (ls) { ls.style.display = "none"; ls.classList.add("hidden"); }
+  // Forcer visibilité app
+  var main = document.getElementById("main");
+  var sidebar = document.getElementById("sidebar");
+  if (main) main.style.display = "flex";
+  if (sidebar) sidebar.style.display = "flex";
   try {
     document.getElementById("topbar-uname").textContent = user.nom;
     var licPlan = {"monthly":"30 jours","yearly":"1 an","lifetime":"À vie","super":"Super Admin"};
