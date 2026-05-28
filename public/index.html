@@ -2706,11 +2706,17 @@ function pAI(){
     +"</div>"
     +"<div class='ai-messages' id='ai-msgs'>"+msgs+"</div>"
     +"<div class='ai-input-area'>"
+    +"<div style='display:flex;flex-direction:column;flex:1;gap:6px'>"
+    +"<div id='ai-pdf-badge' style='display:none;background:rgba(139,115,85,.15);border:1px solid rgba(139,115,85,.3);border-radius:6px;padding:6px 10px;font-size:11px;color:#d4b896;display:none;align-items:center;gap:8px'>"
+    +"<span id='ai-pdf-name'></span><button onclick='clearPDF()' style='background:none;border:none;color:#f87171;cursor:pointer;font-size:14px;padding:0;line-height:1'>✕</button></div>"
     +"<textarea id='ai-input' placeholder='Posez votre question juridique...' rows='2' onkeydown='aiKeyDown(event)'></textarea>"
+    +"</div>"
     +"<div style='display:flex;flex-direction:column;gap:6px;align-self:flex-end'>"
     +"<button class='ai-send-btn' id='ai-send-btn' onclick='sendAI()'>Envoyer ▶</button>"
+    +"<button class='ai-send-btn' onclick='document.getElementById(\"ai-pdf-input\").click()' style='background:rgba(96,165,250,.15);border:1px solid rgba(96,165,250,.25);color:#60a5fa;font-size:11px;padding:7px 14px' title='Joindre un PDF'>📎 PDF</button>"
     +"<button class='ai-send-btn' onclick='printAI()' style='background:rgba(139,115,85,.25);border:1px solid rgba(139,115,85,.3);font-size:11px;padding:7px 14px'>🖨 Imprimer</button>"
     +"</div>"
+    +"<input type='file' id='ai-pdf-input' accept='.pdf' style='display:none' onchange='onPDFSelected(this)'>"
     +"</div></div></div>";
 }
 
@@ -2727,6 +2733,32 @@ function mdToHtml(t){
 
 function aiKeyDown(e){
   if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendAI();}
+}
+
+// ── PDF ATTACHMENT ──
+var AI_PDF_FILE = null;
+
+function onPDFSelected(input) {
+  var file = input.files[0];
+  if (!file) return;
+  AI_PDF_FILE = file;
+  var badge = document.getElementById("ai-pdf-badge");
+  var name  = document.getElementById("ai-pdf-name");
+  if (badge && name) {
+    name.textContent = "📄 " + file.name + " (" + (file.size/1024).toFixed(0) + " Ko)";
+    badge.style.display = "flex";
+  }
+  // Pré-remplir le textarea avec une suggestion
+  var ta = document.getElementById("ai-input");
+  if (ta && !ta.value) ta.value = "Résume ce document et identifie les points juridiques importants.";
+}
+
+function clearPDF() {
+  AI_PDF_FILE = null;
+  var badge = document.getElementById("ai-pdf-badge");
+  if (badge) badge.style.display = "none";
+  var input = document.getElementById("ai-pdf-input");
+  if (input) input.value = "";
 }
 
 function printAI(){
@@ -2793,9 +2825,9 @@ async function sendAI(){
   if(msgs){
     var ub=document.createElement("div");
     ub.className="ai-bubble-user";
-    ub.textContent=text;
+    // Afficher le nom du PDF si joint
+    ub.innerHTML = escHtml(text) + (AI_PDF_FILE ? "<div style='margin-top:6px;font-size:11px;opacity:.7'>📎 "+escHtml(AI_PDF_FILE.name)+"</div>" : "");
     msgs.appendChild(ub);
-    // Add typing indicator
     var typing=document.createElement("div");
     typing.className="ai-bubble-bot";
     typing.id="ai-typing";
@@ -2808,13 +2840,31 @@ async function sendAI(){
   if(btn)btn.disabled=true;
 
   try {
-    var r=await fetch("/api/ai",{
-      method:"POST",
-      headers:{"Content-Type":"application/json","Authorization":"Bearer "+TOKEN},
-      body:JSON.stringify({messages:AI_MESSAGES.map(function(m){return{role:m.role,content:m.content};})})
-    });
-    var data=await r.json();
-    if(!r.ok)throw new Error(data.error||"Erreur");
+    var data;
+    if (AI_PDF_FILE) {
+      // Envoyer le PDF + la question
+      var formData = new FormData();
+      formData.append("pdf", AI_PDF_FILE);
+      formData.append("prompt", text);
+      var r = await fetch("/api/ai/pdf", {
+        method: "POST",
+        headers: { "Authorization": "Bearer " + TOKEN },
+        body: formData
+      });
+      data = await r.json();
+      if (!r.ok) throw new Error(data.error || "Erreur");
+      // Afficher info PDF dans la réponse
+      if (data.pages) data.reply = "📄 **" + data.filename + "** — " + data.pages + " page(s)\n\n" + data.reply + (data.tronque ? "\n\n⚠️ *Document tronqué à 12 000 caractères pour l'analyse.*" : "");
+      clearPDF();
+    } else {
+      var r=await fetch("/api/ai",{
+        method:"POST",
+        headers:{"Content-Type":"application/json","Authorization":"Bearer "+TOKEN},
+        body:JSON.stringify({messages:AI_MESSAGES.map(function(m){return{role:m.role,content:m.content};})})
+      });
+      data=await r.json();
+      if(!r.ok)throw new Error(data.error||"Erreur");
+    }
     var reply=data.reply||"Désolé, je n ai pas pu répondre.";
     AI_MESSAGES.push({role:"assistant",content:reply});
     if(data.usage)AI_TOTAL_TOKENS+=(data.usage.total_tokens||0);

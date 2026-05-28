@@ -5,6 +5,18 @@ const fs = require("fs");
 const path = require("path");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
+const pdfParse = require("pdf-parse");
+
+// Multer : stockage en mémoire (pas de fichier sur disque)
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB max
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === "application/pdf") cb(null, true);
+    else cb(new Error("Seuls les fichiers PDF sont acceptés"));
+  }
+});
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -210,6 +222,54 @@ app.post("/api/admin/reset-password", auth, superOnly, (req, res) => {
   res.json({ ok: true });
 });
 
+
+// ── AI PDF Route — extraction texte + résumé/analyse ──
+app.post("/api/ai/pdf", auth, upload.single("pdf"), async (req, res) => {
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) return res.status(500).json({ error: "Clé API Groq non configurée" });
+  if (!req.file) return res.status(400).json({ error: "Aucun fichier PDF reçu" });
+
+  try {
+    const pdfData = await pdfParse(req.file.buffer);
+    let texte = pdfData.text.trim();
+
+    if (!texte || texte.length < 50)
+      return res.status(400).json({ error: "Impossible d'extraire le texte de ce PDF (PDF scanné ou protégé)" });
+
+    const MAX_CHARS = 12000;
+    const tronque = texte.length > MAX_CHARS;
+    if (tronque) texte = texte.substring(0, MAX_CHARS) + "\n\n[... document tronqué à 12 000 caractères]";
+
+    const prompt = req.body.prompt || "Résume ce document juridique de façon structurée. Identifie : les parties, l'objet, les faits, les arguments principaux, la décision ou conclusion, et les points importants à retenir.";
+
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + apiKey },
+      body: JSON.stringify({
+        model: "llama-3.1-8b-instant",
+        messages: [
+          { role: "system", content: "Tu es un assistant juridique expert spécialisé dans le droit marocain. Analyse les documents juridiques avec précision et structure tes réponses clairement en français." },
+          { role: "user", content: prompt + "\n\n---\nCONTENU DU DOCUMENT :\n" + texte }
+        ],
+        max_tokens: 2000,
+        temperature: 0.2
+      })
+    });
+
+    const data = await response.json();
+    if (!response.ok) return res.status(response.status).json({ error: data.error?.message || "Erreur Groq" });
+
+    res.json({
+      reply: data.choices[0].message.content,
+      filename: req.file.originalname,
+      pages: pdfData.numpages,
+      chars: pdfData.text.length,
+      tronque
+    });
+  } catch (e) {
+    res.status(500).json({ error: "Erreur traitement PDF : " + e.message });
+  }
+});
 
 // ── AI Route (Groq — Llama 3.1 70B — 100% Gratuit) ──
 app.post("/api/ai", auth, async (req, res) => {
