@@ -2613,6 +2613,23 @@ function openModeleForm(action) {
 }
 
 function genererDocument(action) {
+  var titres = {
+    "md":"Mise en demeure","co":"Conclusions en réponse","pt":"Protocole transactionnel",
+    "rd":"Reconnaissance de dette","lr":"Lettre de résiliation","rl":"Relance impayés",
+    "pv":"Promesse de vente immobilière","ap":"Attestation de propriété","cr":"Convention de règlement échelonné",
+    "bc":"Contrat de bail commercial","cdi":"Contrat de travail CDI","cdd":"Contrat de travail CDD",
+    "lic":"Lettre de licenciement","ijp":"Demande d'injonction de payer","rga":"Recours gracieux administratif",
+    "req":"Requête introductive d'instance","ref":"Demande en référé","app":"Mémoire d'appel",
+    "oip":"Opposition à injonction de payer","exeq":"Demande d'exequatur","sarl":"Statuts de SARL",
+    "agpv":"PV d'assemblée générale","cps":"Cession de parts sociales","proc":"Procuration pour AGE",
+    "gerance":"Contrat de gérance","bh":"Contrat de bail d'habitation","edl":"État des lieux",
+    "mv":"Mandat de vente immobilière","ql":"Quittance de loyer","cmd":"Commandement de payer",
+    "stc":"Reçu pour solde de tout compte","mdt":"Mise en demeure de reprise du travail",
+    "rca":"Convention de rupture amiable","caut":"Acte de cautionnement","pret":"Contrat de prêt",
+    "cdc":"Cession de créance","mainl":"Mainlevée de saisie","perm":"Demande d'autorisation de construire",
+    "cont":"Contestation de décision administrative"
+  };
+  var m = { titre: titres[action] || action };
   // Récupérer toutes les valeurs des champs
   var vals = {};
   document.querySelectorAll("[id^='mf_']").forEach(function(el){
