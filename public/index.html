@@ -2259,12 +2259,245 @@ setInterval(function(){
 }, 30000);
 
 function openModeleForm(action) {
-  // Ouvrir directement la page Actes avec le bon modèle pré-sélectionné
-  goTo("actes");
-  setTimeout(function(){
-    var sel = document.getElementById("modele-select");
-    if(sel) { sel.value = action; sel.dispatchEvent(new Event('change')); }
-  }, 200);
+  var modeleData = {
+    "md":  {titre:"Mise en demeure", champs:[
+      {id:"md_dest",label:"Destinataire",ph:"Nom complet de la partie adverse"},
+      {id:"md_objet",label:"Objet de la mise en demeure",ph:"Ex: Paiement de la somme de 50 000 MAD",type:"textarea"},
+      {id:"md_delai",label:"Délai accordé (jours)",ph:"Ex: 8",type:"number"},
+      {id:"md_avocat",label:"Maître (nom de l'avocat)",ph:"Me. Alami"}
+    ]},
+    "co":  {titre:"Conclusions en réponse", champs:[
+      {id:"co_client",label:"Pour (client)",ph:"Nom du client défendeur"},
+      {id:"co_adverse",label:"Contre",ph:"Nom de la partie adverse"},
+      {id:"co_tribunal",label:"Tribunal",ph:"Ex: TPI Casablanca"},
+      {id:"co_faits",label:"En fait",ph:"Exposé des faits...",type:"textarea"},
+      {id:"co_droit",label:"En droit",ph:"Moyens de droit...",type:"textarea"},
+      {id:"co_demande",label:"Par ces motifs, demander",ph:"Ex: Débouter le demandeur...",type:"textarea"},
+      {id:"co_avocat",label:"Maître",ph:"Me. Alami"}
+    ]},
+    "pt":  {titre:"Protocole transactionnel", champs:[
+      {id:"pt_partieA",label:"Partie A",ph:"Nom et qualité"},
+      {id:"pt_partieB",label:"Partie B",ph:"Nom et qualité"},
+      {id:"pt_objet",label:"Objet du litige",ph:"Description du différend",type:"textarea"},
+      {id:"pt_engagements",label:"Engagements réciproques",ph:"Ce que chaque partie s'engage à faire...",type:"textarea"},
+      {id:"pt_montant",label:"Montant du règlement (MAD)",ph:"Ex: 30000",type:"number"},
+      {id:"pt_avocat",label:"Avocat rédacteur",ph:"Me. Alami"}
+    ]},
+    "rd":  {titre:"Reconnaissance de dette", champs:[
+      {id:"rd_debiteur",label:"Débiteur (nom complet)",ph:"Nom, prénom, CIN"},
+      {id:"rd_creancier",label:"Créancier (nom complet)",ph:"Nom, prénom, CIN"},
+      {id:"rd_montant",label:"Montant de la dette (MAD)",ph:"Ex: 50000",type:"number"},
+      {id:"rd_echeance",label:"Date d'échéance",ph:"",type:"date"},
+      {id:"rd_motif",label:"Motif de la dette",ph:"Ex: Prêt consenti le..."}
+    ]},
+    "lr":  {titre:"Lettre de résiliation", champs:[
+      {id:"lr_client",label:"Émetteur (nom)",ph:"Nom de l'émetteur"},
+      {id:"lr_dest",label:"Destinataire",ph:"Nom du destinataire"},
+      {id:"lr_contrat",label:"Contrat résilié",ph:"Ex: contrat de bail du 01/01/2023"},
+      {id:"lr_motif",label:"Motif de résiliation",ph:"Ex: Non-paiement des loyers"},
+      {id:"lr_date_effet",label:"Date d'effet",ph:"",type:"date"},
+      {id:"lr_avocat",label:"Maître",ph:"Me. Alami"}
+    ]},
+    "rl":  {titre:"Relance impayés", champs:[
+      {id:"rl_client",label:"Nom du client débiteur",ph:"Nom complet"},
+      {id:"rl_num_facture",label:"N° de facture",ph:"Ex: FACT-2024-001"},
+      {id:"rl_montant",label:"Montant impayé (MAD)",ph:"Ex: 15000",type:"number"},
+      {id:"rl_date_fact",label:"Date de la facture",ph:"",type:"date"},
+      {id:"rl_cabinet",label:"Cabinet émetteur",ph:"Cabinet Maître Alami"}
+    ]},
+    "pv":  {titre:"Promesse de vente immobilière", champs:[
+      {id:"pv_vendeur",label:"Vendeur",ph:"Nom complet"},
+      {id:"pv_acquereur",label:"Acquéreur",ph:"Nom complet"},
+      {id:"pv_bien",label:"Désignation du bien",ph:"Ex: Villa n°5, Hay Riad, Rabat"},
+      {id:"pv_prix",label:"Prix de vente (MAD)",ph:"Ex: 2500000",type:"number"},
+      {id:"pv_acompte",label:"Acompte versé (MAD)",ph:"Ex: 250000",type:"number"},
+      {id:"pv_date_reit",label:"Date de réitération",ph:"",type:"date"},
+      {id:"pv_notaire",label:"Notaire",ph:"Me. Benali"}
+    ]},
+    "ap":  {titre:"Attestation de propriété", champs:[
+      {id:"ap_proprietaire",label:"Propriétaire",ph:"Nom complet"},
+      {id:"ap_bien",label:"Description du bien",ph:"Ex: Appartement, 3 pièces, Casablanca"},
+      {id:"ap_titre",label:"N° Titre foncier",ph:"Ex: 45678/C"},
+      {id:"ap_superficie",label:"Superficie (m²)",ph:"Ex: 120",type:"number"},
+      {id:"ap_notaire",label:"Notaire instrumentaire",ph:"Me. Idrissi"}
+    ]},
+    "cr":  {titre:"Convention de règlement échelonné", champs:[
+      {id:"cr_debiteur",label:"Débiteur",ph:"Nom complet"},
+      {id:"cr_creancier",label:"Créancier",ph:"Nom complet"},
+      {id:"cr_montant",label:"Montant total de la dette (MAD)",ph:"Ex: 80000",type:"number"},
+      {id:"cr_nb_echeances",label:"Nombre d'échéances",ph:"Ex: 6",type:"number"},
+      {id:"cr_premiere_echeance",label:"Date 1ère échéance",ph:"",type:"date"},
+      {id:"cr_cabinet",label:"Maître",ph:"Me. Alami"}
+    ]},
+    "bc":  {titre:"Contrat de bail commercial", champs:[
+      {id:"bc_bailleur",label:"Bailleur",ph:"Nom et adresse du propriétaire"},
+      {id:"bc_locataire",label:"Locataire",ph:"Nom et raison sociale"},
+      {id:"bc_adresse",label:"Adresse du local",ph:"Ex: 23 Rue Hassan II, Casablanca"},
+      {id:"bc_activite",label:"Activité commerciale",ph:"Ex: Commerce de détail"},
+      {id:"bc_loyer",label:"Loyer mensuel HT (MAD)",ph:"Ex: 8000",type:"number"},
+      {id:"bc_debut",label:"Date de début",ph:"",type:"date"},
+      {id:"bc_duree",label:"Durée (années)",ph:"Ex: 3",type:"number"}
+    ]},
+    "cdi": {titre:"Contrat de travail CDI", champs:[
+      {id:"cdi_employeur",label:"Employeur",ph:"Raison sociale"},
+      {id:"cdi_employe",label:"Employé(e)",ph:"Nom complet"},
+      {id:"cdi_poste",label:"Poste / Fonction",ph:"Ex: Juriste d'entreprise"},
+      {id:"cdi_salaire",label:"Salaire brut mensuel (MAD)",ph:"Ex: 12000",type:"number"},
+      {id:"cdi_debut",label:"Date de prise de poste",ph:"",type:"date"},
+      {id:"cdi_essai",label:"Période d'essai (mois)",ph:"Ex: 3",type:"number"}
+    ]},
+    "cdd": {titre:"Contrat de travail CDD", champs:[
+      {id:"cdd_employeur",label:"Employeur",ph:"Raison sociale"},
+      {id:"cdd_employe",label:"Employé(e)",ph:"Nom complet"},
+      {id:"cdd_poste",label:"Poste / Fonction",ph:"Ex: Assistant juridique"},
+      {id:"cdd_salaire",label:"Salaire brut mensuel (MAD)",ph:"Ex: 8000",type:"number"},
+      {id:"cdd_debut",label:"Date de début",ph:"",type:"date"},
+      {id:"cdd_fin",label:"Date de fin",ph:"",type:"date"},
+      {id:"cdd_motif",label:"Motif du CDD",ph:"Ex: Remplacement, surcroît d'activité"}
+    ]},
+    "lic": {titre:"Lettre de licenciement", champs:[
+      {id:"lic_employe",label:"Nom de l'employé",ph:"Nom complet"},
+      {id:"lic_poste",label:"Poste occupé",ph:"Ex: Juriste"},
+      {id:"lic_motif",label:"Motif(s) du licenciement",ph:"Description détaillée des faits...",type:"textarea"},
+      {id:"lic_preavis",label:"Durée du préavis",ph:"Ex: 1 mois"},
+      {id:"lic_date",label:"Date d'effet",ph:"",type:"date"},
+      {id:"lic_employeur",label:"Employeur / Direction",ph:"Nom du responsable"}
+    ]},
+    "ijp": {titre:"Demande d'injonction de payer", champs:[
+      {id:"ijp_creancier",label:"Créancier demandeur",ph:"Nom complet"},
+      {id:"ijp_debiteur",label:"Débiteur",ph:"Nom complet, adresse"},
+      {id:"ijp_montant",label:"Montant réclamé (MAD)",ph:"Ex: 45000",type:"number"},
+      {id:"ijp_cause",label:"Cause de la créance",ph:"Ex: Factures impayées n°..."},
+      {id:"ijp_tribunal",label:"Tribunal compétent",ph:"Ex: TPI Casablanca"}
+    ]},
+    "rga": {titre:"Recours gracieux administratif", champs:[
+      {id:"rga_nom",label:"Nom du requérant",ph:"Nom complet"},
+      {id:"rga_autorite",label:"Autorité saisie",ph:"Ex: Monsieur le Wali de Casablanca"},
+      {id:"rga_decision",label:"Décision contestée",ph:"Ex: Décision de refus du 01/03/2026"},
+      {id:"rga_motifs",label:"Motifs du recours",ph:"Arguments juridiques et factuels...",type:"textarea"},
+      {id:"rga_demande",label:"Ce que vous demandez",ph:"Ex: Annulation de la décision et..."}
+    ]}
+  };
+
+  var m = modeleData[action];
+  if(!m){
+    notif("Modèle en cours de développement — utilisez le module Actes");
+    return;
+  }
+
+  var champsHtml = m.champs.map(function(c){
+    var input = c.type==="textarea"
+      ? "<textarea id='mf_"+c.id+"' placeholder='"+c.ph+"' style='width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:7px;padding:10px 14px;font-size:14px;outline:none;min-height:80px;resize:vertical;font-family:inherit'></textarea>"
+      : "<input id='mf_"+c.id+"' type='"+(c.type||"text")+"' placeholder='"+c.ph+"' style='width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(139,115,85,.2);color:#e8e0d0;border-radius:7px;padding:10px 14px;font-size:14px;outline:none'/>";
+    return "<div style='margin-bottom:12px'><label style='display:block;font-size:10px;color:#8b7355;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px'>"+c.label+"</label>"+input+"</div>";
+  }).join("");
+
+  var modal = document.createElement("div");
+  modal.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:6000;display:flex;align-items:center;justify-content:center;padding:16px";
+  modal.innerHTML = "<div style='background:#111;border:1px solid rgba(139,115,85,.25);border-radius:14px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;padding:24px'>" +
+    "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:20px'>" +
+      "<div style='font-family:Cinzel,serif;font-size:15px;color:#d4b896'>📄 "+m.titre+"</div>" +
+      "<button onclick='this.closest(\"[style*=position:fixed]\").remove()' style='background:none;border:none;color:#5a5248;font-size:20px;cursor:pointer'>✕</button>" +
+    "</div>" +
+    champsHtml +
+    "<div style='display:flex;gap:10px;justify-content:flex-end;margin-top:16px'>" +
+      "<button onclick='this.closest(\"[style*=position:fixed]\").remove()' style='background:transparent;border:1px solid rgba(139,115,85,.3);color:#8b7355;border-radius:8px;padding:10px 18px;font-family:Cinzel,serif;font-size:11px;cursor:pointer'>Annuler</button>" +
+      "<button onclick='genererDocument(\""+action+"\")' style='background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-family:Cinzel,serif;font-size:11px;cursor:pointer'>📄 Générer le document</button>" +
+    "</div>" +
+  "</div>";
+  document.body.appendChild(modal);
+  modal.addEventListener("click", function(e){ if(e.target===modal) modal.remove(); });
+}
+
+function genererDocument(action) {
+  // Récupérer toutes les valeurs des champs
+  var vals = {};
+  document.querySelectorAll("[id^='mf_']").forEach(function(el){
+    vals[el.id.replace("mf_","").replace(action+"_","")] = el.value.trim();
+  });
+
+  var cabNom = window.CABINET&&window.CABINET.nom ? window.CABINET.nom : "";
+  var cabVille = window.CABINET&&window.CABINET.ville ? window.CABINET.ville : "Casablanca";
+  var cabBar = window.CABINET&&window.CABINET.barreau ? "Barreau de "+window.CABINET.barreau : "";
+  var today = new Date().toLocaleDateString("fr-FR");
+  var corps = "";
+
+  // Générer le texte selon le modèle
+  if(action==="md") {
+    corps = (cabVille?cabVille+", le ":"Fait le ")+today+"\n\nÀ l'attention de : "+vals.dest+"\n\n";
+    corps += "Madame, Monsieur,\n\nPar la présente, nous vous mettons formellement en demeure de procéder à :\n\n"+vals.objet+"\n\n";
+    corps += "dans un délai de "+vals.delai+" jours à compter de la réception de ce courrier.\n\n";
+    corps += "À défaut de réponse favorable dans ce délai, notre client se réservera le droit d'engager toutes poursuites judiciaires utiles, sans autre avertissement.\n\n";
+    corps += "Nous vous invitons à prendre contact avec notre cabinet dans les meilleurs délais.\n\nVeuillez agréer, Madame, Monsieur, l'expression de nos salutations distinguées.\n\n"+vals.avocat+"\n"+cabBar;
+  } else if(action==="rd") {
+    corps = "RECONNAISSANCE DE DETTE\n\nJe soussigné(e), "+vals.debiteur+",\n\nReconnaît devoir à "+vals.creancier+" la somme de "+Number(vals.montant).toLocaleString("fr-FR")+" MAD ("+vals.montant+" dirhams)\n\n";
+    corps += "au titre de : "+vals.motif+"\n\nM'engage à rembourser ladite somme au plus tard le "+vals.echeance+".\n\n";
+    corps += "Fait pour valoir ce que de droit.\n\nFait à "+cabVille+", le "+today+"\n\nSignature du débiteur :\n"+vals.debiteur+"\n\nSignature du créancier :\n"+vals.creancier;
+  } else if(action==="rl") {
+    corps = (cabVille?cabVille+", le ":"Fait le ")+today+"\n\nÀ l'attention de : "+vals.client+"\n\nObjet : Relance — Facture N° "+vals.num_facture+"\n\n";
+    corps += "Madame, Monsieur,\n\nSauf erreur ou omission de notre part, nous constatons que la facture N° "+vals.num_facture+" d'un montant de "+Number(vals.montant).toLocaleString("fr-FR")+" MAD, émise le "+vals.date_fact+", demeure impayée à ce jour.\n\n";
+    corps += "Nous vous serions reconnaissants de bien vouloir procéder au règlement de cette somme dans les meilleurs délais.\n\n";
+    corps += "Passé ce délai, nous nous verrons dans l'obligation d'engager les poursuites nécessaires.\n\nCordialement,\n"+vals.cabinet;
+  } else if(action==="lr") {
+    corps = (cabVille?cabVille+", le ":"Fait le ")+today+"\n\nÀ l'attention de : "+vals.dest+"\n\nObjet : Résiliation de "+vals.contrat+"\n\n";
+    corps += "Madame, Monsieur,\n\nNous avons l'honneur de vous informer de la résiliation du "+vals.contrat+" pour le motif suivant :\n\n"+vals.motif+"\n\n";
+    corps += "Cette résiliation prendra effet le "+vals.date_effet+".\n\nVeuillez agréer, Madame, Monsieur, l'expression de nos salutations distinguées.\n\n"+vals.avocat+"\n"+cabBar;
+  } else if(action==="co") {
+    corps = "TRIBUNAL DE PREMIÈRE INSTANCE DE "+vals.tribunal.toUpperCase()+"\n\nCONCLUSIONS EN RÉPONSE\n\nPour : "+vals.client+"\nContre : "+vals.adverse+"\n\nI. EN FAIT\n"+vals.faits+"\n\nII. EN DROIT\n"+vals.droit+"\n\nPAR CES MOTIFS\n\nPlaise au Tribunal de bien vouloir :\n- "+vals.demande+"\n- Condamner la partie adverse aux dépens\n\nSous toutes réserves.\n\n"+cabVille+", le "+today+"\n"+vals.avocat+"\n"+cabBar;
+  } else if(action==="pt") {
+    var ec = vals.montant ? Number(vals.montant).toLocaleString("fr-FR")+" MAD" : "à convenir";
+    corps = "PROTOCOLE D'ACCORD TRANSACTIONNEL\n\nEntre :\n1. "+vals.partieA+"\n2. "+vals.partieB+"\n\nARTICLE 1 — OBJET\n"+vals.objet+"\n\nARTICLE 2 — ENGAGEMENTS\n"+vals.engagements+"\n\nARTICLE 3 — RÈGLEMENT\nRèglement convenu de "+ec+"\n\nARTICLE 4 — CONFIDENTIALITÉ\nLes parties s'engagent à maintenir la confidentialité du présent accord.\n\nARTICLE 5 — DROIT APPLICABLE\nLe présent accord est soumis au droit marocain.\n\nFait à "+cabVille+", le "+today+"\n\nSignature : "+vals.partieA+"\nSignature : "+vals.partieB+"\n\nAvocat rédacteur : "+vals.avocat;
+  } else if(action==="cr") {
+    var ec2 = vals.nb_echeances&&vals.montant ? (Number(vals.montant)/Number(vals.nb_echeances)).toLocaleString("fr-FR")+" MAD" : "à définir";
+    corps = "CONVENTION DE RÈGLEMENT ÉCHELONNÉ\n\nEntre :\nLE DÉBITEUR : "+vals.debiteur+"\nLE CRÉANCIER : "+vals.creancier+"\n\nARTICLE 1 — MONTANT\nLe débiteur reconnaît devoir la somme totale de "+Number(vals.montant).toLocaleString("fr-FR")+" MAD.\n\nARTICLE 2 — ÉCHELONNEMENT\nRèglement en "+vals.nb_echeances+" versements de "+ec2+" chacun.\nPremière échéance : "+vals.premiere_echeance+"\n\nARTICLE 3 — CLAUSE RÉSOLUTOIRE\nTout défaut rend l'intégralité de la dette exigible immédiatement.\n\nFait à "+cabVille+", le "+today+"\n\nSignature débiteur : "+vals.debiteur+"\nSignature créancier : "+vals.creancier+"\n\nMaître : "+vals.cabinet;
+  } else if(action==="pv") {
+    corps = "PROMESSE SYNALLAGMATIQUE DE VENTE\n\nEntre :\nLE VENDEUR : "+vals.vendeur+"\nL'ACQUÉREUR : "+vals.acquereur+"\n\nARTICLE 1 — DÉSIGNATION DU BIEN\n"+vals.bien+"\n\nARTICLE 2 — PRIX\nPrix de vente : "+Number(vals.prix).toLocaleString("fr-FR")+" MAD\nAcompte versé ce jour : "+Number(vals.acompte).toLocaleString("fr-FR")+" MAD\n\nARTICLE 3 — RÉITÉRATION\nActe définitif au plus tard le "+vals.date_reit+"\n\nFait à "+cabVille+", le "+today+"\n\nSignature vendeur : "+vals.vendeur+"\nSignature acquéreur : "+vals.acquereur+"\nNotaire : Maître "+vals.notaire;
+  } else if(action==="ap") {
+    corps = "ATTESTATION DE PROPRIÉTÉ\n\nJe soussigné, Maître "+vals.notaire+", Notaire à "+cabVille+",\n\nATTESTE ET CERTIFIE\n\nQue "+vals.proprietaire+" est propriétaire du bien immeuble suivant :\n\nDÉSIGNATION : "+vals.bien+"\nTITRE FONCIER N° : "+vals.titre+"\nSUPERFICIE : "+vals.superficie+" m²\n\nDélivrée à la demande de l'intéressé pour servir et valoir ce que de droit.\n\nFait à "+cabVille+", le "+today+"\n\nMaître "+vals.notaire;
+  } else if(action==="bc") {
+    corps = "CONTRAT DE BAIL COMMERCIAL\n(Loi n° 49-16)\n\nEntre :\nLE BAILLEUR : "+vals.bailleur+"\nLE LOCATAIRE : "+vals.locataire+"\n\nARTICLE 1 — OBJET\nLocation du local sis : "+vals.adresse+"\n\nARTICLE 2 — ACTIVITÉ\n"+vals.activite+"\n\nARTICLE 3 — DURÉE\nBail de "+vals.duree+" an(s), à compter du "+vals.debut+"\n\nARTICLE 4 — LOYER\n"+Number(vals.loyer).toLocaleString("fr-FR")+" MAD HT/mois, payable le 1er de chaque mois.\n\nARTICLE 5 — RÉVISION\nLe loyer sera révisé conformément à la loi 49-16.\n\nFait à "+cabVille+", le "+today+"\n\nSignature bailleur : "+vals.bailleur+"\nSignature locataire : "+vals.locataire;
+  } else if(action==="cdi") {
+    corps = "CONTRAT DE TRAVAIL À DURÉE INDÉTERMINÉE\n\nEntre :\nL'EMPLOYEUR : "+vals.employeur+"\nL'EMPLOYÉ(E) : "+vals.employe+"\n\nARTICLE 1 — ENGAGEMENT\n"+vals.employe+" est engagé(e) en qualité de "+vals.poste+" à compter du "+vals.debut+"\n\nARTICLE 2 — PÉRIODE D'ESSAI\nLa période d'essai est fixée à "+vals.essai+" mois, renouvelable une fois.\n\nARTICLE 3 — RÉMUNÉRATION\nSalaire brut mensuel : "+Number(vals.salaire).toLocaleString("fr-FR")+" MAD\n\nARTICLE 4 — DISPOSITIONS APPLICABLES\nConformément au Code du Travail (Loi 65-99) et à la Convention Collective applicable.\n\nFait à "+cabVille+", le "+today+"\n\nSignature employeur : "+vals.employeur+"\nSignature employé(e) : "+vals.employe;
+  } else if(action==="cdd") {
+    corps = "CONTRAT DE TRAVAIL À DURÉE DÉTERMINÉE\n\nEntre :\nL'EMPLOYEUR : "+vals.employeur+"\nL'EMPLOYÉ(E) : "+vals.employe+"\n\nARTICLE 1 — OBJET\nContrat pour : "+vals.motif+"\n\nARTICLE 2 — POSTE\n"+vals.poste+" du "+vals.debut+" au "+vals.fin+"\n\nARTICLE 3 — RÉMUNÉRATION\nSalaire brut mensuel : "+Number(vals.salaire).toLocaleString("fr-FR")+" MAD\n\nARTICLE 4 — FIN DE CONTRAT\nÀ l'échéance, le contrat prend fin de plein droit.\n\nFait à "+cabVille+", le "+today+"\n\nSignature employeur : "+vals.employeur+"\nSignature employé(e) : "+vals.employe;
+  } else if(action==="lic") {
+    corps = (cabVille?cabVille+", le ":"Fait le ")+today+"\n\nÀ l'attention de : M./Mme "+vals.employe+"\nFonction : "+vals.poste+"\n\nObjet : Notification de licenciement\n\n";
+    corps += "Monsieur / Madame,\n\nNous avons le regret de vous informer que nous procédons à votre licenciement pour les motifs suivants :\n\n"+vals.motif+"\n\n";
+    corps += "Un préavis de "+vals.preavis+" vous est accordé, à compter de la présente notification.\nDate d'effet du licenciement : "+vals.date+"\n\n";
+    corps += "Veuillez agréer l'expression de nos salutations distinguées.\n\nLa Direction\n"+vals.employeur;
+  } else if(action==="ijp") {
+    corps = "REQUÊTE EN INJONCTION DE PAYER\n\n"+vals.tribunal+"\n\nREQUÉRANT : "+vals.creancier+"\nDÉFENDEUR : "+vals.debiteur+"\n\nObjet : Recouvrement de la somme de "+Number(vals.montant).toLocaleString("fr-FR")+" MAD\n\nFAITS :\n"+vals.cause+"\n\nLa créance est certaine, liquide et exigible.\n\nPAR CES MOTIFS :\nIl est demandé au Tribunal de bien vouloir ordonner au débiteur de payer la somme de "+Number(vals.montant).toLocaleString("fr-FR")+" MAD, outre les intérêts légaux et les dépens.\n\nFait à "+cabVille+", le "+today+"\n\n"+vals.creancier;
+  } else if(action==="rga") {
+    corps = (cabVille?cabVille+", le ":"Fait le ")+today+"\n\n"+vals.autorite+"\n\nObjet : Recours gracieux contre la décision du "+vals.decision+"\n\n";
+    corps += "Monsieur le Wali / l'Autorité,\n\nJ'ai l'honneur de former le présent recours gracieux contre la décision suivante : "+vals.decision+"\n\nMOTIFS :\n"+vals.motifs+"\n\nPAR CONSÉQUENT, je vous demande de bien vouloir :\n"+vals.demande+"\n\n";
+    corps += "Dans l'attente d'une décision favorable, veuillez agréer l'expression de mes sincères salutations.\n\n"+vals.nom;
+  } else {
+    corps = "Document : " + action + "\n\nCe modèle est en cours de développement.\nUtilisez le module Actes et Documents pour rédiger manuellement.";
+  }
+
+  // Ouvrir fenêtre d'impression
+  var w = window.open("","_blank","width=800,height=900");
+  if(!w) { notif("Autorisez les popups pour générer le document"); return; }
+
+  var cabFooter = cabNom + (cabVille?" · "+cabVille:"") + (cabBar?" · "+cabBar:"");
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+m.titre+'</title>');
+  w.document.write('<style>body{font-family:Georgia,serif;padding:25mm 20mm;color:#111;max-width:210mm;margin:0 auto;font-size:11pt;line-height:1.8}');
+  w.document.write('h1{font-size:13pt;text-align:center;text-transform:uppercase;letter-spacing:.1em;margin-bottom:30px;border-bottom:2px solid #333;padding-bottom:10px}');
+  w.document.write('pre{white-space:pre-wrap;font-family:Georgia,serif;font-size:11pt;line-height:1.8}');
+  w.document.write('.footer{margin-top:40px;padding-top:10px;border-top:1px solid #ccc;font-size:9pt;color:#666;text-align:center}');
+  w.document.write('@page{size:A4;margin:15mm 12mm}@media print{body{padding:0}}</style></head><body>');
+  w.document.write('<h1>'+m.titre+'</h1>');
+  w.document.write('<pre>'+corps.replace(/</g,"&lt;").replace(/>/g,"&gt;")+'</pre>');
+  w.document.write('<div class="footer">'+cabFooter+' · Imprimé le '+today+'</div>');
+  w.document.write('</body></html>');
+  w.document.close();
+  w.focus();
+  setTimeout(function(){ w.print(); }, 600);
+
+  // Fermer le modal
+  var modal = document.querySelector("[style*='z-index:6000']");
+  if(modal) modal.remove();
+  notif("✅ Document généré — "+m.titre);
 }
 
 function toggleMenu(){
