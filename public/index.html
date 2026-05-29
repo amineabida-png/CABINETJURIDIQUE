@@ -1610,34 +1610,94 @@ function pPieces(){
 }
 function pModeles(){
   var modeles=[
+    // Contentieux & Procédure
     {icon:"📋",titre:"Mise en demeure",desc:"Lettre formelle avant action judiciaire",cat:"Contentieux",action:"md"},
     {icon:"⚖️",titre:"Conclusions en réponse",desc:"Mémoire de défense devant le TPI",cat:"Procédure",action:"co"},
+    {icon:"🏛️",titre:"Requête introductive d'instance",desc:"Demande d'ouverture de procédure TPI",cat:"Procédure",action:"req"},
+    {icon:"⚡",titre:"Demande en référé",desc:"Procédure d'urgence devant le président",cat:"Procédure",action:"ref"},
+    {icon:"📤",titre:"Mémoire d'appel",desc:"Appel devant la Cour d'appel",cat:"Procédure",action:"app"},
+    {icon:"🚫",titre:"Opposition à injonction de payer",desc:"Contestation d'une ordonnance d'injonction",cat:"Procédure",action:"oip"},
+    {icon:"🌍",titre:"Demande d'exequatur",desc:"Reconnaissance d'un jugement étranger",cat:"Procédure",action:"exeq"},
+    // Transaction & Amiable
     {icon:"🤝",titre:"Protocole transactionnel",desc:"Accord amiable entre parties",cat:"Transaction",action:"pt"},
+    {icon:"📊",titre:"Convention de règlement échelonné",desc:"Plan de remboursement amiable",cat:"Recouvrement",action:"cr"},
+    // Cabinet
     {icon:"📜",titre:"Convention d'honoraires",desc:"Accord de mission et honoraires",cat:"Cabinet",action:"cv"},
-    {icon:"📄",titre:"Contrat de bail commercial",desc:"Bail à usage commercial (Loi 49-16)",cat:"Immobilier",action:"bc"},
+    // Droit des Sociétés
+    {icon:"🏢",titre:"Statuts de SARL",desc:"Constitution de société à responsabilité limitée",cat:"Sociétés",action:"sarl"},
+    {icon:"📋",titre:"PV d'assemblée générale",desc:"Procès-verbal d'AGO ou AGE",cat:"Sociétés",action:"agpv"},
+    {icon:"🔄",titre:"Cession de parts sociales",desc:"Transfert de parts entre associés",cat:"Sociétés",action:"cps"},
+    {icon:"📝",titre:"Procuration pour AGE",desc:"Mandat de représentation en assemblée",cat:"Sociétés",action:"proc"},
+    {icon:"👔",titre:"Contrat de gérance",desc:"Nomination et missions du gérant",cat:"Sociétés",action:"gerance"},
+    // Droit du Travail
     {icon:"💼",titre:"Contrat de travail CDI",desc:"Contrat à durée indéterminée (Code Travail)",cat:"Droit Social",action:"cdi"},
-    {icon:"🏠",titre:"Promesse de vente immobilière",desc:"Compromis de vente avec conditions",cat:"Immobilier",action:"pv"},
+    {icon:"⏱️",titre:"Contrat de travail CDD",desc:"Contrat à durée déterminée",cat:"Droit Social",action:"cdd"},
+    {icon:"📮",titre:"Lettre de licenciement",desc:"Notification de licenciement avec motifs",cat:"Droit Social",action:"lic"},
+    {icon:"💵",titre:"Reçu solde de tout compte",desc:"Quittance de fin de contrat de travail",cat:"Droit Social",action:"stc"},
+    {icon:"🔔",titre:"Mise en demeure reprise travail",desc:"Injonction de reprendre le poste",cat:"Droit Social",action:"mdt"},
+    {icon:"✌️",titre:"Convention rupture amiable",desc:"Rupture conventionnelle du CDI",cat:"Droit Social",action:"rca"},
+    // Immobilier & Notariat
+    {icon:"📄",titre:"Contrat de bail commercial",desc:"Bail à usage commercial (Loi 49-16)",cat:"Immobilier",action:"bc"},
+    {icon:"🏠",titre:"Contrat de bail d'habitation",desc:"Bail résidentiel conforme à la loi",cat:"Immobilier",action:"bh"},
+    {icon:"🔑",titre:"État des lieux",desc:"Constat d'entrée ou de sortie",cat:"Immobilier",action:"edl"},
+    {icon:"🏡",titre:"Mandat de vente immobilière",desc:"Mandat exclusif ou simple de vente",cat:"Immobilier",action:"mv"},
+    {icon:"🧾",titre:"Quittance de loyer",desc:"Reçu mensuel de paiement du loyer",cat:"Immobilier",action:"ql"},
+    {icon:"⚠️",titre:"Commandement de payer",desc:"Mise en demeure de payer le loyer dû",cat:"Immobilier",action:"cmd"},
+    {icon:"🏗️",titre:"Promesse de vente immobilière",desc:"Compromis de vente avec conditions",cat:"Immobilier",action:"pv"},
     {icon:"📑",titre:"Attestation de propriété",desc:"Attestation notariée de propriété",cat:"Notariat",action:"ap"},
+    // Recouvrement & Obligations
     {icon:"💰",titre:"Reconnaissance de dette",desc:"Acte de reconnaissance de créance",cat:"Obligations",action:"rd"},
     {icon:"📮",titre:"Lettre de résiliation",desc:"Résiliation de contrat avec préavis",cat:"Contrats",action:"lr"},
     {icon:"⚠️",titre:"Relance impayés",desc:"Lettre de relance avant mise en demeure",cat:"Recouvrement",action:"rl"},
-    {icon:"📊",titre:"Convention de règlement échelonné",desc:"Plan de remboursement amiable",cat:"Recouvrement",action:"cr"}
+    {icon:"⚖️",titre:"Demande injonction de payer",desc:"Requête en injonction de payer (TPI)",cat:"Recouvrement",action:"ijp"},
+    {icon:"🛡️",titre:"Acte de cautionnement",desc:"Engagement de caution solidaire",cat:"Obligations",action:"caut"},
+    {icon:"🤲",titre:"Contrat de prêt entre particuliers",desc:"Prêt avec intérêts ou sans intérêts",cat:"Obligations",action:"pret"},
+    {icon:"🔁",titre:"Cession de créance",desc:"Transfert de créance à un tiers",cat:"Obligations",action:"cdc"},
+    {icon:"✅",titre:"Mainlevée de saisie",desc:"Levée d'une mesure conservatoire",cat:"Obligations",action:"mainl"},
+    // Administratif
+    {icon:"📨",titre:"Recours gracieux administratif",desc:"Contestation amiable d'une décision",cat:"Administratif",action:"rga"},
+    {icon:"🏗️",titre:"Demande autorisation de construire",desc:"Dossier de permis de construire",cat:"Administratif",action:"perm"},
+    {icon:"⚡",titre:"Contestation décision administrative",desc:"Recours contre acte administratif",cat:"Administratif",action:"cont"}
   ];
 
-  var cards = modeles.map(function(m){
-    return "<div class='code-card' style='cursor:pointer' onclick='openModeleForm(\""+m.action+"\")'>" +
-      "<div style='font-size:28px;margin-bottom:10px'>"+m.icon+"</div>" +
-      "<div style='font-family:Cinzel,serif;font-size:12px;color:#d4b896;margin-bottom:4px'>"+m.titre+"</div>" +
-      "<div style='font-size:10px;color:#8b7355;margin-bottom:6px'>"+m.cat+"</div>" +
-      "<div style='font-size:11px;color:#5a5248;margin-bottom:12px'>"+m.desc+"</div>" +
-      "<button class='btn bgh' style='padding:6px 12px;font-size:10px;width:100%'>Utiliser ce modèle</button>" +
-    "</div>";
-  }).join("");
+  // Grouper par catégorie
+  var cats = {};
+  modeles.forEach(function(m){
+    if(!cats[m.cat]) cats[m.cat]=[];
+    cats[m.cat].push(m);
+  });
 
-  return "<div class='f jb ac' style='margin-bottom:16px'>" +
-    "<div class='stitle' style='margin:0'>Modèles de documents juridiques</div>" +
-    "</div>" +
-    "<div id='bib-codes' style='display:grid;grid-template-columns:repeat(3,1fr);gap:14px'>"+cards+"</div>";
+  var catIcons = {
+    "Contentieux":"⚖️","Procédure":"🏛️","Transaction":"🤝","Cabinet":"📜",
+    "Sociétés":"🏢","Droit Social":"👷","Immobilier":"🏠","Notariat":"📑",
+    "Obligations":"💰","Contrats":"📝","Recouvrement":"💳","Administratif":"🏛️"
+  };
+
+  var html = "<div style='margin-bottom:20px;display:flex;flex-wrap:wrap;gap:8px'>";
+  Object.keys(cats).forEach(function(cat){
+    html += "<button onclick='filterModeles(\""+cat+"\")' class='btn bgh' style='font-size:10px;padding:5px 12px' id='mcat-"+cat.replace(/[^a-z]/gi,'')+"'>"+(catIcons[cat]||"📄")+" "+cat+" ("+cats[cat].length+")</button>";
+  });
+  html += "<button onclick='filterModeles(\"\")' class='btn bg' style='font-size:10px;padding:5px 12px'>Tous ("+modeles.length+")</button></div>";
+
+  html += "<div id='modeles-grid' style='display:grid;grid-template-columns:repeat(3,1fr);gap:14px'>";
+  modeles.forEach(function(m){
+    html += "<div class='code-card' data-cat='"+m.cat+"' style='cursor:pointer' onclick='openModeleForm(\""+m.action+"\")'>" +
+      "<div style='font-size:24px;margin-bottom:8px'>"+m.icon+"</div>" +
+      "<div style='font-family:Cinzel,serif;font-size:11px;color:#d4b896;margin-bottom:3px'>"+m.titre+"</div>" +
+      "<div style='font-size:10px;color:#8b7355;margin-bottom:5px;font-family:Cinzel,serif'>"+m.cat+"</div>" +
+      "<div style='font-size:11px;color:#5a5248;margin-bottom:10px;line-height:1.4'>"+m.desc+"</div>" +
+      "<button class='btn bgh' style='padding:5px 12px;font-size:10px;width:100%'>Utiliser ▶</button>" +
+    "</div>";
+  });
+  html += "</div>";
+  return html;
+}
+
+function filterModeles(cat) {
+  var cards = document.querySelectorAll("#modeles-grid .code-card");
+  cards.forEach(function(c){
+    c.style.display = (!cat || c.dataset.cat === cat) ? "" : "none";
+  });
 }
 function pConventions(){
   var rows=CONVENTIONS.length?CONVENTIONS.map(function(cv,i){
