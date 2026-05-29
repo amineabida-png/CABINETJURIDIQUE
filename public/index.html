@@ -2757,17 +2757,33 @@ function imprimerHTML(html, titre) {
       return;
     }
   } catch(e) {}
-  // Fallback: iframe modal
-  var modal = document.createElement('div');
-  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;display:flex;flex-direction:column';
+  // Fallback iframe modal
   var blobUrl = URL.createObjectURL(new Blob([html], {type:'text/html;charset=utf-8'}));
-  modal.innerHTML = '<div style="display:flex;justify-content:space-between;padding:10px 16px;background:#111;border-bottom:1px solid rgba(139,115,85,.3)">' +
-    '<span style="font-family:Cinzel,serif;color:#d4b896;font-size:13px">📄 ' + (titre||'Document') + '</span>' +
-    '<div style="display:flex;gap:8px">' +
-    '<button onclick="this.closest('div[style]').querySelector('iframe').contentWindow.print()" style="background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:6px;padding:7px 14px;font-family:Cinzel,serif;font-size:11px;cursor:pointer">🖨 Imprimer</button>' +
-    '<button onclick="this.closest('div[style]').remove()" style="background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#f87171;border-radius:6px;padding:7px 14px;font-size:11px;cursor:pointer">✕</button>' +
-    '</div></div>' +
-    '<iframe src="' + blobUrl + '" style="flex:1;border:none;background:#fff"></iframe>';
+  var mid = 'doc_' + Date.now();
+  var modal = document.createElement('div');
+  modal.id = mid;
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;display:flex;flex-direction:column';
+  var topbar = document.createElement('div');
+  topbar.style.cssText = 'display:flex;justify-content:space-between;padding:10px 16px;background:#111;border-bottom:1px solid rgba(139,115,85,.3)';
+  topbar.innerHTML = '<span style="font-family:Cinzel,serif;color:#d4b896;font-size:13px">&#128196; '+(titre||'Document')+'</span>';
+  var btnRow = document.createElement('div');
+  btnRow.style.cssText = 'display:flex;gap:8px';
+  var btnPrint = document.createElement('button');
+  btnPrint.style.cssText = 'background:linear-gradient(135deg,#8b7355,#a08060);color:#fff;border:none;border-radius:6px;padding:7px 14px;font-family:Cinzel,serif;font-size:11px;cursor:pointer';
+  btnPrint.textContent = 'Imprimer';
+  var btnClose = document.createElement('button');
+  btnClose.style.cssText = 'background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#f87171;border-radius:6px;padding:7px 14px;font-size:11px;cursor:pointer';
+  btnClose.textContent = 'Fermer';
+  var iframe = document.createElement('iframe');
+  iframe.src = blobUrl;
+  iframe.style.cssText = 'flex:1;border:none;background:#fff';
+  btnPrint.onclick = function(){ try{iframe.contentWindow.print();}catch(e){} };
+  btnClose.onclick = function(){ modal.remove(); };
+  btnRow.appendChild(btnPrint);
+  btnRow.appendChild(btnClose);
+  topbar.appendChild(btnRow);
+  modal.appendChild(topbar);
+  modal.appendChild(iframe);
   document.body.appendChild(modal);
 }
 
