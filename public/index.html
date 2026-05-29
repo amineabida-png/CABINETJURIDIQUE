@@ -2370,7 +2370,217 @@ function openModeleForm(action) {
       {id:"ijp_cause",label:"Cause de la créance",ph:"Ex: Factures impayées n°..."},
       {id:"ijp_tribunal",label:"Tribunal compétent",ph:"Ex: TPI Casablanca"}
     ]},
+        "req": {titre:"Requête introductive d'instance", champs:[
+      {id:"req_demandeur",label:"Demandeur",ph:"Nom complet et adresse"},
+      {id:"req_defendeur",label:"Défendeur",ph:"Nom complet et adresse"},
+      {id:"req_tribunal",label:"Tribunal saisi",ph:"Ex: TPI Casablanca"},
+      {id:"req_objet",label:"Objet de la demande",ph:"Ce que vous demandez au tribunal",type:"textarea"},
+      {id:"req_faits",label:"Exposé des faits",ph:"Description chronologique des faits...",type:"textarea"},
+      {id:"req_montant",label:"Montant réclamé (MAD, si applicable)",ph:"Ex: 50000",type:"number"},
+      {id:"req_avocat",label:"Maître",ph:"Me. Alami"}
+    ]},
+    "ref": {titre:"Demande en référé", champs:[
+      {id:"ref_demandeur",label:"Demandeur",ph:"Nom complet"},
+      {id:"ref_defendeur",label:"Défendeur",ph:"Nom complet"},
+      {id:"ref_tribunal",label:"Tribunal",ph:"Ex: Président du TPI Casablanca"},
+      {id:"ref_urgence",label:"Motif d'urgence",ph:"Pourquoi cette affaire est urgente",type:"textarea"},
+      {id:"ref_demande",label:"Mesure demandée",ph:"Ex: Suspension immédiate de...",type:"textarea"},
+      {id:"ref_avocat",label:"Maître",ph:"Me. Alami"}
+    ]},
+    "app": {titre:"Mémoire d'appel", champs:[
+      {id:"app_appelant",label:"Appelant",ph:"Nom complet"},
+      {id:"app_intime",label:"Intimé",ph:"Nom complet"},
+      {id:"app_jugement",label:"Jugement attaqué",ph:"Ex: Jugement n°1234 du TPI Casablanca du 01/03/2026"},
+      {id:"app_moyens",label:"Moyens d'appel",ph:"Arguments pour infirmer le jugement...",type:"textarea"},
+      {id:"app_demande",label:"Ce que vous demandez à la Cour",ph:"Ex: Infirmer le jugement et statuant à nouveau...",type:"textarea"},
+      {id:"app_avocat",label:"Maître",ph:"Me. Alami"}
+    ]},
+    "oip": {titre:"Opposition à injonction de payer", champs:[
+      {id:"oip_opposant",label:"Opposant (débiteur)",ph:"Nom complet"},
+      {id:"oip_creancier",label:"Créancier (demandeur originel)",ph:"Nom complet"},
+      {id:"oip_ordonnance",label:"N° et date de l'ordonnance",ph:"Ex: Ordonnance n°456 du 15/04/2026"},
+      {id:"oip_montant",label:"Montant contesté (MAD)",ph:"Ex: 30000",type:"number"},
+      {id:"oip_motifs",label:"Motifs de l'opposition",ph:"Raisons pour lesquelles vous contestez...",type:"textarea"},
+      {id:"oip_avocat",label:"Maître",ph:"Me. Alami"}
+    ]},
+    "exeq": {titre:"Demande d'exequatur", champs:[
+      {id:"exeq_demandeur",label:"Demandeur",ph:"Nom complet"},
+      {id:"exeq_defendeur",label:"Défendeur",ph:"Nom complet"},
+      {id:"exeq_jugement",label:"Jugement étranger",ph:"Ex: Jugement du Tribunal de Paris du 01/01/2025"},
+      {id:"exeq_pays",label:"Pays d'origine du jugement",ph:"Ex: France"},
+      {id:"exeq_objet",label:"Objet du jugement",ph:"Description de ce que le jugement ordonne",type:"textarea"},
+      {id:"exeq_avocat",label:"Maître",ph:"Me. Alami"}
+    ]},
+    "sarl": {titre:"Statuts de SARL", champs:[
+      {id:"sarl_nom",label:"Dénomination sociale",ph:"Ex: CABINET CONSEIL SARL"},
+      {id:"sarl_objet",label:"Objet social",ph:"Ex: Conseil juridique et assistance..."},
+      {id:"sarl_siege",label:"Siège social",ph:"Adresse complète"},
+      {id:"sarl_capital",label:"Capital social (MAD)",ph:"Ex: 100000",type:"number"},
+      {id:"sarl_gerant",label:"Gérant(e)",ph:"Nom complet du gérant"},
+      {id:"sarl_associes",label:"Associés et parts",ph:"Ex: M. Alami : 60 parts, M. Benali : 40 parts",type:"textarea"},
+      {id:"sarl_duree",label:"Durée de la société (années)",ph:"Ex: 99",type:"number"}
+    ]},
+    "agpv": {titre:"PV d'assemblée générale", champs:[
+      {id:"agpv_societe",label:"Dénomination sociale",ph:"Nom de la société"},
+      {id:"agpv_type",label:"Type d'assemblée",ph:"Ex: AGO, AGE, AGO/AGE"},
+      {id:"agpv_date",label:"Date et heure",ph:"",type:"date"},
+      {id:"agpv_lieu",label:"Lieu de réunion",ph:"Ex: Siège social"},
+      {id:"agpv_president",label:"Président de séance",ph:"Nom du président"},
+      {id:"agpv_presents",label:"Associés présents",ph:"Noms et parts représentées",type:"textarea"},
+      {id:"agpv_ordre",label:"Ordre du jour",ph:"1. ...
+2. ...",type:"textarea"},
+      {id:"agpv_resolutions",label:"Résolutions adoptées",ph:"1ère résolution : ...
+2ème résolution : ...",type:"textarea"}
+    ]},
+    "cps": {titre:"Cession de parts sociales", champs:[
+      {id:"cps_societe",label:"Société",ph:"Dénomination sociale"},
+      {id:"cps_cedant",label:"Cédant",ph:"Nom complet de l'associé cédant"},
+      {id:"cps_cessionnaire",label:"Cessionnaire",ph:"Nom complet de l'acquéreur"},
+      {id:"cps_nb_parts",label:"Nombre de parts cédées",ph:"Ex: 50",type:"number"},
+      {id:"cps_prix",label:"Prix de cession (MAD)",ph:"Ex: 50000",type:"number"},
+      {id:"cps_date",label:"Date de la cession",ph:"",type:"date"}
+    ]},
+    "proc": {titre:"Procuration pour AGE", champs:[
+      {id:"proc_mandant",label:"Mandant (associé absent)",ph:"Nom complet"},
+      {id:"proc_mandataire",label:"Mandataire (représentant)",ph:"Nom complet"},
+      {id:"proc_societe",label:"Société",ph:"Dénomination sociale"},
+      {id:"proc_age",label:"Date de l'AGE",ph:"",type:"date"},
+      {id:"proc_objet",label:"Objet de l'assemblée",ph:"Ex: Modification des statuts, augmentation de capital..."},
+      {id:"proc_nb_parts",label:"Nombre de parts représentées",ph:"Ex: 40",type:"number"}
+    ]},
+    "gerance": {titre:"Contrat de gérance", champs:[
+      {id:"gerance_societe",label:"Société",ph:"Dénomination sociale"},
+      {id:"gerance_gerant",label:"Gérant nommé",ph:"Nom complet"},
+      {id:"gerance_debut",label:"Date de prise de fonction",ph:"",type:"date"},
+      {id:"gerance_duree",label:"Durée du mandat",ph:"Ex: 3 ans renouvelables"},
+      {id:"gerance_remuneration",label:"Rémunération mensuelle (MAD)",ph:"Ex: 15000",type:"number"},
+      {id:"gerance_pouvoirs",label:"Pouvoirs conférés",ph:"Ex: Représenter la société, signer tous actes...",type:"textarea"}
+    ]},
+    "bh": {titre:"Contrat de bail d'habitation", champs:[
+      {id:"bh_bailleur",label:"Bailleur",ph:"Nom complet du propriétaire"},
+      {id:"bh_locataire",label:"Locataire",ph:"Nom complet"},
+      {id:"bh_adresse",label:"Adresse du logement",ph:"Adresse complète"},
+      {id:"bh_description",label:"Description du bien",ph:"Ex: Appartement F3, 2ème étage, 85m²"},
+      {id:"bh_loyer",label:"Loyer mensuel (MAD)",ph:"Ex: 4500",type:"number"},
+      {id:"bh_caution",label:"Dépôt de garantie (MAD)",ph:"Ex: 9000",type:"number"},
+      {id:"bh_debut",label:"Date d'entrée",ph:"",type:"date"},
+      {id:"bh_duree",label:"Durée (mois)",ph:"Ex: 12",type:"number"}
+    ]},
+    "edl": {titre:"État des lieux", champs:[
+      {id:"edl_type",label:"Type",ph:"Ex: Entrée ou Sortie"},
+      {id:"edl_adresse",label:"Adresse du bien",ph:"Adresse complète"},
+      {id:"edl_bailleur",label:"Bailleur",ph:"Nom complet"},
+      {id:"edl_locataire",label:"Locataire",ph:"Nom complet"},
+      {id:"edl_date",label:"Date de l'état des lieux",ph:"",type:"date"},
+      {id:"edl_pieces",label:"État des pièces",ph:"Cuisine : bon état
+Salon : marques sur murs
+Chambres : bon état...",type:"textarea"},
+      {id:"edl_observations",label:"Observations générales",ph:"Compteurs, clés remises, réserves..."}
+    ]},
+    "mv": {titre:"Mandat de vente immobilière", champs:[
+      {id:"mv_mandant",label:"Mandant (propriétaire)",ph:"Nom complet"},
+      {id:"mv_mandataire",label:"Agence / Agent immobilier",ph:"Dénomination"},
+      {id:"mv_bien",label:"Description du bien",ph:"Ex: Villa, 4 pièces, 200m², Hay Riad Rabat"},
+      {id:"mv_prix",label:"Prix de vente (MAD)",ph:"Ex: 3500000",type:"number"},
+      {id:"mv_commission",label:"Commission (%)",ph:"Ex: 2.5",type:"number"},
+      {id:"mv_type",label:"Type de mandat",ph:"Exclusif ou Simple"},
+      {id:"mv_duree",label:"Durée du mandat (mois)",ph:"Ex: 3",type:"number"}
+    ]},
+    "ql": {titre:"Quittance de loyer", champs:[
+      {id:"ql_bailleur",label:"Bailleur",ph:"Nom complet"},
+      {id:"ql_locataire",label:"Locataire",ph:"Nom complet"},
+      {id:"ql_adresse",label:"Adresse du bien loué",ph:"Adresse complète"},
+      {id:"ql_mois",label:"Mois concerné",ph:"Ex: Mai 2026"},
+      {id:"ql_loyer",label:"Montant du loyer (MAD)",ph:"Ex: 5000",type:"number"},
+      {id:"ql_date_paiement",label:"Date de paiement",ph:"",type:"date"},
+      {id:"ql_mode",label:"Mode de paiement",ph:"Ex: Virement, chèque, espèces"}
+    ]},
+    "cmd": {titre:"Commandement de payer", champs:[
+      {id:"cmd_bailleur",label:"Bailleur (créancier)",ph:"Nom complet"},
+      {id:"cmd_locataire",label:"Locataire (débiteur)",ph:"Nom complet"},
+      {id:"cmd_adresse",label:"Adresse du bien",ph:"Adresse du local loué"},
+      {id:"cmd_montant",label:"Somme due (MAD)",ph:"Ex: 15000",type:"number"},
+      {id:"cmd_mois",label:"Mois impayés",ph:"Ex: Janvier, Février, Mars 2026"},
+      {id:"cmd_delai",label:"Délai accordé (jours)",ph:"Ex: 8",type:"number"},
+      {id:"cmd_avocat",label:"Maître",ph:"Me. Alami"}
+    ]},
+    "stc": {titre:"Reçu pour solde de tout compte", champs:[
+      {id:"stc_employe",label:"Employé(e)",ph:"Nom complet"},
+      {id:"stc_employeur",label:"Employeur",ph:"Raison sociale"},
+      {id:"stc_poste",label:"Poste occupé",ph:"Ex: Juriste"},
+      {id:"stc_fin",label:"Date de fin de contrat",ph:"",type:"date"},
+      {id:"stc_motif",label:"Motif de rupture",ph:"Ex: Licenciement, démission, rupture conventionnelle"},
+      {id:"stc_indemnites",label:"Indemnités versées (MAD)",ph:"Ex: 25000",type:"number"},
+      {id:"stc_details",label:"Détail du solde",ph:"Salaire du mois : X MAD
+Congés payés : X MAD
+Indemnité de préavis : X MAD",type:"textarea"}
+    ]},
+    "mdt": {titre:"Mise en demeure de reprise du travail", champs:[
+      {id:"mdt_employe",label:"Employé(e) absent(e)",ph:"Nom complet"},
+      {id:"mdt_poste",label:"Poste",ph:"Ex: Assistant juridique"},
+      {id:"mdt_depuis",label:"Absent depuis le",ph:"",type:"date"},
+      {id:"mdt_delai",label:"Délai de reprise accordé (jours)",ph:"Ex: 3",type:"number"},
+      {id:"mdt_employeur",label:"Employeur",ph:"Raison sociale ou nom du responsable"}
+    ]},
+    "rca": {titre:"Convention de rupture amiable", champs:[
+      {id:"rca_employe",label:"Salarié(e)",ph:"Nom complet"},
+      {id:"rca_employeur",label:"Employeur",ph:"Raison sociale"},
+      {id:"rca_poste",label:"Poste",ph:"Ex: Juriste d'entreprise"},
+      {id:"rca_date_rupture",label:"Date de rupture convenue",ph:"",type:"date"},
+      {id:"rca_indemnite",label:"Indemnité de rupture (MAD)",ph:"Ex: 30000",type:"number"},
+      {id:"rca_conditions",label:"Conditions particulières",ph:"Ex: Préavis de X jours, formation de remplacement...",type:"textarea"}
+    ]},
+    "caut": {titre:"Acte de cautionnement", champs:[
+      {id:"caut_caution",label:"La caution",ph:"Nom complet du garant"},
+      {id:"caut_creancier",label:"Créancier bénéficiaire",ph:"Nom complet"},
+      {id:"caut_debiteur",label:"Débiteur principal",ph:"Nom complet"},
+      {id:"caut_montant",label:"Montant garanti (MAD)",ph:"Ex: 100000",type:"number"},
+      {id:"caut_objet",label:"Objet de la garantie",ph:"Ex: Remboursement du prêt de..."},
+      {id:"caut_duree",label:"Durée de la caution",ph:"Ex: 5 ans ou jusqu'à extinction de la dette"}
+    ]},
+    "pret": {titre:"Contrat de prêt entre particuliers", champs:[
+      {id:"pret_preteur",label:"Prêteur",ph:"Nom complet"},
+      {id:"pret_emprunteur",label:"Emprunteur",ph:"Nom complet"},
+      {id:"pret_montant",label:"Montant du prêt (MAD)",ph:"Ex: 50000",type:"number"},
+      {id:"pret_taux",label:"Taux d'intérêt annuel (%)",ph:"Ex: 0 (sans intérêt) ou 5",type:"number"},
+      {id:"pret_remboursement",label:"Date de remboursement",ph:"",type:"date"},
+      {id:"pret_modalites",label:"Modalités de remboursement",ph:"Ex: En une fois, ou 12 mensualités de X MAD"}
+    ]},
+    "cdc": {titre:"Cession de créance", champs:[
+      {id:"cdc_cedant",label:"Cédant (créancier actuel)",ph:"Nom complet"},
+      {id:"cdc_cessionnaire",label:"Cessionnaire (nouveau créancier)",ph:"Nom complet"},
+      {id:"cdc_debiteur",label:"Débiteur cédé",ph:"Nom complet"},
+      {id:"cdc_montant",label:"Montant de la créance (MAD)",ph:"Ex: 75000",type:"number"},
+      {id:"cdc_cause",label:"Origine de la créance",ph:"Ex: Facture n°123 du 01/01/2026"},
+      {id:"cdc_prix",label:"Prix de la cession (MAD)",ph:"Ex: 70000",type:"number"}
+    ]},
+    "mainl": {titre:"Mainlevée de saisie", champs:[
+      {id:"mainl_creancier",label:"Créancier (demandeur de mainlevée)",ph:"Nom complet"},
+      {id:"mainl_debiteur",label:"Débiteur",ph:"Nom complet"},
+      {id:"mainl_type_saisie",label:"Type de saisie",ph:"Ex: Saisie-conservatoire, saisie-arrêt"},
+      {id:"mainl_ref",label:"Référence de la saisie",ph:"Ex: Ordonnance n°789 du 01/02/2026"},
+      {id:"mainl_motif",label:"Motif de la mainlevée",ph:"Ex: Dette intégralement payée le..."},
+      {id:"mainl_tribunal",label:"Tribunal compétent",ph:"Ex: TPI Casablanca"}
+    ]},
+    "perm": {titre:"Demande d'autorisation de construire", champs:[
+      {id:"perm_demandeur",label:"Demandeur",ph:"Nom complet ou raison sociale"},
+      {id:"perm_adresse",label:"Adresse du terrain",ph:"Situation précise du terrain"},
+      {id:"perm_titre",label:"N° Titre foncier",ph:"Ex: 45678/C"},
+      {id:"perm_superficie",label:"Superficie du terrain (m²)",ph:"Ex: 500",type:"number"},
+      {id:"perm_nature",label:"Nature des travaux",ph:"Ex: Construction d'une villa R+1"},
+      {id:"perm_surf_plancher",label:"Surface plancher (m²)",ph:"Ex: 300",type:"number"},
+      {id:"perm_autorite",label:"Autorité compétente",ph:"Ex: Monsieur le Président de la Commune"}
+    ]},
+    "cont": {titre:"Contestation de décision administrative", champs:[
+      {id:"cont_nom",label:"Requérant",ph:"Nom complet"},
+      {id:"cont_autorite",label:"Autorité concernée",ph:"Ex: Commune de Casablanca, Ministère de..."},
+      {id:"cont_decision",label:"Décision contestée",ph:"Référence et date de la décision"},
+      {id:"cont_motifs",label:"Motifs de la contestation",ph:"Illégalité, vice de procédure, excès de pouvoir...",type:"textarea"},
+      {id:"cont_demande",label:"Ce que vous demandez",ph:"Ex: Annulation de la décision, réparation du préjudice...",type:"textarea"},
+      {id:"cont_tribunal",label:"Tribunal administratif saisi",ph:"Ex: Tribunal Administratif de Casablanca"}
+    ]},
     "rga": {titre:"Recours gracieux administratif", champs:[
+"rga": {titre:"Recours gracieux administratif", champs:[
       {id:"rga_nom",label:"Nom du requérant",ph:"Nom complet"},
       {id:"rga_autorite",label:"Autorité saisie",ph:"Ex: Monsieur le Wali de Casablanca"},
       {id:"rga_decision",label:"Décision contestée",ph:"Ex: Décision de refus du 01/03/2026"},
@@ -2471,6 +2681,55 @@ function genererDocument(action) {
     corps = (cabVille?cabVille+", le ":"Fait le ")+today+"\n\n"+vals.autorite+"\n\nObjet : Recours gracieux contre la décision du "+vals.decision+"\n\n";
     corps += "Monsieur le Wali / l'Autorité,\n\nJ'ai l'honneur de former le présent recours gracieux contre la décision suivante : "+vals.decision+"\n\nMOTIFS :\n"+vals.motifs+"\n\nPAR CONSÉQUENT, je vous demande de bien vouloir :\n"+vals.demande+"\n\n";
     corps += "Dans l'attente d'une décision favorable, veuillez agréer l'expression de mes sincères salutations.\n\n"+vals.nom;
+  } else if(action==="req") {
+    corps = "REQUÊTE INTRODUCTIVE D'INSTANCE\n\n"+vals.tribunal+"\n\nDEMANDEUR : "+vals.demandeur+"\nDÉFENDEUR : "+vals.defendeur+"\n\nOBJET : "+vals.objet+"\n\nFAITS ET MOYENS :\n"+vals.faits+"\n\n"+(vals.montant?"MONTANT RÉCLAMÉ : "+Number(vals.montant).toLocaleString("fr-FR")+" MAD\n\n":"")+"PAR CES MOTIFS :\nIl plaise au Tribunal de bien vouloir :\n- Déclarer recevable et bien fondée la présente requête\n- "+vals.objet+"\n- Condamner le défendeur aux entiers dépens\n\nFait à "+cabVille+", le "+today+"\n\nMaître "+vals.avocat+"\n"+cabBar;
+  } else if(action==="ref") {
+    corps = "REQUÊTE EN RÉFÉRÉ\n\n"+vals.tribunal+"\n\nDEMANDEUR EN RÉFÉRÉ : "+vals.demandeur+"\nDÉFENDEUR : "+vals.defendeur+"\n\nURGENCE :\n"+vals.urgence+"\n\nMESURE SOLLICITÉE :\n"+vals.demande+"\n\nPAR CES MOTIFS :\nVu l'urgence et le péril imminent, il est demandé au Président du Tribunal d'ordonner en référé :\n"+vals.demande+"\n\nFait à "+cabVille+", le "+today+"\n\nMaître "+vals.avocat+"\n"+cabBar;
+  } else if(action==="app") {
+    corps = "MÉMOIRE D'APPEL\n\nCour d'Appel — Appel formé contre :\n"+vals.jugement+"\n\nAPPELANT : "+vals.appelant+"\nINTIMÉ : "+vals.intime+"\n\nMOYENS D'APPEL :\n"+vals.moyens+"\n\nPAR CES MOTIFS :\nIl plaise à la Cour d'appel de bien vouloir :\n"+vals.demande+"\n\nFait à "+cabVille+", le "+today+"\n\nMaître "+vals.avocat+"\n"+cabBar;
+  } else if(action==="oip") {
+    corps = "OPPOSITION À INJONCTION DE PAYER\n\n"+vals.ordonnance+"\n\nOPPOSANT : "+vals.opposant+"\nCRÉANCIER : "+vals.creancier+"\nMONTANT CONTESTÉ : "+Number(vals.montant).toLocaleString("fr-FR")+" MAD\n\nMOTIFS DE L'OPPOSITION :\n"+vals.motifs+"\n\nPAR CES MOTIFS :\nIl est demandé au Tribunal de bien vouloir :\n- Déclarer recevable la présente opposition\n- Constater l'absence de fondement de la créance alléguée\n- Débouter le créancier de toutes ses demandes\n\nFait à "+cabVille+", le "+today+"\n\nMaître "+vals.avocat+"\n"+cabBar;
+  } else if(action==="exeq") {
+    corps = "REQUÊTE EN EXEQUATUR\n\nTribunal de Première Instance\n\nDEMANDEUR : "+vals.demandeur+"\nDÉFENDEUR : "+vals.defendeur+"\n\nJUGEMENT ÉTRANGER À EXEQUATURER :\n"+vals.jugement+" ("+vals.pays+")\n\nOBJET DU JUGEMENT :\n"+vals.objet+"\n\nPAR CES MOTIFS :\nIl est demandé au Tribunal de :\n- Accorder l'exequatur au jugement susvisé\n- Autoriser son exécution sur le territoire marocain\n\nFait à "+cabVille+", le "+today+"\n\nMaître "+vals.avocat+"\n"+cabBar;
+  } else if(action==="sarl") {
+    corps = "STATUTS DE SOCIÉTÉ À RESPONSABILITÉ LIMITÉE\n\n"+vals.nom+"\n\nARTICLE 1 — FORME\nIl est constitué une Société à Responsabilité Limitée régie par la loi n° 5-96.\n\nARTICLE 2 — DÉNOMINATION\n"+vals.nom+"\n\nARTICLE 3 — OBJET SOCIAL\n"+vals.objet+"\n\nARTICLE 4 — SIÈGE SOCIAL\n"+vals.siege+"\n\nARTICLE 5 — DURÉE\n"+vals.duree+" ans à compter de son immatriculation au RC.\n\nARTICLE 6 — CAPITAL SOCIAL\nLe capital social est fixé à "+Number(vals.capital).toLocaleString("fr-FR")+" MAD.\n\nARTICLE 7 — RÉPARTITION DES PARTS\n"+vals.associes+"\n\nARTICLE 8 — GÉRANCE\nLa société est gérée par : "+vals.gerant+"\n\nFait à "+cabVille+", le "+today+"\n\nSignatures des associés";
+  } else if(action==="agpv") {
+    corps = "PROCÈS-VERBAL D'ASSEMBLÉE GÉNÉRALE\n"+vals.type.toUpperCase()+"\n\n"+vals.societe+"\n\nDate : "+vals.date+" — "+vals.lieu+"\nPrésident de séance : "+vals.president+"\n\nASSOCIÉS PRÉSENTS OU REPRÉSENTÉS :\n"+vals.presents+"\n\nORDRE DU JOUR :\n"+vals.ordre+"\n\nDÉLIBÉRATIONS :\n"+vals.resolutions+"\n\nL'ordre du jour étant épuisé, la séance est levée.\n\nFait à "+cabVille+", le "+vals.date+"\n\nLe Président de séance\n"+vals.president;
+  } else if(action==="cps") {
+    corps = "ACTE DE CESSION DE PARTS SOCIALES\n\n"+vals.societe+"\n\nEntre :\nLE CÉDANT : "+vals.cedant+"\nLE CESSIONNAIRE : "+vals.cessionnaire+"\n\nARTICLE 1 — CESSION\nLe cédant cède "+vals.nb_parts+" parts sociales au cessionnaire.\n\nARTICLE 2 — PRIX\nCession consentie au prix de "+Number(vals.prix).toLocaleString("fr-FR")+" MAD, payé ce jour.\n\nARTICLE 3 — JOUISSANCE\nLe cessionnaire entre en jouissance à compter du "+vals.date+".\n\nARTICLE 4 — GARANTIE\nLe cédant garantit que les parts sont libres de tout nantissement.\n\nFait à "+cabVille+", le "+vals.date+"\n\nSignature cédant : "+vals.cedant+"\nSignature cessionnaire : "+vals.cessionnaire;
+  } else if(action==="proc") {
+    corps = "PROCURATION POUR ASSEMBLÉE GÉNÉRALE EXTRAORDINAIRE\n\n"+vals.societe+"\n\nJe soussigné(e), "+vals.mandant+", associé(e) titulaire de "+vals.nb_parts+" parts sociales,\n\nDonne pouvoir à "+vals.mandataire+"\n\nde me représenter à l'Assemblée Générale Extraordinaire du "+vals.age+".\n\nObjet : "+vals.objet+"\n\nLe mandataire votera en mon nom sur toutes les résolutions inscrites à l'ordre du jour.\n\nFait à "+cabVille+", le "+today+"\n\nSignature du mandant :\n"+vals.mandant;
+  } else if(action==="gerance") {
+    corps = "CONTRAT DE GÉRANCE\n\n"+vals.societe+"\n\nARTICLE 1 — NOMINATION\n"+vals.gerant+" est nommé(e) Gérant(e) de la société à compter du "+vals.debut+".\n\nARTICLE 2 — DURÉE\nLe mandat est consenti pour : "+vals.duree+".\n\nARTICLE 3 — POUVOIRS\n"+vals.pouvoirs+"\n\nARTICLE 4 — RÉMUNÉRATION\nRémunération mensuelle brute : "+Number(vals.remuneration).toLocaleString("fr-FR")+" MAD.\n\nARTICLE 5 — OBLIGATIONS\nLe gérant est tenu au respect des statuts et des décisions des associés.\n\nFait à "+cabVille+", le "+today+"\n\nSignature du gérant : "+vals.gerant+"\nPour la société : "+vals.societe;
+  } else if(action==="bh") {
+    corps = "CONTRAT DE BAIL D'HABITATION\n\nEntre :\nLE BAILLEUR : "+vals.bailleur+"\nLE LOCATAIRE : "+vals.locataire+"\n\nARTICLE 1 — OBJET\nLocation du logement : "+vals.adresse+"\n"+vals.description+"\n\nARTICLE 2 — DURÉE\nBail de "+vals.duree+" mois, à compter du "+vals.debut+".\n\nARTICLE 3 — LOYER\n"+Number(vals.loyer).toLocaleString("fr-FR")+" MAD/mois, payable le 1er de chaque mois.\n\nARTICLE 4 — DÉPÔT DE GARANTIE\n"+Number(vals.caution).toLocaleString("fr-FR")+" MAD, restituable à la fin du bail.\n\nARTICLE 5 — OBLIGATIONS\nLe locataire s'engage à entretenir le logement en bon état.\n\nFait à "+cabVille+", le "+today+"\n\nSignature bailleur : "+vals.bailleur+"\nSignature locataire : "+vals.locataire;
+  } else if(action==="edl") {
+    corps = "ÉTAT DES LIEUX — "+vals.type.toUpperCase()+"\n\nBien concerné : "+vals.adresse+"\n\nBAILLEUR : "+vals.bailleur+"\nLOCATAIRE : "+vals.locataire+"\nDate : "+vals.date+"\n\nÉTAT DES PIÈCES :\n"+vals.pieces+"\n\nOBSERVATIONS :\n"+vals.observations+"\n\nLe présent état des lieux a été établi contradictoirement entre les parties.\n\nFait à "+cabVille+", le "+vals.date+"\n\nSignature bailleur : "+vals.bailleur+"\nSignature locataire : "+vals.locataire;
+  } else if(action==="mv") {
+    corps = "MANDAT DE VENTE IMMOBILIÈRE\n"+vals.type.toUpperCase()+"\n\nMANDANT (propriétaire) : "+vals.mandant+"\nMANDATAIRE : "+vals.mandataire+"\n\nARTICLE 1 — BIEN\n"+vals.bien+"\n\nARTICLE 2 — PRIX\nPrix de vente : "+Number(vals.prix).toLocaleString("fr-FR")+" MAD\n\nARTICLE 3 — COMMISSION\n"+vals.commission+"% TTC sur le prix de vente.\n\nARTICLE 4 — DURÉE\nMandat de "+vals.duree+" mois à compter du "+today+".\n\nFait à "+cabVille+", le "+today+"\n\nSignature mandant : "+vals.mandant+"\nSignature mandataire : "+vals.mandataire;
+  } else if(action==="ql") {
+    corps = "QUITTANCE DE LOYER\n\nJe soussigné(e), "+vals.bailleur+", propriétaire du bien sis :\n"+vals.adresse+"\n\nDonne quittance à "+vals.locataire+"\n\nDu paiement du loyer du mois de : "+vals.mois+"\nMontant : "+Number(vals.loyer).toLocaleString("fr-FR")+" MAD\nDate de paiement : "+vals.date_paiement+"\nMode de paiement : "+vals.mode+"\n\nSous réserve de tous droits.\n\nFait à "+cabVille+", le "+today+"\n\nSignature du bailleur :\n"+vals.bailleur;
+  } else if(action==="cmd") {
+    corps = (cabVille?cabVille+", le ":"Fait le ")+today+"\n\nÀ l'attention de : "+vals.locataire+"\nObjet du bien : "+vals.adresse+"\n\nMadame, Monsieur,\n\nNous vous mettons en demeure de payer dans un délai de "+vals.delai+" jours :\n\nSomme due : "+Number(vals.montant).toLocaleString("fr-FR")+" MAD\nAu titre des loyers impayés : "+vals.mois+"\n\nÀ défaut de paiement dans ce délai, nous saisirons le Tribunal compétent pour obtenir votre expulsion ainsi que le paiement des sommes dues, outre les frais et dépens.\n\nFait à "+cabVille+", le "+today+"\n\nMaître "+vals.avocat+"\n"+cabBar;
+  } else if(action==="stc") {
+    corps = "REÇU POUR SOLDE DE TOUT COMPTE\n\nEntre :\nL'EMPLOYEUR : "+vals.employeur+"\nL'EMPLOYÉ(E) : "+vals.employe+"\n\nPoste : "+vals.poste+"\nDate de fin de contrat : "+vals.fin+"\nMotif : "+vals.motif+"\n\nDÉTAIL DU SOLDE :\n"+vals.details+"\n\nTOTAL NET VERSÉ : "+Number(vals.indemnites).toLocaleString("fr-FR")+" MAD\n\nL'employé(e) reconnaît avoir reçu la totalité des sommes qui lui sont dues au titre de la rupture du contrat de travail et donne quittance de bonne et valable.\n\nFait à "+cabVille+", le "+today+"\n\nSignature employeur : "+vals.employeur+"\nSignature employé(e) : "+vals.employe;
+  } else if(action==="mdt") {
+    corps = (cabVille?cabVille+", le ":"Fait le ")+today+"\n\nÀ l'attention de : M./Mme "+vals.employe+"\nFonction : "+vals.poste+"\n\nObjet : Mise en demeure de reprise du travail\n\nMonsieur / Madame,\n\nNous constatons votre absence injustifiée depuis le "+vals.depuis+".\n\nNous vous mettons en demeure de reprendre votre poste dans un délai de "+vals.delai+" jours ouvrables à compter de la réception de la présente.\n\nPassé ce délai, sans reprise ni justificatif valable, nous serons contraints d'engager la procédure de licenciement pour abandon de poste.\n\nLa Direction\n"+vals.employeur;
+  } else if(action==="rca") {
+    corps = "CONVENTION DE RUPTURE CONVENTIONNELLE DU CONTRAT DE TRAVAIL\n\nEntre :\nL'EMPLOYEUR : "+vals.employeur+"\nLE/LA SALARIÉ(E) : "+vals.employe+"\n\nPoste : "+vals.poste+"\n\nARTICLE 1 — ACCORD\nLes parties conviennent d'un commun accord de mettre fin au contrat de travail.\n\nARTICLE 2 — DATE DE RUPTURE\nLa rupture prend effet le : "+vals.date_rupture+"\n\nARTICLE 3 — INDEMNITÉ\nL'employeur verse une indemnité de rupture de "+Number(vals.indemnite).toLocaleString("fr-FR")+" MAD.\n\nARTICLE 4 — CONDITIONS\n"+vals.conditions+"\n\nLes parties reconnaissent avoir librement consenti à la présente convention.\n\nFait à "+cabVille+", le "+today+"\n\nSignature employeur : "+vals.employeur+"\nSignature salarié(e) : "+vals.employe;
+  } else if(action==="caut") {
+    corps = "ACTE DE CAUTIONNEMENT\n\nJe soussigné(e), "+vals.caution+",\n\nMe porte caution solidaire et indivisible de "+vals.debiteur+" envers "+vals.creancier+"\n\nARTICLE 1 — OBJET\n"+vals.objet+"\n\nARTICLE 2 — MONTANT GARANTI\nMontant maximum : "+Number(vals.montant).toLocaleString("fr-FR")+" MAD\n\nARTICLE 3 — DURÉE\n"+vals.duree+"\n\nARTICLE 4 — SOLIDARITÉ\nLa caution renonce au bénéfice de discussion et de division.\n\nFait à "+cabVille+", le "+today+"\n\nSignature de la caution :\n"+vals.caution;
+  } else if(action==="pret") {
+    var taux_txt = vals.taux&&Number(vals.taux)>0 ? "au taux annuel de "+vals.taux+"%" : "sans intérêts";
+    corps = "CONTRAT DE PRÊT ENTRE PARTICULIERS\n\nEntre :\nLE PRÊTEUR : "+vals.preteur+"\nL'EMPRUNTEUR : "+vals.emprunteur+"\n\nARTICLE 1 — OBJET\nLe prêteur remet à l'emprunteur la somme de "+Number(vals.montant).toLocaleString("fr-FR")+" MAD.\n\nARTICLE 2 — INTÉRÊTS\nPrêt consenti "+taux_txt+".\n\nARTICLE 3 — REMBOURSEMENT\nDate de remboursement : "+vals.remboursement+"\nModalités : "+vals.modalites+"\n\nARTICLE 4 — DÉFAUT\nEn cas de non-remboursement à l'échéance, la totalité du prêt sera exigible immédiatement.\n\nFait à "+cabVille+", le "+today+"\n\nSignature prêteur : "+vals.preteur+"\nSignature emprunteur : "+vals.emprunteur;
+  } else if(action==="cdc") {
+    corps = "ACTE DE CESSION DE CRÉANCE\n\nEntre :\nLE CÉDANT : "+vals.cedant+"\nLE CESSIONNAIRE : "+vals.cessionnaire+"\nLE DÉBITEUR CÉDÉ : "+vals.debiteur+"\n\nARTICLE 1 — CRÉANCE CÉDÉE\nLe cédant cède au cessionnaire la créance de "+Number(vals.montant).toLocaleString("fr-FR")+" MAD\ndue par "+vals.debiteur+" au titre de : "+vals.cause+"\n\nARTICLE 2 — PRIX\nCession consentie au prix de "+Number(vals.prix).toLocaleString("fr-FR")+" MAD.\n\nARTICLE 3 — GARANTIE\nLe cédant garantit l'existence de la créance mais non la solvabilité du débiteur.\n\nARTICLE 4 — NOTIFICATION\nLa cession sera notifiée au débiteur par voie d'huissier.\n\nFait à "+cabVille+", le "+today+"\n\nSignature cédant : "+vals.cedant+"\nSignature cessionnaire : "+vals.cessionnaire;
+  } else if(action==="mainl") {
+    corps = "MAINLEVÉE DE SAISIE\n\n"+vals.tribunal+"\n\nCRÉANCIER : "+vals.creancier+"\nDÉBITEUR : "+vals.debiteur+"\n\nRÉFÉRENCE : "+vals.ref_saisie+"\nTYPE DE SAISIE : "+vals.type_saisie+"\n\nMotif de la mainlevée :\n"+vals.motif+"\n\nJe soussigné(e), "+vals.creancier+", donne mainlevée totale et définitive de la "+vals.type_saisie+" pratiquée à l'encontre de "+vals.debiteur+" en vertu de "+vals.ref_saisie+".\n\nFait à "+cabVille+", le "+today+"\n\nSignature du créancier :\n"+vals.creancier;
+  } else if(action==="perm") {
+    corps = "DEMANDE D'AUTORISATION DE CONSTRUIRE\n\n"+vals.autorite+"\n\nJe soussigné(e), "+vals.demandeur+",\n\nAi l'honneur de solliciter une autorisation de construire sur le terrain suivant :\n\nSITUATION : "+vals.adresse+"\nTITRE FONCIER N° : "+vals.titre+"\nSUPERFICIE : "+vals.superficie+" m²\n\nNATURE DES TRAVAUX : "+vals.nature+"\nSURFACE PLANCHER PROJETÉE : "+vals.surf_plancher+" m²\n\nJe m'engage à respecter les règles d'urbanisme en vigueur et les prescriptions du plan d'aménagement.\n\nPièces jointes : Titre de propriété, plan de masse, plan de façade, plan de coupe\n\nFait à "+cabVille+", le "+today+"\n\n"+vals.demandeur;
+  } else if(action==="cont") {
+    corps = (cabVille?cabVille+", le ":"Fait le ")+today+"\n\n"+vals.autorite+"\n\nObjet : Recours contentieux contre la décision : "+vals.decision+"\n\nMonsieur / Madame,\n\nJ'ai l'honneur de former le présent recours contentieux contre la décision susvisée pour les motifs suivants :\n\nMOTIFS :\n"+vals.motifs+"\n\nPAR CES MOTIFS :\n"+vals.demande+"\n\nJe vous prie d'agréer, Monsieur/Madame, l'expression de ma haute considération.\n\n"+vals.nom;
   } else {
     corps = "Document : " + action + "\n\nCe modèle est en cours de développement.\nUtilisez le module Actes et Documents pour rédiger manuellement.";
   }
